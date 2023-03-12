@@ -1,14 +1,17 @@
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import { createApp } from "vue";
+import { createPinia } from "pinia";
+import SvgIcon from "@/components/SvgIcon.vue";
+import "@/permission";
+import "nprogress/nprogress.css";
+import "virtual:svg-icons-register";
+import "@/assets/styles/index.scss";
 
-import App from './App.vue'
-import router from './router'
+import App from "./App.vue";
+import router from "./router";
 
-import './assets/main.css'
+const app = createApp(App);
 
-const app = createApp(App)
-
-app.use(createPinia())
-app.use(router)
-
-app.mount('#app')
+app.use(createPinia());
+app.use(router);
+app.component("svg-icon", SvgIcon);
+app.mount("#app");
