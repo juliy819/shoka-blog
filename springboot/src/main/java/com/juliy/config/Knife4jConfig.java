@@ -14,7 +14,7 @@ import java.util.Map;
 
 /**
  * knife4j配置
- * @author JuLiy
+ * @author juliy
  * @date 2023/3/1 22:00
  */
 @Configuration

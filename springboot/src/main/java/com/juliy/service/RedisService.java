@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * redis服务接口
- * @author JuLiy
+ * @author juliy
  * @date 2023/3/12 11:37
  */
 @SuppressWarnings("all")

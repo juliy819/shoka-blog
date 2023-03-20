@@ -2,87 +2,94 @@ import type {
   AxiosError,
   AxiosResponse,
   InternalAxiosRequestConfig
-} from "axios";
-import axios from "axios";
-import useStore from "@/stores";
-import { ElMessage, ElNotification } from "element-plus";
-import { messageConfirm } from "./modal";
-import { getToken, token_prefix } from "./token";
+} from 'axios';
+import axios from 'axios';
+import useStore from '@/store';
+import { ElMessage, ElNotification } from 'element-plus';
+import { messageConfirm } from './modal';
+import { getToken, token_prefix } from './token';
+import { errorCode } from '@/utils/errorCode';
 
 // 是否显示重新登录
 export const isReLogin = { show: false };
 
+// 创建axios实例
 const requests = axios.create({
-  baseURL: "/api",
+  // axios中请求配置有baseURL选项，表示请求URL公共部分
+  baseURL: import.meta.env.VITE_APP_BASE_API,
+  // 超时
   timeout: 10000,
   headers: {
-    "Content-Type": "application/json;charset=UTF-8"
+    'Content-Type': 'application/json;charset=UTF-8'
   }
 });
 
 // 请求拦截器
 requests.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    // 请求带token
-    if (getToken()) {
-      config.headers["Authorization"] = token_prefix + getToken();
+    // 是否需要设置token
+    const isToken = (config.headers || {}).isToken === false;
+    if (getToken() && !isToken) {
+      config.headers['Authorization'] = token_prefix + getToken();
     }
     return config;
   },
   (error: AxiosError) => {
+    console.log(error);
     return Promise.reject(error);
   }
 );
 
-// 配置响应拦截器
+// 响应拦截器
 requests.interceptors.response.use(
   (response: AxiosResponse) => {
-    const { user } = useStore();
-    switch (response.data.code) {
-      case 400:
-        ElNotification({
-          title: "失败",
-          message: response.data.msg,
-          type: "error"
-        });
-        break;
-      case 402:
-        if (!isReLogin.show) {
-          isReLogin.show = true;
-          messageConfirm("登录状态已过期，您可以继续留在该页面，或者重新登录")
-            .then(() => {
-              isReLogin.show = false;
-              user.LogOut().then(() => {
-                location.href = "/login";
-              });
-            })
-            .catch(() => {
-              isReLogin.show = false;
+    // 未设置状态码则默认成功状态
+    const code = response.data.code || 200;
+    // 获取错误信息
+    const msg = response.data.msg || errorCode[code] || errorCode['default'];
+
+    const { userStore } = useStore();
+
+    if (code == 401) {
+      if (!isReLogin.show) {
+        isReLogin.show = true;
+        messageConfirm('登录状态已过期，您可以继续留在该页面，或者重新登录')
+          .then(() => {
+            isReLogin.show = false;
+            userStore.logout().then(() => {
+              location.href = '/login';
             });
-        }
-        break;
-      case 500:
-        ElNotification({
-          title: "失败",
-          message: response.data.msg,
-          type: "error"
-        });
-        break;
+          })
+          .catch(() => {
+            isReLogin.show = false;
+          });
+      }
+      return Promise.reject('无效的会话，或者会话已过期，请重新登录。');
+    } else if (code == 500) {
+      ElMessage({ message: msg, type: 'error' });
+      return Promise.reject(new Error(msg));
+    } else if (code == 601) {
+      ElMessage({ message: msg, type: 'warning' });
+      return Promise.reject(new Error(msg));
+    } else if (code != 200) {
+      ElNotification.error({ title: msg });
+      return Promise.reject('error');
+    } else {
+      return Promise.resolve(response);
     }
-    return response;
   },
   (error: AxiosError) => {
     let { message } = error;
-    if (message == "Network Error") {
-      message = "后端接口连接异常";
-    } else if (message.includes("timeout")) {
-      message = "系统接口请求超时";
-    } else if (message.includes("Request failed with status code")) {
-      message = "系统接口" + message.substring(message.length - 3) + "异常";
+    if (message == 'Network Error') {
+      message = '后端接口连接异常';
+    } else if (message.includes('timeout')) {
+      message = '系统接口请求超时';
+    } else if (message.includes('Request failed with status code')) {
+      message = '系统接口' + message.substring(message.length - 3) + '异常';
     }
     ElMessage({
       message: message,
-      type: "error",
+      type: 'error',
       duration: 5 * 1000
     });
     return Promise.reject(error);

@@ -1,7 +1,6 @@
 package com.juliy.model.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 
 import static com.juliy.enums.StatusCodeEnum.FAIL;
@@ -9,11 +8,11 @@ import static com.juliy.enums.StatusCodeEnum.SUCCESS;
 
 /**
  * 结果返回类
- * @author JuLiy
+ * @author juliy
  * @date 2023/3/1 14:26
  */
 @Data
-@Tag(name = "结果返回类")
+@Schema(description = "结果返回类")
 public class Result<T> {
 
     /** 返回状态 */

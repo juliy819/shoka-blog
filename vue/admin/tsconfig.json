@@ -3,8 +3,7 @@
   "include": [
     "src/**/*.ts",
     "src/**/*.d.ts",
-    "src/**/*.vue",
-    "src/types/auto-imports.d.ts",
+    "src/**/*.vue"
   ],
   "compilerOptions": {
     "target": "ESNext",
@@ -29,7 +28,11 @@
       "@/*": [
         "src/*"
       ]
-    }
+    },
+    "types": [
+      "pinia-plugin-persist",
+      "vite/client"
+    ]
   },
   "references": [
     {

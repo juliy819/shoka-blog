@@ -27,14 +27,13 @@
   transform: translateX(30px);
 }
 
-/* breadcrumb transition */
+/* 面包屑过渡动画 */
 .breadcrumb-enter-active,
 .breadcrumb-leave-active {
-  transition: all 0.5s ease;
+  transition: all 1s ease;
 }
 
-.breadcrumb-enter-from,
-.breadcrumb-leave-active {
+.breadcrumb-enter-from {
   opacity: 0;
   transform: translateX(20px);
 }

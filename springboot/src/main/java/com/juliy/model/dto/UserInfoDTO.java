@@ -1,7 +1,7 @@
 package com.juliy.model.dto;
 
 /**
- * @author JuLiy
+ * @author juliy
  * @date 2023/3/11 20:44
  */
 public class UserInfoDTO {

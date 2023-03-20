@@ -2,49 +2,94 @@ package com.juliy.constant;
 
 /**
  * 通用常量
- * @author JuLiy
+ * @author juliy
  * @date 2023/3/1 19:58
  */
 public interface CommonConstant {
 
-    int ONE = 1;
+    /**
+     * 否
+     */
+    public static final Integer FALSE = 0;
 
-    int ZERO = 0;
+    /**
+     * 是
+     */
+    public static final Integer TRUE = 1;
 
-    int FALSE = 0;
+    /**
+     * 博主id
+     */
+    public static final Integer BLOGGER_ID = 1;
 
-    int TRUE = 1;
+    /**
+     * 验证码
+     */
+    public static final String CAPTCHA = "验证码";
 
-    int BLOGGER_ID = 1;
+    /**
+     * 默认用户昵称
+     */
+    public static final String USER_NICKNAME = "用户";
 
-    int DEFAULT_CONFIG_ID = 1;
+    /**
+     * 审核提醒
+     */
+    public static final String CHECK_REMIND = "审核提醒";
 
-    int DEFAULT_ABOUT_ID = 1;
+    /**
+     * 评论提醒
+     */
+    public static final String COMMENT_REMIND = "评论提醒";
 
-    String PRE_TAG = "<mark>";
+    /**
+     * 通用邮件HTMl模板
+     */
+    public static final String COMMON_TEMPLATE = "common.html";
 
-    String POST_TAG = "</mark>";
+    /**
+     * 用户邮件HTMl模板
+     */
+    public static final String USER_TEMPLATE = "user.html";
 
-    String CURRENT = "current";
+    /**
+     * 作者邮件HTML模板
+     */
+    public static final String AUTHOR_TEMPLATE = "author.html";
 
-    String SIZE = "size";
+    /**
+     * 在线用户
+     */
+    public static final String ONLINE_USER = "onlineUser";
 
-    String DEFAULT_SIZE = "10";
+    /**
+     * 父级菜单id
+     */
+    public static final Integer PARENT_ID = 0;
 
-    String DEFAULT_NICKNAME = "用户";
+    /**
+     * 管理员id
+     */
+    public static final String ADMIN = "1";
 
-    String COMPONENT = "Layout";
+    /**
+     * 菜单类型（目录）
+     */
+    public static final String TYPE_DIR = "M";
 
-    String UNKNOWN = "未知";
+    /**
+     * 菜单类型（菜单）
+     */
+    public static final String TYPE_MENU = "C";
 
-    String APPLICATION_JSON = "application/json;charset=utf-8";
+    /**
+     * Layout组件标识
+     */
+    public final static String LAYOUT = "Layout";
 
-    String CAPTCHA = "验证码";
-
-    String CHECK_REMIND = "审核提醒";
-
-    String COMMENT_REMIND = "评论提醒";
-
-    String MENTION_REMIND = "@提醒";
+    /**
+     * ParentView组件标识
+     */
+    public final static String PARENT_VIEW = "ParentView";
 
 }

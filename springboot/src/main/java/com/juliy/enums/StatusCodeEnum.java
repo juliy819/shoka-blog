@@ -5,7 +5,7 @@ import lombok.Getter;
 
 /**
  * 状态码枚举
- * @author JuLiy
+ * @author juliy
  * @date 2023/3/1 14:27
  */
 @Getter
@@ -25,7 +25,7 @@ public enum StatusCodeEnum {
     /**
      * 未登录
      */
-    UNAUTHORIZED(402, "未登录"),
+    UNAUTHORIZED(401, "未登录"),
 
     /**
      * 系统异常
@@ -33,9 +33,14 @@ public enum StatusCodeEnum {
     SYSTEM_ERROR(-1, "系统异常"),
 
     /**
-     * 操作失败
+     * 系统内部错误
      */
-    FAIL(500, "操作失败");
+    FAIL(500, "系统内部错误"),
+
+    /**
+     * 系统警告消息
+     */
+    WARN(601, "警告");
 
     /**
      * 状态码

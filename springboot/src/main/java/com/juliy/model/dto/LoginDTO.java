@@ -9,7 +9,7 @@ import lombok.Data;
 
 /**
  * 登录信息
- * @author JuLiy
+ * @author juliy
  * @date 2023/3/1 13:25
  */
 @Data

@@ -1,13 +1,13 @@
 /**
- * 登录信息
+ * 登录表单
  */
 export interface LoginForm {
-  /**
-   * 用户名
-   */
+
+  /** 用户名 */
   username: string;
-  /**
-   * 密码
-   */
+
+  /** 密码 */
   password: string;
 }
+
+
