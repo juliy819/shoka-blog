@@ -8,15 +8,14 @@
   <div v-if="!item.meta || !item.meta.hidden">
     <!-- 若没有子路由，则渲染为一级菜单 -->
     <template
-      v-if="hasOneShowingChild(item, item.children) &&
+        v-if="hasOneShowingChild(item, item.children) &&
         (!onlyOneChild.children || onlyOneChild.noShowingChildren)">
       <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)">
           <el-icon>
             <svg-icon
-              v-if="onlyOneChild.meta && onlyOneChild.meta.icon"
-              :icon-class="onlyOneChild.meta.icon"
-            />
+                v-if="onlyOneChild.meta && onlyOneChild.meta.icon"
+                :icon-class="onlyOneChild.meta.icon"/>
           </el-icon>
           <template #title>
             {{ onlyOneChild.meta.title }}
@@ -28,21 +27,24 @@
     <el-sub-menu v-else :index="resolvePath(item.path)">
       <template #title>
         <el-icon>
-          <svg-icon v-if="item.meta && item.meta.icon"
-                    :icon-class="item.meta.icon" />
+          <svg-icon
+              v-if="item.meta && item.meta.icon"
+              :icon-class="item.meta.icon"/>
         </el-icon>
-        <span v-if="item.meta && item.meta.title"
-              class="menu-title">{{ item.meta.title }}</span>
+        <span
+            v-if="item.meta && item.meta.title"
+            class="menu-title"
+        >{{ item.meta.title }}</span
+        >
       </template>
       <!-- 添加子菜单 -->
       <sidebar-item
-        v-for="child in item.children"
-        :key="child.path"
-        :base-path="resolvePath(child.path)"
-        :is-nest="true"
-        :item="child"
-        class="nest-menu"
-      />
+          v-for="child in item.children"
+          :key="child.path"
+          :base-path="resolvePath(child.path)"
+          :is-nest="true"
+          :item="child"
+          class="nest-menu"/>
     </el-sub-menu>
   </div>
 </template>
@@ -104,7 +106,7 @@ const resolvePath = (routePath: string) => {
 };
 
 const getNormalPath = (p: string) => {
-  if (p.length === 0 || !p || p == 'undefined') {
+  if (p.length === 0 || !p || p === 'undefined') {
     return p;
   }
   let res = p.replace('//', '/');

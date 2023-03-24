@@ -1,18 +1,15 @@
 import type { AppState } from '../interface';
 import { defineStore } from 'pinia';
-import Cookies from 'js-cookie';
 
 const useAppStore = defineStore('useAppStore', {
   state: (): AppState => ({
     sidebar: {
-      opened: Cookies.get('sidebarStatus')
-        ? Cookies.get('sidebarStatus') == '1'
-        : true,
+      opened: true,
       withoutAnimation: false,
-      hide: false
+      hide: false,
     },
     device: 'desktop',
-    size: Cookies.get('size') || 'default'
+    size: 'default',
   }),
   actions: {
     /**
@@ -25,11 +22,6 @@ const useAppStore = defineStore('useAppStore', {
       }
       this.sidebar.opened = !this.sidebar.opened;
       this.sidebar.withoutAnimation = withoutAnimation;
-      if (this.sidebar.opened) {
-        Cookies.set('sidebarStatus', '1');
-      } else {
-        Cookies.set('sidebarStatus', '0');
-      }
     },
 
     /**
@@ -45,7 +37,6 @@ const useAppStore = defineStore('useAppStore', {
      * @param withoutAnimation 是否启用动画 true表示不启用
      */
     closeSidebar(withoutAnimation: boolean) {
-      Cookies.set('sidebarStatus', '0');
       this.sidebar.opened = false;
       this.sidebar.withoutAnimation = withoutAnimation;
     },
@@ -64,19 +55,14 @@ const useAppStore = defineStore('useAppStore', {
      */
     setSize(size: string) {
       this.size = size;
-      Cookies.set('size', size);
-    }
+    },
   },
   getters: {},
   //持久化存储
   persist: {
     enabled: true,
-    strategies: [
-      {
-        storage: localStorage
-      }
-    ]
-  }
+    strategies: [{ storage: localStorage }],
+  },
 });
 
 export default useAppStore;

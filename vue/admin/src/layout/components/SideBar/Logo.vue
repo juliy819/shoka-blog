@@ -1,36 +1,38 @@
 <template>
-  <div class="sidebar-logo-container">
-    <transition :class="{collapse:isCollapse}" name="sidebarLogoFade"
-                style="background-color: rgb(48, 65, 86)">
-      <router-link v-if="collapse" key="collapse" class="sidebar-logo-link"
+  <div class="sidebar-logo-container" :class="{'collapse':collapse}"
+       :style="{ backgroundColor: sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground }">
+    <transition name="sidebarLogoFade">
+      <router-link v-if="collapse" key="collapse"
+                   class="sidebar-logo-link"
                    to="/">
-        <img v-if="logo" :src="logo" alt="" class="sidebar-logo" />
+        <img v-if="logo" :src="logo" alt="" class="sidebar-logo"/>
         <h1 v-else class="sidebar-title">博客后台管理系统</h1>
       </router-link>
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" alt="" class="sidebar-logo" />
-        <h1 class="sidebar-title">博客后台管理系统</h1>
+        <img v-if="logo" :src="logo" alt="" class="sidebar-logo"/>
+        <h1 class="sidebar-title"
+            :style="{ color: sideTheme === 'theme-dark' ? variables.logoTitleColor : variables.logoLightTitleColor }">
+          博客后台管理系统</h1>
       </router-link>
     </transition>
   </div>
 </template>
 
 <script lang="ts" setup>
+import variables from '@/assets/styles/variables.module.scss';
+import useStore from '@/store/index';
+import logo from '@/assets/logo.svg';
 
-const props = defineProps({
+defineProps({
   collapse: {
     type: Boolean,
     required: true
   }
 });
 
-const state = reactive({
-  isCollapse: props.collapse,
-  logo: new URL(`../../../assets/logo.svg`, import.meta.url).href
-});
+const { settingStore } = useStore();
 
-const { logo, isCollapse } = toRefs(state);
-
+const sideTheme = computed(() => settingStore.sideTheme);
 </script>
 
 <style lang="scss" scoped>

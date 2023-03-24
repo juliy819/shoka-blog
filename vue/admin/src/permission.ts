@@ -3,14 +3,14 @@ import { getToken } from '@/utils/token';
 import NProgress from 'nprogress';
 import { isReLogin } from '@/utils/request';
 import useStore from '@/store';
-import { ElMessage } from 'element-plus';
+import { msgError } from '@/utils/modal';
 
 NProgress.configure({
   easing: 'ease',
   speed: 500,
   showSpinner: false,
   trickleSpeed: 200,
-  minimum: 0.3
+  minimum: 0.3,
 });
 
 // 白名单路由
@@ -32,9 +32,9 @@ router.beforeEach((to, from, next) => {
           .getBackendUserInfo()
           .then(() => {
             isReLogin.show = false;
-            permissionStore.generateRoutes().then((accessRoutes) => {
+            permissionStore.generateRoutes().then(accessRoutes => {
               // 根据roles权限生成可访问的路由表
-              accessRoutes.forEach((route) => {
+              accessRoutes.forEach(route => {
                 // 动态添加可访问路由表
                 router.addRoute(route);
               });
@@ -44,10 +44,10 @@ router.beforeEach((to, from, next) => {
               next({ ...to, replace: true });
             });
           })
-          .catch((err) => {
+          .catch(err => {
             // 信息拉取失败则注销账户并重新转到登录页
             userStore.logout().then(() => {
-              ElMessage.error(err);
+              msgError(err);
               next({ path: '/login' });
             });
           });

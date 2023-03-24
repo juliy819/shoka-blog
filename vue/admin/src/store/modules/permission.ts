@@ -21,17 +21,17 @@ const usePermissionStore = defineStore('usePermissionStore', {
       return new Promise((resolve, reject) => {
         // 向后端请求路由数据
         getRouters()
-          .then(({ data }) => {
-            if (data.flag) {
-              const routeData = data.data;
-              const asyncRoutes = filterAsyncRoutes(routeData);
-              this.setRoutes(asyncRoutes);
-              resolve(asyncRoutes);
-            }
-          })
-          .catch((error) => {
-            reject(error);
-          });
+            .then(({ data }) => {
+              if (data.flag) {
+                const routeData = data.data;
+                const asyncRoutes = filterAsyncRoutes(routeData);
+                this.setRoutes(asyncRoutes);
+                resolve(asyncRoutes);
+              }
+            })
+            .catch(error => {
+              reject(error);
+            });
       });
     }
   }
@@ -40,12 +40,12 @@ const usePermissionStore = defineStore('usePermissionStore', {
 /** 遍历后台传来的路由字符串，转换为组件对象 */
 const filterAsyncRoutes = (routes: RouteRecordRaw[]) => {
   const res: RouteRecordRaw[] = [];
-  routes.forEach((route) => {
+  routes.forEach(route => {
     // 这里拿到的route中的属性均为字符串，不是RawRouteComponent等ts定义的类型
     // 需要将其解构并转为any类型以进行字符串比较判断，不然ts会报错
     const tmpRoute = { ...route } as any;
     // 判断类型
-    if (tmpRoute.component == 'Layout') {
+    if (tmpRoute.component === 'Layout') {
       tmpRoute.component = Layout;
     } else if (tmpRoute.component === 'ParentView') {
       tmpRoute.component = ParentView;

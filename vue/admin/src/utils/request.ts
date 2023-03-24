@@ -1,12 +1,7 @@
-import type {
-  AxiosError,
-  AxiosResponse,
-  InternalAxiosRequestConfig
-} from 'axios';
+import type { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import axios from 'axios';
 import useStore from '@/store';
-import { ElMessage, ElNotification } from 'element-plus';
-import { messageConfirm } from './modal';
+import { messageConfirm, msgError, msgWarning, notifyError } from './modal';
 import { getToken, token_prefix } from './token';
 import { errorCode } from '@/utils/errorCode';
 
@@ -26,74 +21,71 @@ const requests = axios.create({
 
 // 请求拦截器
 requests.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
-    // 是否需要设置token
-    const isToken = (config.headers || {}).isToken === false;
-    if (getToken() && !isToken) {
-      config.headers['Authorization'] = token_prefix + getToken();
+    (config: InternalAxiosRequestConfig) => {
+      // 是否需要设置token
+      const isToken = (config.headers || {}).isToken === false;
+      if (getToken() && !isToken) {
+        config.headers['Authorization'] = token_prefix + getToken();
+      }
+      return config;
+    },
+    (error: AxiosError) => {
+      console.log(error);
+      return Promise.reject(error);
     }
-    return config;
-  },
-  (error: AxiosError) => {
-    console.log(error);
-    return Promise.reject(error);
-  }
 );
 
 // 响应拦截器
 requests.interceptors.response.use(
-  (response: AxiosResponse) => {
-    // 未设置状态码则默认成功状态
-    const code = response.data.code || 200;
-    // 获取错误信息
-    const msg = response.data.msg || errorCode[code] || errorCode['default'];
+    (response: AxiosResponse) => {
+      // 未设置状态码则默认成功状态
+      const code = response.data.code || 200;
+      // 获取错误信息
+      const message =
+          response.data.msg || errorCode[code] || errorCode['default'];
 
-    const { userStore } = useStore();
+      const { userStore } = useStore();
 
-    if (code == 401) {
-      if (!isReLogin.show) {
-        isReLogin.show = true;
-        messageConfirm('登录状态已过期，您可以继续留在该页面，或者重新登录')
-          .then(() => {
-            isReLogin.show = false;
-            userStore.logout().then(() => {
-              location.href = '/login';
-            });
-          })
-          .catch(() => {
-            isReLogin.show = false;
-          });
+      if (code === 401) {
+        if (!isReLogin.show) {
+          isReLogin.show = true;
+          messageConfirm('登录状态已过期，您可以继续留在该页面，或者重新登录')
+              .then(() => {
+                isReLogin.show = false;
+                userStore.logout().then(() => {
+                  location.href = '/login';
+                });
+              })
+              .catch(() => {
+                isReLogin.show = false;
+              });
+        }
+        return Promise.reject('无效的会话，或者会话已过期，请重新登录。');
+      } else if (code === 500) {
+        msgError(message);
+        return Promise.reject(new Error(message));
+      } else if (code === 601) {
+        msgWarning(message);
+        return Promise.reject(new Error(message));
+      } else if (code != 200) {
+        notifyError(message);
+        return Promise.reject('error');
+      } else {
+        return Promise.resolve(response);
       }
-      return Promise.reject('无效的会话，或者会话已过期，请重新登录。');
-    } else if (code == 500) {
-      ElMessage({ message: msg, type: 'error' });
-      return Promise.reject(new Error(msg));
-    } else if (code == 601) {
-      ElMessage({ message: msg, type: 'warning' });
-      return Promise.reject(new Error(msg));
-    } else if (code != 200) {
-      ElNotification.error({ title: msg });
-      return Promise.reject('error');
-    } else {
-      return Promise.resolve(response);
+    },
+    (error: AxiosError) => {
+      let { message } = error;
+      if (message === 'Network Error') {
+        message = '后端接口连接异常';
+      } else if (message.includes('timeout')) {
+        message = '系统接口请求超时';
+      } else if (message.includes('Request failed with status code')) {
+        message = '系统接口' + message.substring(message.length - 3) + '异常';
+      }
+      msgError(message);
+      return Promise.reject(error);
     }
-  },
-  (error: AxiosError) => {
-    let { message } = error;
-    if (message == 'Network Error') {
-      message = '后端接口连接异常';
-    } else if (message.includes('timeout')) {
-      message = '系统接口请求超时';
-    } else if (message.includes('Request failed with status code')) {
-      message = '系统接口' + message.substring(message.length - 3) + '异常';
-    }
-    ElMessage({
-      message: message,
-      type: 'error',
-      duration: 5 * 1000
-    });
-    return Promise.reject(error);
-  }
 );
 
 export default requests;

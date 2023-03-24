@@ -21,7 +21,7 @@ module.exports = {
   bracketSameLine: true,
   jsxBracketSameLine: true,
   // 11.箭头函数单个参数的情况是否省略括号，默认always是总是带括号（arrowParens: "<always|avoid>"）
-  arrowParens: 'always',
+  arrowParens: 'avoid',
   // 12.range是format执行的范围，可以选执行一个文件的一部分，默认的设置是整个文件（rangeStart: <int>  rangeEnd: <int>）
   rangeStart: 0,
   rangeEnd: Infinity,
@@ -30,7 +30,7 @@ module.exports = {
   // 19.    endOfLine: "<lf|crlf|cr|auto>" 行尾换行符,默认是lf,
   endOfLine: 'lf',
   // 20.embeddedLanguageFormatting: "off",默认是auto,控制被引号包裹的代码是否进行格式化
-  embeddedLanguageFormatting: 'off',
+  embeddedLanguageFormatting: 'off'
 };
 
 // 14. requirePragma: <bool>,格式化有特定开头编译指示的文件 比如下面两种

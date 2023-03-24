@@ -5,18 +5,17 @@
 -->
 <template>
   <div>
-    <svg-icon size="1.1rem"
-              :icon-class="isFullscreen ? 'exit-fullscreen' : 'fullscreen'"
-              @click="toggle" />
+    <svg-icon
+      :icon-class="isFullscreen ? 'exit-fullscreen' : 'fullscreen'"
+      size="1.1rem"
+      @click="toggle" />
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { useFullscreen } from '@vueuse/core';
 
 const { isFullscreen, toggle } = useFullscreen();
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style lang="scss" scoped></style>

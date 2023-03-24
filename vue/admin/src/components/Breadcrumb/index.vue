@@ -20,7 +20,7 @@
   </el-breadcrumb>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 
 import type {
   RouteLocationMatched,
@@ -72,10 +72,9 @@ watchEffect(() => {
   }
   getBreadcrumb();
 });
-
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .app-breadcrumb {
   display: inline-block;
   line-height: 50px;

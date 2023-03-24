@@ -9,16 +9,13 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 
 const url = import.meta.env.VITE_BLOG_URL;
 
 const goto = () => {
   window.open(url);
 };
-
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style lang="scss" scoped></style>

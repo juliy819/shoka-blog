@@ -8,44 +8,36 @@ import type { RouteRecordRaw } from 'vue-router';
 /**
  * 用户登录
  * @param data 登录信息
- * @returns Token
+ * @return Token
  */
-export function login(data: LoginForm): AxiosPromise<Result<string>> {
-  return request({
-    url: '/login',
-    method: 'post',
-    data
-  });
-}
+export const login = (data: LoginForm): AxiosPromise<Result<string>> => request({
+  url: '/login',
+  method: 'post',
+  data
+});
 
 /**
  * 用户退出登录
  */
-export function logout(): AxiosPromise<Result<null>> {
-  return request({
-    url: '/logout',
-    method: 'get'
-  });
-}
+export const logout = (): AxiosPromise<Result<null>> => request({
+  url: '/logout',
+  method: 'get'
+});
 
 /**
  * 获取后台用户信息
- * @returns 后台用户信息
+ * @return 后台用户信息
  */
-export function getBackendUserInfo(): AxiosPromise<Result<BackendUserInfo>> {
-  return request({
-    url: '/admin/getBackendUserInfo',
-    method: 'get'
-  });
-}
+export const getBackendUserInfo = (): AxiosPromise<Result<BackendUserInfo>> => request({
+  url: '/admin/getBackendUserInfo',
+  method: 'get'
+});
 
 /**
  * 获取路由
- * @returns 路由信息
+ * @return 路由信息
  * */
-export function getRouters(): AxiosPromise<Result<RouteRecordRaw[]>> {
-  return request({
-    url: '/admin/getRouters',
-    method: 'get'
-  });
-}
+export const getRouters = (): AxiosPromise<Result<RouteRecordRaw[]>> => request({
+  url: '/admin/getRouters',
+  method: 'get'
+});

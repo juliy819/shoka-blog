@@ -4,15 +4,15 @@
   .main-container {
     min-height: 100%;
     transition: margin-left 0.28s;
-    margin-left: $sideBarWidth;
+    margin-left: $base-sidebar-width;
     position: relative;
   }
 
   .sidebar-container {
     -webkit-transition: width 0.28s;
     transition: width 0.28s;
-    width: $sideBarWidth !important;
-    background-color: $menuBg;
+    width: $base-sidebar-width !important;
+    background-color: $base-menu-background;
     height: 100%;
     position: fixed;
     font-size: 0;
@@ -70,34 +70,43 @@
       white-space: nowrap !important;
     }
 
+    .sub-menu-title-noDropdown,
     .el-sub-menu__title {
       &:hover {
-        background-color: $menuHover !important;
+        background-color: $base-menu-hover !important;
       }
     }
 
-    .is-active > .el-sub-menu__title {
-      color: $subMenuActiveText !important;
+    & .theme-dark .is-active > .el-sub-menu__title {
+      color: $base-menu-color-active !important;
     }
 
     & .nest-menu .el-sub-menu > .el-sub-menu__title,
     & .el-sub-menu .el-menu-item {
-      min-width: $sideBarWidth !important;
-      background-color: $subMenuBg !important;
+      min-width: $base-sidebar-width !important;
 
       &:hover {
-        background-color: $subMenuHover !important;
+        background-color: $base-menu-hover !important;
       }
+    }
+  }
+
+  & .theme-dark .nest-menu .el-sub-menu > .el-sub-menu__title,
+  & .theme-dark .el-sub-menu .el-menu-item {
+    background-color: $base-sub-menu-background !important;
+
+    &:hover {
+      background-color: $base-sub-menu-hover !important;
     }
   }
 
   .hideSidebar {
     .sidebar-container {
-      width: 64px !important;
+      width: $base-sidebar-width-closed !important;
     }
 
     .main-container {
-      margin-left: 64px;
+      margin-left: $base-sidebar-width-closed;
     }
 
     .el-sub-menu {
@@ -128,7 +137,7 @@
   }
 
   .el-menu--collapse .el-menu .el-sub-menu {
-    min-width: $sideBarWidth !important;
+    min-width: $base-sidebar-width !important;
   }
 
   .el-menu--collapse .el-sub-menu__icon-arrow {
@@ -143,14 +152,14 @@
 
     .sidebar-container {
       transition: transform 0.28s;
-      width: $sideBarWidth !important;
+      width: $base-sidebar-width !important;
     }
 
     &.hideSidebar {
       .sidebar-container {
         pointer-events: none;
         transition-duration: 0.3s;
-        transform: translate3d(-$sideBarWidth, 0, 0);
+        transform: translate3d(-$base-sidebar-width, 0, 0);
       }
     }
   }
@@ -175,8 +184,7 @@
   .nest-menu .el-sub-menu > .el-sub-menu__title,
   .el-menu-item {
     &:hover {
-      // you can use $subMenuHover
-      background-color: $menuHover !important;
+      background-color: $base-menu-hover !important;
     }
   }
 }

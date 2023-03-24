@@ -1,25 +1,13 @@
-interface DefaultSettings {
+import type { SettingState } from '@/store/interface';
 
-  /**
-   * 是否显示 tagView
-   */
-  tagView: boolean;
-
-  /**
-   * 是否固定头部
-   */
-  fixedHeader: boolean;
-
-  /**
-   * 是否显示Logo
-   */
-  sidebarLogo: boolean;
-}
-
-const defaultSettings: DefaultSettings = {
-  tagView: true,
+const defaultSettings: SettingState = {
+  dynamicTitle: false,
   fixedHeader: true,
-  sidebarLogo: true
+  sideTheme: 'theme-dark',
+  sidebarLogo: true,
+  tagsView: true,
+  theme: '',
+  title: import.meta.env.VITE_APP_TITLE
 };
 
 export default defaultSettings;

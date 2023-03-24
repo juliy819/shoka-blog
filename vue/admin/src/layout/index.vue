@@ -6,16 +6,21 @@
 <template>
   <div :class="classObj" class="app-wrapper">
     <!-- 菜单背景 -->
-    <div
-      v-if="device === 'mobile' && appStore.sidebar.opened"
-      class="drawer-bg"
-      @click="handleClickOutside" />
+    <div v-if="device === 'mobile' && appStore.sidebar.opened" class="drawer-bg"
+         @click="handleClickOutside"/>
     <!-- 侧边栏 -->
-    <SideBar class="sidebar-container"></SideBar>
-    <div class="main-container">
-      <NavBar @setLayout="setLayout"></NavBar>
+    <SideBar class="sidebar-container"/>
+    <div :class="{ 'hasTagsView': needTagsView }" class="main-container">
+      <div :class="{ 'fixed-header': fixedHeader }">
+        <!-- 导航栏 -->
+        <NavBar @setLayout="setLayout"/>
+        <!-- 标签栏 -->
+        <TagsView v-if="needTagsView"/>
+      </div>
       <!-- 主页面 -->
-      <AppMain></AppMain>
+      <AppMain/>
+      <!-- 设置 -->
+      <Settings ref="settingsRef"/>
     </div>
   </div>
 </template>
@@ -24,19 +29,18 @@
 import AppMain from './components/AppMain/index.vue';
 import NavBar from './components/NavBar/index.vue';
 import SideBar from './components/SideBar/index.vue';
+import TagsView from './components/TagsView/index.vue';
 import { useWindowSize } from '@vueuse/core';
 import useStore from '@/store';
-import { ElMessage } from 'element-plus';
 
-const { appStore } = useStore();
+const { appStore, settingStore } = useStore();
 const { width } = useWindowSize();
 const WIDTH = 992;
-// const settingRef = ref();
+const settingsRef = ref();
 
 const device = computed(() => appStore.device);
-
-// const needTagView = computed(() => setting.tagView);
-// const fixedHeader = computed(() => setting.fixedHeader);
+const needTagsView = computed(() => settingStore.tagsView);
+const fixedHeader = computed(() => settingStore.fixedHeader);
 const classObj = computed(() => ({
   hideSidebar: !appStore.sidebar.opened,
   openSidebar: appStore.sidebar.opened,
@@ -45,10 +49,6 @@ const classObj = computed(() => ({
 }));
 
 watchEffect(() => {
-  // if (device.value === 'mobile' && appStore.sidebar.opened) {
-  //   appStore.closeSidebar(false);
-  // }
-
   // 根据浏览器宽度判断是电脑还是手机
   if (width.value - 1 < WIDTH) {
     appStore.toggleDevice('mobile');
@@ -58,12 +58,18 @@ watchEffect(() => {
   }
 });
 
-const handleClickOutside = () => {
+/**
+ * 手机模式下点击菜单外区域时收起菜单
+ */
+const handleClickOutside = (): void => {
   appStore.closeSidebar(false);
 };
 
-const setLayout = () => {
-  ElMessage.info('setLayout');
+/**
+ * 打开设置页面
+ */
+const setLayout = (): void => {
+  settingsRef.value.openSettings();
 };
 </script>
 
@@ -93,25 +99,21 @@ const setLayout = () => {
   z-index: 999;
 }
 
-//
-//.fixed-header {
-//  position: fixed;
-//  top: 0;
-//  right: 0;
-//  z-index: 40;
-//  width: calc(100% - #{$sideBarWidth});
-//  transition: width 0.28s;
-//}
-//
-//.hideSidebar .fixed-header {
-//  width: calc(100% - 64px);
-//}
-//
-//.sidebarHide .fixed-header {
-//  width: 100%;
-//}
-//
-//.mobile .fixed-header {
-//  width: 100%;
-//}
+.fixed-header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 40;
+  width: calc(100% - #{$base-sidebar-width});
+  transition: width 0.28s;
+}
+
+
+.hideSidebar .fixed-header {
+  width: calc(100% - #{$base-sidebar-width-closed});
+}
+
+.mobile .fixed-header {
+  width: 100%;
+}
 </style>

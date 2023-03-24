@@ -56,6 +56,7 @@
 
 <script lang="ts" setup>
 import type { FormInstance, FormRules } from 'element-plus';
+import { ElInput } from 'element-plus';
 import { reactive, ref } from 'vue';
 import useStore from '@/store';
 import router from '@/router';
@@ -97,14 +98,14 @@ const handleLogin = async (formEl: FormInstance | undefined) => {
     if (valid) {
       loading.value = true;
       userStore
-        .login(loginForm)
-        .then(() => {
-          router.push({ path: '/' });
-          loading.value = false;
-        })
-        .catch(() => {
-          loading.value = false;
-        });
+          .login(loginForm)
+          .then(() => {
+            router.push({ path: '/' });
+            loading.value = false;
+          })
+          .catch(() => {
+            loading.value = false;
+          });
     } else {
       return false;
     }

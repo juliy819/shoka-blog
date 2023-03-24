@@ -34,7 +34,6 @@ const logout = () => {
   }).catch(() => {
   });
 };
-
 </script>
 
 <style scoped>

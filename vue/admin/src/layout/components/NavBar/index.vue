@@ -30,12 +30,13 @@
           <size-select class="right-menu-item hover-effect" />
         </el-tooltip>
       </template>
-      <el-dropdown @command="handleCommand"
-                   class="right-menu-item hover-effect avatar-container"
-                   trigger="click">
+      <el-dropdown
+        class="right-menu-item hover-effect avatar-container"
+        trigger="click"
+        @command="handleCommand">
         <!-- 头像 -->
         <div class="avatar-wrapper">
-          <img :src="userStore.avatar" class="user-avatar" alt="" />
+          <img :src="userStore.avatar" alt="" class="user-avatar" />
         </div>
         <!-- 选项 -->
         <template #dropdown>
@@ -43,7 +44,7 @@
             <el-dropdown-item command="setLayout">
               <span>布局设置</span>
             </el-dropdown-item>
-            <el-dropdown-item divided command="logout">
+            <el-dropdown-item command="logout" divided>
               <span>退出登录</span>
             </el-dropdown-item>
           </el-dropdown-menu>

@@ -2,19 +2,25 @@
   <div class="wscn-http404-container">
     <div class="wscn-http404">
       <div class="pic-404">
-        <img alt="404" class="pic-404__parent"
-             src="@/assets/404_images/404.png">
-        <img alt="404" class="pic-404__child left"
-             src="@/assets/404_images/404_cloud.png">
-        <img alt="404" class="pic-404__child mid"
-             src="@/assets/404_images/404_cloud.png">
-        <img alt="404"
-             class="pic-404__child right" src="@/assets/404_images/404_cloud.png">
+        <img
+          alt="404"
+          class="pic-404__parent"
+          src="@/assets/404_images/404.png" />
+        <img
+          alt="404"
+          class="pic-404__child left"
+          src="@/assets/404_images/404_cloud.png" />
+        <img
+          alt="404"
+          class="pic-404__child mid"
+          src="@/assets/404_images/404_cloud.png" />
+        <img
+          alt="404"
+          class="pic-404__child right"
+          src="@/assets/404_images/404_cloud.png" />
       </div>
       <div class="bullshit">
-        <div class="bullshit__oops">
-          404错误!
-        </div>
+        <div class="bullshit__oops">404错误!</div>
         <div class="bullshit__headline">
           {{ message }}
         </div>
