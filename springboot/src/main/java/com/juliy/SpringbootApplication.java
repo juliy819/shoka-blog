@@ -1,6 +1,5 @@
 package com.juliy;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -9,20 +8,15 @@ import org.springframework.core.env.Environment;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+/**
+ * @author juliy
+ * @date 2023/3/1 13:23
+ */
 @SpringBootApplication
-@Slf4j
 public class SpringbootApplication {
 
     public static void main(String[] args) throws UnknownHostException {
         ConfigurableApplicationContext application = SpringApplication.run(SpringbootApplication.class, args);
-        System.out.println("""
-                                      _       _ _             _     _            \s
-                                     (_)_   _| (_)_   _      | |__ | | ___   __ _\s
-                                     | | | | | | | | | |_____| '_ \\| |/ _ \\ / _` |
-                                     | | |_| | | | |_| |_____| |_) | | (_) | (_| |
-                                    _/ |\\__,_|_|_|\\__, |     |_.__/|_|\\___/ \\__, |
-                                   |__/           |___/                     |___/\s""".indent(1));
-
         Environment env = application.getEnvironment();
         String ip = InetAddress.getLocalHost().getHostAddress();
         String port = env.getProperty("server.port");

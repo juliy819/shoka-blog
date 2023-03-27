@@ -37,7 +37,13 @@ public class StpInterfaceImpl implements StpInterface {
         for (String roleId : getRoleList(loginId, loginType)) {
             // 将不同角色所拥有的权限存到自定义session中
             SaSession roleSession = SaSessionCustomUtil.getSessionById("role-" + roleId);
-            List<String> list = roleSession.get("Permission_List", () -> menuMapper.selectPermissionByRoleId(roleId));
+            List<String> list;
+            // 若为管理员则添加所有权限
+            if (Long.parseLong(roleId) == 1) {
+                list = roleSession.get("Permission_List", menuMapper::selectPermissionAll);
+            } else {
+                list = roleSession.get("Permission_List", () -> menuMapper.selectPermissionByRoleId(roleId));
+            }
             permissionList.addAll(list);
         }
         return permissionList;

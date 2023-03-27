@@ -1,6 +1,6 @@
 <!--
  * @description 设置页
- * @author JuLiy
+ * @author juliy
  * @date 2023/3/22 21:04
 -->
 <template>
@@ -61,18 +61,17 @@
 
     <el-divider/>
 
-    <el-button :icon="DocumentAdd" plain type="primary"
+    <el-button icon="DocumentAdd" plain type="primary"
                @click="saveSetting">
       保存设置
     </el-button>
-    <el-button :icon="Refresh" plain @click="resetSetting">重置配置</el-button>
+    <el-button icon="Refresh" plain @click="resetSetting">重置配置</el-button>
   </el-drawer>
 </template>
 
 <script lang="ts" setup>
 import useStore from '@/store';
 import { computed, ref } from 'vue';
-import { DocumentAdd, Refresh, Select } from '@element-plus/icons-vue';
 import { useDynamicTitle } from '@/utils/dynamicTitle';
 import { closeLoading, loading } from '@/utils/modal';
 import { handleThemeStyle } from '@/utils/theme';

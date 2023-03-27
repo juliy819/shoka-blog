@@ -1,7 +1,8 @@
-@import './variables.module.scss';
-@import './mixin.scss';
-@import './transition.scss';
-@import './sidebar.scss';
+@import 'variables.module';
+@import 'mixin';
+@import 'transition';
+@import 'sidebar';
+@import "common";
 
 body {
   height: 100%;

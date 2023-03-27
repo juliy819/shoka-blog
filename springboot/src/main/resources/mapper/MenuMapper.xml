@@ -36,6 +36,13 @@
           AND r.is_disable = 0
           AND ur.user_id = #{userId}
     </select>
+
+    <select id="selectPermissionAll" resultType="java.lang.String">
+        SELECT DISTINCT m.perms
+        FROM t_menu m
+        WHERE m.is_disable = 0
+    </select>
+
     <select id="selectPermissionByRoleId"
             resultType="java.lang.String">
         SELECT DISTINCT m.perms
@@ -44,5 +51,6 @@
         WHERE rm.role_id = #{roleId}
           AND m.is_disable = 0
     </select>
+
 
 </mapper>

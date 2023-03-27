@@ -1,6 +1,9 @@
 package com.juliy.satoken;
 
+import cn.dev33.satoken.interceptor.SaInterceptor;
+import com.juliy.interceptor.PaginationInterceptor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -11,7 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Component
 public class SaTokenConfig implements WebMvcConfigurer {
 
-//    private final AccessLimitInterceptor accessLimitInterceptor;
+    //    private final AccessLimitInterceptor accessLimitInterceptor;
 //
 //    @Autowired
 //    public SaTokenConfig(AccessLimitInterceptor accessLimitInterceptor) {
@@ -30,15 +33,15 @@ public class SaTokenConfig implements WebMvcConfigurer {
 //
 //    private final long timeout = 600;
 //
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        // 注册分页拦截器
-//        registry.addInterceptor(new PageableInterceptor());
-//        // 注册Redis限流器
-//        registry.addInterceptor(accessLimitInterceptor);
-//        // 注册 Sa-Token 的注解拦截器，打开注解式鉴权功能
-//        registry.addInterceptor(new SaInterceptor()).addPathPatterns("/**");
-//    }
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        // 注册分页拦截器
+        registry.addInterceptor(new PaginationInterceptor());
+        // 注册Redis限流器
+        //registry.addInterceptor(accessLimitInterceptor);
+        // 注册 Sa-Token 的注解拦截器，打开注解式鉴权功能
+        registry.addInterceptor(new SaInterceptor()).addPathPatterns("/**");
+    }
 //
 //    @Bean
 //    public SaServletFilter getSaServletFilter() {

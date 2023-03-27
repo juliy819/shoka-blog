@@ -31,7 +31,7 @@ const hexToRgb = (hex: string): number[] => {
  * @param rgb rgb格式颜色数组，0-r;1-g;2-b
  */
 const rgbToHex = (rgb: number[]): string => {
-  let hexs = [rgb[0].toString(16), rgb[0].toString(16), rgb[0].toString(16)];
+  let hexs = [rgb[0].toString(16), rgb[1].toString(16), rgb[2].toString(16)];
   for (let i = 0; i < 3; i++) {
     if (hexs[i].length === 1) {
       hexs[i] = `0${ hexs[i] }`;
@@ -48,7 +48,7 @@ const rgbToHex = (rgb: number[]): string => {
 const getLightColor = (color: string, level: number): string => {
   let rgb = hexToRgb(color);
   for (let i = 0; i < 3; i++) {
-    rgb[i] = Math.floor(255 - rgb[i]) * level + rgb[i];
+    rgb[i] = Math.floor((255 - rgb[i]) * level + rgb[i]);
   }
   return rgbToHex(rgb);
 };

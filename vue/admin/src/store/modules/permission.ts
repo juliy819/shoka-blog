@@ -65,7 +65,7 @@ const filterAsyncRoutes = (routes: RouteRecordRaw[]) => {
 const loadView = (routeStr: string) => {
   let res;
   for (const path in modules) {
-    const dir = path.split('views/')[1].split('.vue')[0];
+    const dir = path.split('views/')[1].split('/index.vue')[0];
     if (dir === routeStr) {
       res = () => modules[path]();
     }
