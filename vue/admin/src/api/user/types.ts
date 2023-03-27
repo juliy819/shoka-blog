@@ -1,7 +1,7 @@
 /**
  * 后台用户信息
  */
-export interface BackendUserInfo {
+export interface AdminUserInfo {
   /**
    * 用户id
    */

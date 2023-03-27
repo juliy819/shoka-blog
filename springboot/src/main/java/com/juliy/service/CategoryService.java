@@ -2,11 +2,11 @@ package com.juliy.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.juliy.entity.Category;
-import com.juliy.model.dto.CategoryAdminDTO;
 import com.juliy.model.dto.CategoryDTO;
-import com.juliy.model.dto.CategoryOptionDTO;
+import com.juliy.model.dto.ConditionDTO;
+import com.juliy.model.vo.CategoryAdminVO;
+import com.juliy.model.vo.CategoryOptionVO;
 import com.juliy.model.vo.CategoryVO;
-import com.juliy.model.vo.ConditionVO;
 import com.juliy.model.vo.PageResult;
 
 import java.util.List;
@@ -18,22 +18,42 @@ import java.util.List;
  */
 public interface CategoryService extends IService<Category> {
 
-    List<CategoryDTO> listCategories();
+    /**
+     * 获取分类列表
+     * @return 分类列表
+     */
+    List<CategoryVO> listCategories();
 
     /**
-     * 查看后台分类列表
+     * 获取后台分类列表
      * @param condition 查询条件
      * @return 后台分类列表
      */
-    PageResult<CategoryAdminDTO> listCategoriesAdmin(ConditionVO condition);
+    PageResult<CategoryAdminVO> listCategoriesAdminByPage(ConditionDTO condition);
 
-    List<CategoryOptionDTO> listCategoryOptions(ConditionVO condition);
+    /**
+     * 获取分类选项列表
+     * @param condition 查询条件
+     * @return 分类选项列表
+     */
+    List<CategoryOptionVO> listCategoryOptions(ConditionDTO condition);
 
-    void addCategory(CategoryVO categoryVO);
+    /**
+     * 添加分类
+     * @param categoryDTO 分类
+     */
+    void saveCategory(CategoryDTO categoryDTO);
 
-    void deleteCategories(List<Integer> categoryList);
+    /**
+     * 修改分类
+     * @param categoryDTO 分类
+     */
+    void updateCategory(CategoryDTO categoryDTO);
 
-    void updateCategory(CategoryVO categoryVO);
-
+    /**
+     * 删除分类
+     * @param categoryIds 分类id列表
+     */
+    void removeCategories(List<Integer> categoryIds);
 
 }

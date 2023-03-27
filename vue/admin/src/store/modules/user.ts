@@ -1,4 +1,4 @@
-import { getBackendUserInfo, login, logout } from '@/api/login';
+import { getAdminUserInfo, login, logout } from '@/api/login';
 import type { LoginForm } from '@/api/login/types';
 import { getToken, removeToken, setToken } from '@/utils/token';
 import type { UserState } from '../interface';
@@ -33,9 +33,9 @@ const useUserStore = defineStore('useUserStore', {
       });
     },
     /** 获取后台用户信息 */
-    getBackendUserInfo() {
+    getAdminUserInfo() {
       return new Promise((resolve, reject) => {
-        getBackendUserInfo()
+        getAdminUserInfo()
             .then(({ data }) => {
               if (data.flag) {
                 const userInfo = data.data;

@@ -6,16 +6,24 @@
 <template>
   <div class="navbar">
     <Hamburger
-      :is-active="appStore.sidebar.opened"
-      class="hamburger-container"
-      @toggle="toggleSidebar"></Hamburger>
+        :is-active="appStore.sidebar.opened"
+        class="hamburger-container"
+        @toggle="toggleSidebar"></Hamburger>
     <Breadcrumb></Breadcrumb>
     <!-- 右侧菜单 -->
     <div class="right-menu">
       <template v-if="device !== 'mobile'">
         <!-- 博客首页 -->
         <el-tooltip content="博客首页">
-          <blog class="right-menu-item hover-effect"></blog>
+          <home class="right-menu-item hover-effect"></home>
+        </el-tooltip>
+
+        <el-tooltip content="github">
+          <github class="right-menu-item hover-effect"></github>
+        </el-tooltip>
+
+        <el-tooltip content="gitee">
+          <gitee class="right-menu-item hover-effect"></gitee>
         </el-tooltip>
         <!-- 修改密码 -->
         <el-tooltip content="修改密码">
@@ -27,16 +35,16 @@
         </el-tooltip>
         <!-- 布局大小 -->
         <el-tooltip content="布局大小">
-          <size-select class="right-menu-item hover-effect" />
+          <size-select class="right-menu-item hover-effect"/>
         </el-tooltip>
       </template>
       <el-dropdown
-        class="right-menu-item hover-effect avatar-container"
-        trigger="click"
-        @command="handleCommand">
+          class="right-menu-item hover-effect avatar-container"
+          trigger="click"
+          @command="handleCommand">
         <!-- 头像 -->
         <div class="avatar-wrapper">
-          <img :src="userStore.avatar" alt="" class="user-avatar" />
+          <img :src="userStore.avatar" alt="" class="user-avatar"/>
         </div>
         <!-- 选项 -->
         <template #dropdown>

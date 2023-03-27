@@ -1,15 +1,16 @@
 import type { AppState } from '../interface';
 import { defineStore } from 'pinia';
+import Cookies from 'js-cookie';
 
 const useAppStore = defineStore('useAppStore', {
   state: (): AppState => ({
     sidebar: {
       opened: true,
       withoutAnimation: false,
-      hide: false,
+      hide: false
     },
     device: 'desktop',
-    size: 'default',
+    size: 'default'
   }),
   actions: {
     /**
@@ -55,14 +56,15 @@ const useAppStore = defineStore('useAppStore', {
      */
     setSize(size: string) {
       this.size = size;
-    },
+      Cookies.set('size', size);
+    }
   },
   getters: {},
   //持久化存储
   persist: {
     enabled: true,
-    strategies: [{ storage: localStorage }],
-  },
+    strategies: [{ storage: localStorage }]
+  }
 });
 
 export default useAppStore;

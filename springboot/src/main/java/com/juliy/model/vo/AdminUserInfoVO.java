@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @Builder
 @Schema(description = "后台用户信息")
-public class BackendUserInfoVO {
+public class AdminUserInfoVO {
 
     /**
      * 用户id

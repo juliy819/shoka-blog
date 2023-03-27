@@ -17,7 +17,7 @@ public interface MenuService {
      * @param userId 用户ID
      * @return 菜单列表
      */
-    public List<Menu> selectMenuTreeByUserId(int userId);
+    public List<Menu> listMenuTreeByUserId(int userId);
 
     /**
      * 构建前端路由所需要的菜单

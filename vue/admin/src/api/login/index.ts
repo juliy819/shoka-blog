@@ -2,7 +2,7 @@ import type { Result } from '@/model';
 import request from '@/utils/request';
 import type { AxiosPromise } from 'axios';
 import type { LoginForm } from './types';
-import type { BackendUserInfo } from '@/api/user/types';
+import type { AdminUserInfo } from '@/api/user/types';
 import type { RouteRecordRaw } from 'vue-router';
 
 /**
@@ -28,8 +28,8 @@ export const logout = (): AxiosPromise<Result<null>> => request({
  * 获取后台用户信息
  * @return 后台用户信息
  */
-export const getBackendUserInfo = (): AxiosPromise<Result<BackendUserInfo>> => request({
-  url: '/admin/getBackendUserInfo',
+export const getAdminUserInfo = (): AxiosPromise<Result<AdminUserInfo>> => request({
+  url: '/admin/getAdminUserInfo',
   method: 'get'
 });
 

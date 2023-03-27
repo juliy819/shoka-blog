@@ -133,7 +133,7 @@ import { msgError } from '@/utils/modal';
 const editorRef = ref<ExposeParam>();
 const isDark = useDark();
 const articleTitle = ref(useDateFormat(new Date(), 'YYYY-MM-DD'));
-const addOrUpdate = ref(false);
+const open = ref(false);
 
 //表格检验
 const articleFormRef = ref<FormInstance>();
@@ -170,7 +170,7 @@ const typeList = reactive([
 ]);
 
 
-const openModel = () => {
+const handleAdd = () => {
   if (articleForm.articleTitle.trim() === '') {
     msgError('文章标题不能为空');
     return;

@@ -3,6 +3,8 @@ package com.juliy.service.impl;
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.juliy.entity.User;
+import com.juliy.enums.StatusCodeEnum;
+import com.juliy.exception.ServiceException;
 import com.juliy.mapper.UserMapper;
 import com.juliy.model.dto.LoginDTO;
 import com.juliy.model.dto.RegisterDTO;
@@ -10,7 +12,6 @@ import com.juliy.service.LoginService;
 import com.juliy.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 /**
  * 登录业务接口实现类
@@ -28,14 +29,15 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public String login(LoginDTO loginInfo) {
+    public String login(LoginDTO loginDTO) {
         // 按输入的用户名、密码查询账户，若用户名或密码有误则user为null
         User user = userMapper.selectOne(new LambdaQueryWrapper<User>()
                                                  .select(User::getId)
-                                                 .eq(User::getUsername, loginInfo.getUsername())
-                                                 .eq(User::getPassword, SecurityUtils.sha256Encrypt(loginInfo.getPassword())));
-
-        Assert.notNull(user, "用户不存在或密码错误");
+                                                 .eq(User::getUsername, loginDTO.getUsername())
+                                                 .eq(User::getPassword, SecurityUtils.sha256Encrypt(loginDTO.getPassword())));
+        if (user == null) {
+            throw new ServiceException(StatusCodeEnum.UNAUTHORIZED, "用户名或密码错误");
+        }
         // 校验指定账号是否已被封禁，如果被封禁则抛出异常 `DisableServiceException`
         StpUtil.checkDisable(user.getId());
         // 通过校验后，再进行登录

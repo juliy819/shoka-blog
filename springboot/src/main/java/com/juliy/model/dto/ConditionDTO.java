@@ -1,4 +1,4 @@
-package com.juliy.model.vo;
+package com.juliy.model.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -10,7 +10,7 @@ import lombok.Data;
  */
 @Data
 @Schema(description = "查询条件")
-public class ConditionVO {
+public class ConditionDTO {
 
     /**
      * 页码

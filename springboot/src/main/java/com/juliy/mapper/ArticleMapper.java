@@ -2,15 +2,15 @@ package com.juliy.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.juliy.entity.Article;
+import com.juliy.model.dto.ConditionDTO;
 import com.juliy.model.vo.ArticleAdminVO;
-import com.juliy.model.vo.ConditionVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 /**
- * 文章 mapper
+ * 文章mapper
  * @author juliy
  * @date 2023/3/25 10:00
  */
@@ -22,7 +22,7 @@ public interface ArticleMapper extends BaseMapper<Article> {
      * @param condition 查询条件
      * @return 文章数量
      */
-    Long countArticleBackVO(ConditionVO condition);
+    Long countArticleBackVO(ConditionDTO condition);
 
     /**
      * 查询后台文章列表
@@ -31,6 +31,6 @@ public interface ArticleMapper extends BaseMapper<Article> {
      * @param condition 查询条件
      * @return 后台文章列表
      */
-    List<ArticleAdminVO> selectArticleBackVO(@Param("limit") Long limit, @Param("size") Long size, @Param("condition") ConditionVO condition);
+    List<ArticleAdminVO> selectArticleBackVO(@Param("limit") Long limit, @Param("size") Long size, @Param("condition") ConditionDTO condition);
 
 }

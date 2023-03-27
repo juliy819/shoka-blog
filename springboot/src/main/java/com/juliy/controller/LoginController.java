@@ -1,10 +1,9 @@
 package com.juliy.controller;
 
-import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.stp.StpUtil;
 import com.juliy.entity.Menu;
 import com.juliy.model.dto.LoginDTO;
-import com.juliy.model.vo.BackendUserInfoVO;
+import com.juliy.model.vo.AdminUserInfoVO;
 import com.juliy.model.vo.Result;
 import com.juliy.model.vo.RouterVO;
 import com.juliy.service.LoginService;
@@ -48,19 +47,18 @@ public class LoginController {
 
     /**
      * 用户登录
-     * @param loginInfo 登录参数
+     * @param loginDTO 登录参数
      * @return {@link String} Token
      */
     @Operation(summary = "用户登录")
     @PostMapping("/login")
-    public Result<String> login(@Validated @RequestBody LoginDTO loginInfo) {
-        return Result.success(loginService.login(loginInfo));
+    public Result<String> login(@Validated @RequestBody LoginDTO loginDTO) {
+        return Result.success(loginService.login(loginDTO));
     }
 
     /**
      * 用户注销登录
      */
-    @SaCheckLogin
     @Operation(summary = "用户注销登录")
     @GetMapping("/logout")
     public Result<?> logout() {
@@ -85,9 +83,9 @@ public class LoginController {
      * @return 后台用户信息
      */
     @Operation(summary = "获取后台用户信息")
-    @GetMapping("/admin/getBackendUserInfo")
-    public Result<BackendUserInfoVO> getInfo() {
-        return Result.success(userService.getBackendUserInfo());
+    @GetMapping("/admin/getAdminUserInfo")
+    public Result<AdminUserInfoVO> getAdminUserInfo() {
+        return Result.success(userService.getAdminUserInfo());
     }
 
     /**
@@ -98,7 +96,7 @@ public class LoginController {
     @GetMapping("/admin/getRouters")
     public Result<List<RouterVO>> getRouters() {
         int userId = StpUtil.getLoginIdAsInt();
-        List<Menu> menus = menuService.selectMenuTreeByUserId(userId);
+        List<Menu> menus = menuService.listMenuTreeByUserId(userId);
         return Result.success(menuService.buildMenus(menus));
     }
 

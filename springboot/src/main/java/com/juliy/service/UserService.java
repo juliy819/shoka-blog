@@ -1,6 +1,6 @@
 package com.juliy.service;
 
-import com.juliy.model.vo.BackendUserInfoVO;
+import com.juliy.model.vo.AdminUserInfoVO;
 
 /**
  * 用户服务接口
@@ -13,5 +13,5 @@ public interface UserService {
      * 获取后台用户信息
      * @return 后台用户信息
      */
-    BackendUserInfoVO getBackendUserInfo();
+    AdminUserInfoVO getAdminUserInfo();
 }

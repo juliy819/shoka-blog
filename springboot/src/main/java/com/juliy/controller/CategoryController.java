@@ -1,13 +1,9 @@
 package com.juliy.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import com.juliy.model.dto.CategoryAdminDTO;
 import com.juliy.model.dto.CategoryDTO;
-import com.juliy.model.dto.CategoryOptionDTO;
-import com.juliy.model.vo.CategoryVO;
-import com.juliy.model.vo.ConditionVO;
-import com.juliy.model.vo.PageResult;
-import com.juliy.model.vo.Result;
+import com.juliy.model.dto.ConditionDTO;
+import com.juliy.model.vo.*;
 import com.juliy.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,6 +19,7 @@ import java.util.List;
  */
 @Tag(name = "分类模块")
 @RestController
+@RequestMapping("/category")
 public class CategoryController {
 
     private final CategoryService categoryService;
@@ -37,8 +34,8 @@ public class CategoryController {
      */
     @Operation(summary = "获取所有分类")
     @SaCheckPermission("category:list")
-    @GetMapping("/categories/list")
-    public Result<List<CategoryDTO>> listCategories() {
+    @GetMapping("/list")
+    public Result<List<CategoryVO>> getCategories() {
         return Result.success(categoryService.listCategories());
     }
 
@@ -49,9 +46,9 @@ public class CategoryController {
      */
     @Operation(summary = "获取后台分类列表")
     @SaCheckPermission("category:list")
-    @GetMapping("/admin/categories")
-    public Result<PageResult<CategoryAdminDTO>> listCategoriesAdmin(ConditionVO condition) {
-        return Result.success(categoryService.listCategoriesAdmin(condition));
+    @GetMapping("/admin/list")
+    public Result<PageResult<CategoryAdminVO>> getCategoriesAdminByPage(ConditionDTO condition) {
+        return Result.success(categoryService.listCategoriesAdminByPage(condition));
     }
 
     /**
@@ -61,44 +58,44 @@ public class CategoryController {
      */
     @Operation(summary = "获取分类选项")
     @SaCheckPermission("category:list")
-    @GetMapping("/admin/categories/options")
-    public Result<List<CategoryOptionDTO>> listCategoryOptions(ConditionVO condition) {
+    @GetMapping("/admin/listOptions")
+    public Result<List<CategoryOptionVO>> getCategoryOptions(ConditionDTO condition) {
         return Result.success(categoryService.listCategoryOptions(condition));
     }
 
     /**
      * 删除分类
-     * @param categoryList 要删除的分类ID列表
+     * @param categoryIds 要删除的分类ID列表
      */
     @Operation(summary = "删除分类")
     @SaCheckPermission("category:delete")
-    @DeleteMapping("/admin/categories")
-    public Result<?> deleteCategories(@RequestBody List<Integer> categoryList) {
-        categoryService.deleteCategories(categoryList);
+    @DeleteMapping("/{categoryIds}")
+    public Result<?> deleteCategories(@PathVariable Integer[] categoryIds) {
+        categoryService.removeCategories(List.of(categoryIds));
         return Result.success();
     }
 
     /**
      * 添加分类
-     * @param categoryVO 要添加的分类
+     * @param categoryDTO 要添加的分类
      */
     @Operation(summary = "添加分类")
     @SaCheckPermission("category:add")
-    @PostMapping("/admin/categories")
-    public Result<?> addCategory(@Validated @RequestBody CategoryVO categoryVO) {
-        categoryService.addCategory(categoryVO);
+    @PostMapping
+    public Result<?> addCategory(@Validated @RequestBody CategoryDTO categoryDTO) {
+        categoryService.saveCategory(categoryDTO);
         return Result.success();
     }
 
     /**
      * 修改分类
-     * @param categoryVO 要修改的分类
+     * @param categoryDTO 要修改的分类
      */
     @Operation(summary = "修改分类")
     @SaCheckPermission("category:update")
-    @PutMapping("/admin/categories")
-    public Result<?> updateCategory(@Validated @RequestBody CategoryVO categoryVO) {
-        categoryService.updateCategory(categoryVO);
+    @PutMapping
+    public Result<?> updateCategory(@Validated @RequestBody CategoryDTO categoryDTO) {
+        categoryService.updateCategory(categoryDTO);
         return Result.success();
     }
 

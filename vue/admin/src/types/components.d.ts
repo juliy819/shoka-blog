@@ -9,7 +9,6 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    Blog: typeof import('./../components/Blog/index.vue')['default']
     Breadcrumb: typeof import('./../components/Breadcrumb/index.vue')['default']
     ElAutocomplete: typeof import('element-plus/es')['ElAutocomplete']
     ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
@@ -30,6 +29,7 @@ declare module '@vue/runtime-core' {
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElOption: typeof import('element-plus/es')['ElOption']
+    ElPagination: typeof import('element-plus/es')['ElPagination']
     ElPopover: typeof import('element-plus/es')['ElPopover']
     ElRadio: typeof import('element-plus/es')['ElRadio']
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
@@ -44,7 +44,11 @@ declare module '@vue/runtime-core' {
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     ElUpload: typeof import('element-plus/es')['ElUpload']
     EmojiExtension: typeof import('./../components/EmojiExtension/index.vue')['default']
+    Gitee: typeof import('./../components/Blog/gitee/index.vue')['default']
+    Github: typeof import('./../components/Blog/github/index.vue')['default']
     Hamburger: typeof import('./../components/Hamburger/index.vue')['default']
+    Home: typeof import('./../components/Blog/home/index.vue')['default']
+    Pagination: typeof import('./../components/Pagination/index.vue')['default']
     ParentView: typeof import('./../components/ParentView/index.vue')['default']
     Password: typeof import('./../components/Password/index.vue')['default']
     RightToolBar: typeof import('./../components/RightToolBar/index.vue')['default']

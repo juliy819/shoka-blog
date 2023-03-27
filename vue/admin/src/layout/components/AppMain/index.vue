@@ -3,7 +3,7 @@
     <router-view v-slot="{ Component, route }">
       <transition mode="out-in" name="fade-transform">
         <keep-alive>
-          <component :is="Component" :key="route.fullPath" />
+          <component :is="Component" :key="route.fullPath"/>
         </keep-alive>
       </transition>
     </router-view>
@@ -33,13 +33,4 @@
     padding-top: 84px;
   }
 }
-</style>
-
-<style lang="scss">
-// fix css style bug in open el-dialog
-//.el-popup-parent--hidden {
-//  .fixed-header {
-//    padding-right: 100px;
-//  }
-//}
 </style>

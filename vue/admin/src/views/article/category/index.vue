@@ -8,41 +8,41 @@
     <!-- 搜索栏 -->
     <el-form :inline="true" v-show="showSearch">
       <el-form-item label="分类名称">
-        <el-input v-model="queryParams.keywords" @keyup.enter="handleSearch"
+        <el-input v-model="queryParams.keywords" @keyup.enter="handleQuery"
                   style="width: 200px"
                   placeholder="请输入分类名称" clearable/>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="Search" @click="handleSearch">
-          搜索
-        </el-button>
+        <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+        <el-button icon="Refresh" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
     <!-- 操作按钮 -->
-    <el-row :gutter="10" class="mb15">
+    <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button type="primary" plain icon="Plus"
-                   @click="openModel(undefined)">
+                   @click="handleAdd">
           新增
         </el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button type="danger" icon="Delete" plain
-                   :disabled="categoryIdList.length === 0"
+        <el-button type="danger" plain icon="Delete"
+                   :disabled="multiple"
                    @click="handleDelete(undefined)">
-          批量删除
+          删除
         </el-button>
       </el-col>
+      <!-- 右侧工具栏 -->
       <right-tool-bar v-model:show-search="showSearch" @queryTable="getList"/>
     </el-row>
     <!-- 表格 -->
     <el-table :data="categoryList" v-loading="loading"
               @selection-change="handleSelectionChange">
       <el-table-column type="selection" align="center"/>
-      <el-table-column prop="categoryName" label="分类名"
+      <el-table-column prop="categoryName" label="分类名" min-width="150"
                        align="center"/>
-      <el-table-column prop="articleCount" label="文章数量" align="center"/>
-      <el-table-column prop="createTime" label="创建时间"
+      <el-table-column prop="articleCount" label="文章数量" min-width="100" align="center"/>
+      <el-table-column prop="createTime" label="创建时间" min-width="150"
                        align="center">
         <template #default="scope">
           <div class="create-time">
@@ -56,11 +56,11 @@
         </template>
       </el-table-column>
       <!-- 操作 -->
-      <el-table-column label="操作" align="center">
+      <el-table-column label="操作" align="center" min-width="150">
         <template #default="scope">
           <el-button type="primary" icon="Edit" link
-                     @click="openModel(scope.row)">
-            编辑
+                     @click="handleUpdate(scope.row)">
+            修改
           </el-button>
           <el-button type="danger" icon="Delete" link
                      @click="handleDelete(scope.row.id)">
@@ -69,22 +69,24 @@
         </template>
       </el-table-column>
     </el-table>
-
+    <!-- 分页工具 -->
+    <pagination v-if="count > 0" :total="count" v-model:page="queryParams.current" v-model:limit="queryParams.size"
+                @pagination="getList"/>
     <!-- 添加或修改对话框 -->
-    <el-dialog :title="title" v-model="addOrUpdate" width="500px"
+    <el-dialog :title="title" v-model="open" width="500px"
                append-to-body>
       <el-form ref="categoryFormRef" label-width="100px" :model="categoryForm"
                :rules="rules"
                @submit.native.prevent>
         <el-form-item label="分类名称" prop="categoryName">
-          <el-input placeholder="请输入分类名称"
+          <el-input placeholder="请输入分类名称" @keyup.enter="submitForm"
                     v-model="categoryForm.categoryName" style="width: 250px;"/>
         </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
           <el-button type="primary" @click="submitForm">确 定</el-button>
-          <el-button @click="addOrUpdate = false">取 消</el-button>
+          <el-button @click="open = false">取 消</el-button>
         </div>
       </template>
     </el-dialog>
@@ -92,7 +94,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, toRefs } from 'vue';
+import { reactive, ref, toRefs } from 'vue';
 import type { Category, CategoryForm, CategoryQuery } from '@/api/category/types';
 import { Clock } from '@element-plus/icons-vue';
 import { formatDate } from '@/utils/date';
@@ -108,12 +110,15 @@ const rules = reactive<FormRules>({
     trigger: 'blur'
   }]
 });
+const count = ref(0);
+const showSearch = ref(true);
+const loading = ref(false);
+const title = ref('');
+const multiple = ref(false);
+const open = ref(false);
+const categoryIdList = ref<number[]>([]);
+const categoryList = ref<Category[]>([]);
 const data = reactive({
-  count: 0,
-  showSearch: true,
-  loading: false,
-  title: '',
-  addOrUpdate: false,
   queryParams: {
     current: 1,
     size: 10
@@ -121,41 +126,35 @@ const data = reactive({
   categoryForm: {
     id: undefined,
     categoryName: ''
-  } as CategoryForm,
-  categoryIdList: [] as number[],
-  categoryList: [] as Category[]
+  } as CategoryForm
 });
-const {
-  count,
-  showSearch,
-  loading,
-  title,
-  addOrUpdate,
-  queryParams,
-  categoryForm,
-  categoryIdList,
-  categoryList
-} = toRefs(data);
+const { queryParams, categoryForm } = toRefs(data);
 
 /**
- * 打开编辑/新增页面
+ * 添加分类
  */
-const openModel = (category?: Category): void => {
+const handleAdd = (): void => {
   categoryFormRef.value?.clearValidate();
-  if (category !== undefined) {
-    title.value = '修改分类';
-    categoryForm.value = {
-      id: category.id,
-      categoryName: category.categoryName
-    };
-  } else {
-    title.value = '添加分类';
-    categoryForm.value = {
-      id: undefined,
-      categoryName: ''
-    };
-  }
-  addOrUpdate.value = true;
+  title.value = '添加分类';
+  categoryForm.value = {
+    id: undefined,
+    categoryName: ''
+  };
+  open.value = true;
+};
+
+/**
+ * 修改分类
+ * @param category
+ */
+const handleUpdate = (category: Category): void => {
+  categoryFormRef.value?.clearValidate();
+  title.value = '修改分类';
+  categoryForm.value = {
+    id: category.id,
+    categoryName: category.categoryName
+  };
+  open.value = true;
 };
 
 /**
@@ -171,7 +170,7 @@ const submitForm = (): void => {
             notifySuccess(data.msg);
             getList();
           }
-          addOrUpdate.value = false;
+          open.value = false;
         });
       } else {
         // 无id表示新增
@@ -180,15 +179,20 @@ const submitForm = (): void => {
             notifySuccess(data.msg);
             getList();
           }
-          addOrUpdate.value = false;
+          open.value = false;
         });
       }
     }
   });
 };
 
-const handleSelectionChange = (selection: Category[]) => {
+/**
+ * 多选处理
+ * @param selection 选择项
+ */
+const handleSelectionChange = (selection: Category[]): void => {
   categoryIdList.value = selection.map(item => item.id);
+  multiple.value = !selection.length;
 };
 
 /**
@@ -228,7 +232,16 @@ const getList = (): void => {
 /**
  * 搜索
  */
-const handleSearch = (): void => {
+const handleQuery = (): void => {
+  queryParams.value.current = 1;
+  getList();
+};
+
+/**
+ * 重置搜索
+ */
+const resetQuery = (): void => {
+  queryParams.value.keywords = '';
   queryParams.value.current = 1;
   getList();
 };

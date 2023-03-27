@@ -35,7 +35,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public List<Menu> selectMenuTreeByUserId(int userId) {
+    public List<Menu> listMenuTreeByUserId(int userId) {
         List<Menu> menus;
         if (SecurityUtils.isAdmin(userId)) {
             menus = menuMapper.selectMenuTreeAll();

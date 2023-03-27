@@ -6,11 +6,12 @@ import lombok.Data;
 /**
  * 标签选项VO
  * @author juliy
- * @date 2023/3/25 10:06
+ * @date 2023/3/27 10:30
  */
 @Data
 @Schema(description = "标签选项VO")
 public class TagOptionVO {
+
     /**
      * 标签id
      */

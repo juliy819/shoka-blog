@@ -5,7 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.juliy.entity.User;
 import com.juliy.mapper.UserMapper;
-import com.juliy.model.vo.BackendUserInfoVO;
+import com.juliy.model.vo.AdminUserInfoVO;
 import com.juliy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public BackendUserInfoVO getBackendUserInfo() {
+    public AdminUserInfoVO getAdminUserInfo() {
         // 获取登录用户id
         int userId = StpUtil.getLoginIdAsInt();
         // 获取用户信息
@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
                 .distinct()
                 .toList();
         //构建并返回
-        return BackendUserInfoVO.builder()
+        return AdminUserInfoVO.builder()
                 .id(userId)
                 .avatar(user.getAvatar())
                 .roleList(roleList)

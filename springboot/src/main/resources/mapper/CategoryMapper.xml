@@ -4,7 +4,7 @@
 <mapper namespace="com.juliy.mapper.CategoryMapper">
 
     <select id="selectCategories"
-            resultType="com.juliy.model.dto.CategoryDTO">
+            resultType="com.juliy.model.vo.CategoryVO">
         SELECT c.id,
                c.category_name,
                COUNT(a.id) AS article_count
@@ -17,7 +17,7 @@
     </select>
 
     <select id="selectCategoriesAdmin"
-            resultType="com.juliy.model.dto.CategoryAdminDTO">
+            resultType="com.juliy.model.vo.CategoryAdminVO">
         SELECT
         c.id,
         c.category_name,

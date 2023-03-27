@@ -12,10 +12,10 @@ public interface LoginService {
 
     /**
      * 用户登录
-     * @param loginInfo 登录参数
+     * @param loginDTO 登录参数
      * @return token
      */
-    String login(LoginDTO loginInfo);
+    String login(LoginDTO loginDTO);
 
     /**
      * 用户注册
