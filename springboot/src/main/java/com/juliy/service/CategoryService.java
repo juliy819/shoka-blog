@@ -39,16 +39,10 @@ public interface CategoryService extends IService<Category> {
     List<CategoryOptionVO> listCategoryOptions(ConditionDTO condition);
 
     /**
-     * 添加分类
+     * 添加或修改分类
      * @param categoryDTO 分类
      */
-    void saveCategory(CategoryDTO categoryDTO);
-
-    /**
-     * 修改分类
-     * @param categoryDTO 分类
-     */
-    void updateCategory(CategoryDTO categoryDTO);
+    void saveOrUpdateCategory(CategoryDTO categoryDTO);
 
     /**
      * 删除分类

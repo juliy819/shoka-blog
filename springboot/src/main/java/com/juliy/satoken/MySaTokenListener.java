@@ -4,6 +4,7 @@ import cn.dev33.satoken.listener.SaTokenListenerForLog;
 import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.juliy.entity.User;
 import com.juliy.mapper.UserMapper;
@@ -23,6 +24,7 @@ import static com.juliy.enums.ZoneEnum.SHANGHAI;
 
 /**
  * SaToken侦听器
+ *
  * @author juliy
  * @date 2023/3/15 15:38
  */
@@ -44,6 +46,10 @@ public class MySaTokenListener extends SaTokenListenerForLog {
     public void doLogin(String loginType, Object loginId, String tokenValue, SaLoginModel loginModel) {
         super.doLogin(loginType, loginId, tokenValue, loginModel);
 
+        // 没有UA就不更新信息了，主要是由于测试环境登录时没UA
+        if (StrUtil.isEmpty(request.getHeader("User-Agent"))) {
+            return;
+        }
         // 解析os和browser
         Map<String, String> userAgentMap = UserAgentUtils.parseOsAndBrowser(request.getHeader("User-Agent"));
         // 获取登录ip地址
@@ -63,8 +69,8 @@ public class MySaTokenListener extends SaTokenListenerForLog {
         userMapper.updateById(newUser);
         // 查询用户头像和昵称
         User user = userMapper.selectOne(new LambdaQueryWrapper<User>()
-                                                 .select(User::getAvatar, User::getNickname)
-                                                 .eq(User::getId, loginId));
+                .select(User::getAvatar, User::getNickname)
+                .eq(User::getId, loginId));
         // 更新在线信息
         OnlineUserVO onlineUser = OnlineUserVO.builder()
                 .id((Integer) loginId)

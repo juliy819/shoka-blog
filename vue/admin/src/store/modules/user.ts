@@ -3,7 +3,7 @@ import type { LoginForm } from '@/api/login/types';
 import { getToken, removeToken, setToken } from '@/utils/token';
 import type { UserState } from '../interface';
 import { defineStore } from 'pinia';
-import defAva from '@/assets/images/avatar.jpg';
+import defAva from '@/assets/images/defaultAvatar.jpg';
 
 const useUserStore = defineStore('useUserStore', {
   state: (): UserState => ({
@@ -65,6 +65,12 @@ const useUserStore = defineStore('useUserStore', {
               resolve(null);
             })
             .catch(error => {
+              this.id = null;
+              this.token = '';
+              this.avatar = '';
+              this.roles = [];
+              this.permissions = [];
+              removeToken();
               reject(error);
             });
       });

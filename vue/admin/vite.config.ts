@@ -25,32 +25,32 @@ export default defineConfig({
         //设为true则每次启动后都会生成文件
         enabled: false,
         filepath: './.eslintrc-auto-import.json',
-        globalsPropValue: true,
+        globalsPropValue: true
       },
-      dts: 'src/types/auto-imports.d.ts',
+      dts: 'src/types/auto-imports.d.ts'
     }),
     //自动引入组件
     Components({
       dirs: ['src/components'],
       include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
       resolvers: [ElementPlusResolver()],
-      dts: 'src/types/components.d.ts',
+      dts: 'src/types/components.d.ts'
     }),
     //引入所有svg图片
     createSvgIconsPlugin({
       // 指定需要缓存的图标文件夹
       iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
       // 指定symbolId格式
-      symbolId: 'icon-[dir]-[name]',
-    }),
+      symbolId: 'icon-[dir]-[name]'
+    })
   ],
   resolve: {
     alias: {
       //设置路径别名
       '~': fileURLToPath(new URL('./', import.meta.url)),
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      '@': fileURLToPath(new URL('./src', import.meta.url))
     },
-    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
+    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue']
   },
   server: {
     //端口
@@ -65,8 +65,11 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:8080',
         changeOrigin: true,
-        rewrite: path => path.replace(/^\/api/, ''),
-      },
-    },
+        rewrite: path => path.replace(/^\/api/, '')
+      }
+    }
   },
+  optimizeDeps: {
+    include: ['@kangc/v-md-editor/lib/theme/vuepress.js']
+  }
 });

@@ -26,6 +26,7 @@ import java.util.Objects;
 
 /**
  * 分类业务接口实现类
+ *
  * @author juliy
  * @date 2023/3/25 12:01
  */
@@ -51,14 +52,14 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     public PageResult<CategoryAdminVO> listCategoriesAdminByPage(ConditionDTO condition) {
         Long count = categoryMapper.selectCount(
                 new LambdaQueryWrapper<Category>().like(StrUtil.isNotBlank(condition.getKeywords()),
-                                                        Category::getCategoryName,
-                                                        condition.getKeywords()));
+                        Category::getCategoryName,
+                        condition.getKeywords()));
         if (count == 0) {
             return new PageResult<>();
         }
         List<CategoryAdminVO> categoryList = categoryMapper.selectCategoriesAdmin(PageUtils.getLimitCurrent(),
-                                                                                  PageUtils.getSize(),
-                                                                                  condition);
+                PageUtils.getSize(),
+                condition);
         return new PageResult<>(categoryList, count);
     }
 
@@ -67,32 +68,16 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         List<Category> categoryList = categoryMapper.selectList(
                 new LambdaQueryWrapper<Category>()
                         .like(StrUtil.isNotBlank(condition.getKeywords()),
-                              Category::getCategoryName,
-                              condition.getKeywords())
+                                Category::getCategoryName,
+                                condition.getKeywords())
                         .orderByDesc(Category::getId));
         return BeanCopyUtils.copyBeanList(categoryList, CategoryOptionVO.class);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public void saveCategory(CategoryDTO categoryDTO) {
+    public void saveOrUpdateCategory(CategoryDTO categoryDTO) {
         // 判断分类是否已存在
-        Category existCategory = categoryMapper.selectOne(
-                new LambdaQueryWrapper<Category>()
-                        .select(Category::getId)
-                        .eq(Category::getCategoryName, categoryDTO.getCategoryName()));
-
-        if (Objects.nonNull(existCategory)) {
-            throw new ServiceException("分类已存在");
-        }
-        // 添加新分类
-        Category newCategory = Category.builder()
-                .categoryName(categoryDTO.getCategoryName())
-                .build();
-        this.save(newCategory);
-    }
-
-    @Override
-    public void updateCategory(CategoryDTO categoryDTO) {
         Category existCategory = categoryMapper.selectOne(
                 new LambdaQueryWrapper<Category>()
                         .select(Category::getId)
@@ -106,10 +91,10 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
                 .id(categoryDTO.getId())
                 .categoryName(categoryDTO.getCategoryName())
                 .build();
-        this.updateById(newCategory);
+        this.saveOrUpdate(newCategory);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void removeCategories(List<Integer> categoryIds) {
         Long count = articleMapper.selectCount(

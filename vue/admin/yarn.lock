@@ -1841,6 +1841,11 @@ ignore@^5.2.0:
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.2.4.tgz#a291c0c6178ff1b960befe47fcdec301674a6324"
   integrity sha512-MAb38BcSbH0eHNBxn7ql2NH/kX33OkB3lZ1BNdh7ENeRChHTYsTvWrMubiIAMNS2llXEEgZ1MUOBtXChP3kaFQ==
 
+image-conversion@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/image-conversion/-/image-conversion-2.1.1.tgz#8213fc19033f7dfdee20bb19792e8dcebd052417"
+  integrity sha512-hnMOmP7q2jxA+52FZ+wHNhg3fdFRlgfngsQH2JQHEQkafY7tj/8F15e6Rv/RxDegc872jvyaRHwMbkTZK1Cjbg==
+
 image-size@^0.5.1:
   version "0.5.5"
   resolved "https://registry.yarnpkg.com/image-size/-/image-size-0.5.5.tgz#09dfd4ab9d20e29eb1c3e80b8990378df9e3cb9c"
@@ -2311,6 +2316,11 @@ map-visit@^1.0.0:
   integrity sha512-4y7uGv8bd2WdM9vpQsiQNo41Ln1NvhvDRuVt0k2JZQ+ezN2uaQes7lZeZ+QQUHOLQAtDaBJ+7wCbi+ab/KFs+w==
   dependencies:
     object-visit "^1.0.0"
+
+md-editor-v3@^2.11.0:
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/md-editor-v3/-/md-editor-v3-2.11.0.tgz#80bc8f53bafc20961909742af4abe249898fd1b9"
+  integrity sha512-k94hCH7PUEOfZkKhWMfv7WHbJOetN59eTSPZoMutXZ3NLKNa8GqEdllHSfdy6XytnVSHlQBbQrmMu7PYyIruvQ==
 
 mdn-data@2.0.14:
   version "2.0.14"

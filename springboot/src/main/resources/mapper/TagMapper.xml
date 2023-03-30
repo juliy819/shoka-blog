@@ -35,4 +35,12 @@
                  JOIN t_article_tag at ON t.id = at.tag_id
         WHERE article_id = #{articleId}
     </select>
+    <select id="selectTagList" resultType="com.juliy.entity.Tag">
+        SELECT id, tag_name
+        FROM t_tag
+        WHERE tag_name IN
+        <foreach collection="tagNameList" item="tagName" open="(" separator="," close=")">
+            #{tagName}
+        </foreach>
+    </select>
 </mapper>

@@ -39,16 +39,10 @@ public interface TagService extends IService<Tag> {
     List<TagOptionVO> listTagOptions(ConditionDTO condition);
 
     /**
-     * 添加标签
+     * 添加或修改标签
      * @param tagDTO 标签
      */
-    void saveTag(TagDTO tagDTO);
-
-    /**
-     * 修改标签
-     * @param tagDTO 标签
-     */
-    void updateTag(TagDTO tagDTO);
+    void saveOrUpdateTag(TagDTO tagDTO);
 
     /**
      * 删除标签

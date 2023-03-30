@@ -23,7 +23,6 @@ router.beforeEach((to, from, next) => {
   if (getToken()) {
     if (to.path === '/login') {
       next({ path: '/' });
-      // next();
     } else {
       if (userStore.roles.length === 0) {
         isReLogin.show = true;
@@ -49,6 +48,9 @@ router.beforeEach((to, from, next) => {
               userStore.logout().then(() => {
                 msgError(err);
                 next({ path: '/login' });
+              }).catch(() => {
+                msgError("123");
+                next({ path: '/login' });
               });
             });
       } else {
@@ -62,7 +64,7 @@ router.beforeEach((to, from, next) => {
     }
     // 否则全部重定向到登录页
     else {
-      next(`/login?redirect=${ to.fullPath }`);
+      next(`/login?redirect=${to.fullPath}`);
     }
   }
 });

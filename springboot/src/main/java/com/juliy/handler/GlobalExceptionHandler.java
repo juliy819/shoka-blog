@@ -81,7 +81,7 @@ public class GlobalExceptionHandler {
     /** 处理系统异常 */
     @ExceptionHandler(value = Exception.class)
     public Result<?> handleSystemException(Exception e) {
-        e.printStackTrace();
+        log.error("系统异常\n", e);
         return Result.fail(SYSTEM_ERROR.getCode(), SYSTEM_ERROR.getMsg());
     }
 }

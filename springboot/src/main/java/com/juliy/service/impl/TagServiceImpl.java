@@ -26,6 +26,7 @@ import java.util.Objects;
 
 /**
  * 标签业务接口实现类
+ *
  * @author juliy
  * @date 2023/3/27 11:43
  */
@@ -50,16 +51,16 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
     @Override
     public PageResult<TagAdminVO> listTagsAdminByPage(ConditionDTO condition) {
         Long count = tagMapper.selectCount(new LambdaQueryWrapper<Tag>()
-                                                   .like(StrUtil.isNotBlank(condition.getKeywords()),
-                                                         Tag::getTagName,
-                                                         condition.getKeywords()));
+                .like(StrUtil.isNotBlank(condition.getKeywords()),
+                        Tag::getTagName,
+                        condition.getKeywords()));
 
         if (count == 0) {
             return new PageResult<>();
         }
         List<TagAdminVO> tagList = tagMapper.selectTagsAdmin(PageUtils.getLimitCurrent(),
-                                                             PageUtils.getSize(),
-                                                             condition);
+                PageUtils.getSize(),
+                condition);
         return new PageResult<>(tagList, count);
     }
 
@@ -68,32 +69,15 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
         List<Tag> tagList = tagMapper.selectList(
                 new LambdaQueryWrapper<Tag>()
                         .like(StrUtil.isNotBlank(condition.getKeywords()),
-                              Tag::getTagName,
-                              condition.getKeywords())
+                                Tag::getTagName,
+                                condition.getKeywords())
                         .orderByDesc(Tag::getId));
         return BeanCopyUtils.copyBeanList(tagList, TagOptionVO.class);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public void saveTag(TagDTO tagDTO) {
-        // 判断标签是否已存在
-        Tag existTag = tagMapper.selectOne(
-                new LambdaQueryWrapper<Tag>()
-                        .select(Tag::getId)
-                        .eq(Tag::getTagName, tagDTO.getTagName()));
-
-        if (Objects.nonNull(existTag)) {
-            throw new ServiceException("标签已存在");
-        }
-        // 添加新标签
-        Tag newTag = Tag.builder()
-                .tagName(tagDTO.getTagName())
-                .build();
-        this.save(newTag);
-    }
-
-    @Override
-    public void updateTag(TagDTO tagDTO) {
+    public void saveOrUpdateTag(TagDTO tagDTO) {
         // 判断标签是否已存在
         Tag existTag = tagMapper.selectOne(
                 new LambdaQueryWrapper<Tag>()
@@ -108,10 +92,10 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
                 .id(tagDTO.getId())
                 .tagName(tagDTO.getTagName())
                 .build();
-        this.updateById(newTag);
+        this.saveOrUpdate(newTag);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void removeTags(List<Integer> tagIds) {
         Long count = articleTagMapper.selectCount(

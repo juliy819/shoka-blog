@@ -77,7 +77,7 @@ export interface ArticleForm {
   /**
    * 是否推荐 (0否 1是)
    */
-  isRecommend: number;
+  isFeatured: number;
 
   /**
    * 状态 (1公开 2私密 3草稿)
@@ -88,7 +88,7 @@ export interface ArticleForm {
 /**
  * 分类
  */
-export interface CategoryVO {
+export interface CategoryOption {
   /**
    * 分类id
    */
@@ -103,7 +103,7 @@ export interface CategoryVO {
 /**
  * 标签
  */
-export interface TagVO {
+export interface TagOption {
   /**
    * 标签id
    */
@@ -146,7 +146,7 @@ export interface Article {
   /**
    * 是否推荐 (0否 1是)
    */
-  isRecommend: number;
+  isFeatured: number;
 
   /**
    * 是否删除 (0否 1是)
@@ -176,10 +176,38 @@ export interface Article {
   /**
    * 文章标签
    */
-  tagVOList: TagVO[];
+  tagList: TagOption[];
 
   /**
    * 发表时间
    */
   createTime: string;
+}
+
+/**
+ * 置顶状态
+ */
+export interface Top {
+  /**
+   * 文章id
+   */
+  id: number;
+  /**
+   * 是否置顶 (0否 1是)
+   */
+  isTop: number;
+}
+
+/**
+ * 推荐状态
+ */
+export interface Featured {
+  /**
+   * 文章id
+   */
+  id: number;
+  /**
+   * 是否推荐 (0否 1是)
+   */
+  isFeatured: number;
 }

@@ -12,6 +12,7 @@ import java.util.List;
 
 /**
  * 分类mapper
+ *
  * @author juliy
  * @date 2023/3/25 10:36
  */
@@ -20,12 +21,14 @@ public interface CategoryMapper extends BaseMapper<Category> {
 
     /**
      * 查询分类列表
+     *
      * @return 分类列表
      */
     List<CategoryVO> selectCategories();
 
     /**
      * 查询后台分类列表
+     *
      * @param current   页码
      * @param size      数量
      * @param condition 查询条件

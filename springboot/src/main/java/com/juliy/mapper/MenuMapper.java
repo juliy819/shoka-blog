@@ -3,6 +3,7 @@ package com.juliy.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.juliy.entity.Menu;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public interface MenuMapper extends BaseMapper<Menu> {
      * @param userId 用户id
      * @return 菜单列表
      */
-    List<Menu> selectMenuTreeByUserId(Integer userId);
+    List<Menu> selectMenuTreeByUserId(@Param("userId") Integer userId);
 
     /**
      * 查询所有权限
@@ -39,5 +40,5 @@ public interface MenuMapper extends BaseMapper<Menu> {
      * @param roleId id
      * @return 权限列表
      */
-    List<String> selectPermissionByRoleId(String roleId);
+    List<String> selectPermissionByRoleId(@Param("roleId") String roleId);
 }

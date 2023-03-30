@@ -3,6 +3,7 @@ package com.juliy.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.juliy.entity.Role;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -19,6 +20,6 @@ public interface RoleMapper extends BaseMapper<Role> {
      * @param userId 用户id
      * @return 角色
      */
-    List<String> selectRoleListByUserId(Object userId);
+    List<String> selectRoleListByUserId(@Param("userId") Object userId);
 
 }

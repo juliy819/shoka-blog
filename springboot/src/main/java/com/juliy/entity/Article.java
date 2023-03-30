@@ -69,7 +69,7 @@ public class Article {
     /**
      * 是否推荐 (0否 1是)
      */
-    private Integer isRecommend;
+    private Integer isFeatured;
 
     /**
      * 状态 (1公开 2私密 3草稿)

@@ -1,5 +1,6 @@
 package com.juliy.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.List;
  * @author juliy
  * @date 2023/3/13 12:26
  */
+@Slf4j
 public class BeanCopyUtils {
 
     private BeanCopyUtils() {}
@@ -28,7 +30,7 @@ public class BeanCopyUtils {
                 BeanUtils.copyProperties(source, temp);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Bean复制失败\n", e);
         }
         return temp;
     }

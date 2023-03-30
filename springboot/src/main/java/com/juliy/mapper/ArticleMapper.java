@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.juliy.entity.Article;
 import com.juliy.model.dto.ConditionDTO;
 import com.juliy.model.vo.ArticleAdminVO;
+import com.juliy.model.vo.ArticleInfoVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -22,7 +23,7 @@ public interface ArticleMapper extends BaseMapper<Article> {
      * @param condition 查询条件
      * @return 文章数量
      */
-    Long countArticleBackVO(ConditionDTO condition);
+    Long countArticlesAdmin(@Param("condition") ConditionDTO condition);
 
     /**
      * 查询后台文章列表
@@ -31,6 +32,14 @@ public interface ArticleMapper extends BaseMapper<Article> {
      * @param condition 查询条件
      * @return 后台文章列表
      */
-    List<ArticleAdminVO> selectArticleBackVO(@Param("limit") Long limit, @Param("size") Long size, @Param("condition") ConditionDTO condition);
+    List<ArticleAdminVO> selectArticlesAdmin(@Param("limit") Long limit, @Param("size") Long size, @Param("condition") ConditionDTO condition);
+
+    /**
+     * 根据id查询文章信息
+     * @param articleId 文章id
+     * @return 文章信息
+     */
+    ArticleInfoVO selectArticleInfoById(@Param("articleId") Integer articleId);
+
 
 }
