@@ -14,7 +14,6 @@ import java.util.List;
 
 /**
  * 分类控制器
- *
  * @author juliy
  * @date 2023/3/25 11:58
  */
@@ -31,7 +30,6 @@ public class CategoryController {
 
     /**
      * 获取所有分类
-     *
      * @return 分类列表
      */
     @Operation(summary = "获取所有分类")
@@ -43,7 +41,6 @@ public class CategoryController {
 
     /**
      * 获取后台分类列表
-     *
      * @param condition 查询条件
      * @return 后台分类列表
      */
@@ -56,7 +53,6 @@ public class CategoryController {
 
     /**
      * 获取分类选项
-     *
      * @param condition 查询条件
      * @return 分类选项列表
      */
@@ -69,7 +65,6 @@ public class CategoryController {
 
     /**
      * 删除分类
-     *
      * @param categoryIds 要删除的分类ID列表
      */
     @Operation(summary = "删除分类")
@@ -82,7 +77,6 @@ public class CategoryController {
 
     /**
      * 添加分类
-     *
      * @param categoryDTO 要添加的分类
      */
     @Operation(summary = "添加分类")
@@ -95,7 +89,6 @@ public class CategoryController {
 
     /**
      * 修改分类
-     *
      * @param categoryDTO 要修改的分类
      */
     @Operation(summary = "修改分类")

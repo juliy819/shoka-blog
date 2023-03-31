@@ -14,15 +14,21 @@ import lombok.Data;
 @Schema(description = "菜单其它信息")
 public class MetaVO {
 
-    /** 菜单名称 */
+    /**
+     * 菜单名称
+     */
     @Schema(description = "菜单名称")
     private String title;
 
-    /** 菜单图标 */
+    /**
+     * 菜单图标
+     */
     @Schema(description = "菜单图标")
     private String icon;
 
-    /** 是否隐藏 */
+    /**
+     * 是否隐藏
+     */
     @Schema(description = "是否隐藏")
     private Boolean hidden;
 

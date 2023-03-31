@@ -45,12 +45,12 @@ public class Knife4jConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                              .title("接口文档")
-                              .version("1.0")
-                              .description("juliy博客后台接口文档")
-                              .termsOfService("799399654@qq.com")
-                              .contact(new Contact().name("juliy").email("799399654@qq.com"))
-                              .license(new License().name("Apache 2.0")
-                                               .url("https://www.apache.org/licenses/LICENSE-2.0.html")));
+                        .title("接口文档")
+                        .version("1.0")
+                        .description("juliy博客后台接口文档")
+                        .termsOfService("799399654@qq.com")
+                        .contact(new Contact().name("juliy").email("799399654@qq.com"))
+                        .license(new License().name("Apache 2.0")
+                                .url("https://www.apache.org/licenses/LICENSE-2.0.html")));
     }
 }

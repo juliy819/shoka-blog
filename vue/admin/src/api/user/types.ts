@@ -1,3 +1,17 @@
+import type { AxiosPromise } from 'axios';
+import type { Result } from '@/model';
+
+/**
+ * 用户api接口
+ */
+export interface UserApi {
+  /**
+   * 修改管理员密码
+   * @param password 密码
+   */
+  updateAdminPassword(password: Password): AxiosPromise<Result<null>>;
+}
+
 /**
  * 后台用户信息
  */

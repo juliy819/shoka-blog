@@ -55,10 +55,10 @@ public class MenuServiceImpl implements MenuService {
             router.setPath(getRouterPath(menu));
             router.setComponent(getComponent(menu));
             router.setMeta(MetaVO.builder()
-                                   .title(menu.getMenuName())
-                                   .icon(menu.getIcon())
-                                   .hidden(menu.getIsHidden().equals(TRUE))
-                                   .build());
+                    .title(menu.getMenuName())
+                    .icon(menu.getIcon())
+                    .hidden(menu.getIsHidden().equals(TRUE))
+                    .build());
 
             List<Menu> cMenus = menu.getChildren();
             // 有子节点且是目录类型时

@@ -19,15 +19,14 @@ import static com.juliy.enums.UploadModeEnum.getStrategy;
 public class UploadStrategyContext {
 
     /**
+     * 实现类
+     */
+    private final Map<String, UploadStrategy> uploadStrategyMap;
+    /**
      * 上传模式
      */
     @Value("${upload.strategy}")
     private String uploadStrategy;
-
-    /**
-     * 实现类
-     */
-    private final Map<String, UploadStrategy> uploadStrategyMap;
 
     @Autowired
     public UploadStrategyContext(Map<String, UploadStrategy> uploadStrategyMap) {

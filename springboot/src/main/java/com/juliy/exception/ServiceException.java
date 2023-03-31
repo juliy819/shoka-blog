@@ -10,9 +10,8 @@ import lombok.Getter;
  */
 @Getter
 public class ServiceException extends RuntimeException {
-    private Integer code = StatusCodeEnum.FAIL.getCode();
-
     private final String message;
+    private Integer code = StatusCodeEnum.FAIL.getCode();
 
     public ServiceException(String message) {
         this.message = message;

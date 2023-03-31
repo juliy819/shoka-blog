@@ -5,10 +5,7 @@
 -->
 <template>
   <div>
-    <svg-icon
-      :icon-class="isFullscreen ? 'exit-fullscreen' : 'fullscreen'"
-      size="1.1rem"
-      @click="toggle" />
+    <svg-icon :icon-class="isFullscreen ? 'exit-fullscreen' : 'fullscreen'" size="1.1rem" @click="toggle" />
   </div>
 </template>
 

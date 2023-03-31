@@ -18,7 +18,7 @@ public class ArticleFeaturedDTO {
      */
     @NotNull(message = "文章id不能为空")
     @Schema(description = "文章id")
-    private Integer articleId;
+    private Integer id;
 
     /**
      * 是否推荐 (0否 1是)

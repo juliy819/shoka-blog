@@ -35,7 +35,8 @@ public class PaginationInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
+                                Exception ex) {
         // 请求完成后则删除保存的信息
         PageUtils.remove();
     }

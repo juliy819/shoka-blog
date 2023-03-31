@@ -15,7 +15,6 @@ import java.util.List;
 
 /**
  * 标签控制器
- *
  * @author juliy
  * @date 2023/3/27 12:34
  */
@@ -33,7 +32,6 @@ public class TagController {
 
     /**
      * 获取所有标签
-     *
      * @return 标签列表
      */
     @Operation(summary = "获取所有标签")
@@ -45,7 +43,6 @@ public class TagController {
 
     /**
      * 获取后台标签列表
-     *
      * @param condition 查询条件
      * @return 后台标签列表
      */
@@ -58,7 +55,6 @@ public class TagController {
 
     /**
      * 获取标签选项
-     *
      * @param condition 查询条件
      * @return 标签选项列表
      */
@@ -71,7 +67,6 @@ public class TagController {
 
     /**
      * 添加标签
-     *
      * @param tagDTO 要添加的标签
      */
     @Operation(summary = "添加标签")
@@ -84,7 +79,6 @@ public class TagController {
 
     /**
      * 修改标签
-     *
      * @param tagDTO 要修改的标签
      */
     @Operation(summary = "修改标签")
@@ -97,7 +91,6 @@ public class TagController {
 
     /**
      * 删除标签
-     *
      * @param tagIds 要删除的标签ID列表
      */
     @Operation(summary = "删除标签")

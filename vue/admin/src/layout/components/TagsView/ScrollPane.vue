@@ -9,13 +9,25 @@
   </el-scrollbar>
 </template>
 
-<script lang="ts" setup></script>
-
 <style lang="scss" scoped>
 .scroll-container {
   white-space: nowrap;
   position: relative;
   overflow: hidden;
   width: 100%;
+
+  :deep(.el-scrollbar__bar) {
+    bottom: 0;
+  }
+
+  :deep(.el-scrollbar__wrap) {
+    overflow-x: auto;
+    height: calc(100% + 20px);
+  }
+
+  :deep(.el-scrollbar__wrap .el-scrollbar__view) {
+    white-space: nowrap;
+    display: inline-block;
+  }
 }
 </style>

@@ -6,78 +6,69 @@
 <template>
   <div class="app-container">
     <!-- 搜索栏 -->
-    <el-form :inline="true" v-show="showSearch">
+    <el-form v-show="showSearch" :inline="true">
       <el-form-item label="标签名称">
-        <el-input v-model="queryParams.keywords" @keyup.enter="handleQuery"
-                  style="width: 200px"
-                  placeholder="请输入标签名称" clearable/>
+        <el-input v-model="queryParams.keywords" clearable placeholder="请输入标签名称" style="width: 200px"
+                  @keyup.enter="queryTags" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+        <el-button icon="Search" type="primary" @click="queryTags">搜索</el-button>
         <el-button icon="Refresh" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
     <!-- 操作按钮 -->
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button type="primary" plain icon="Plus" @click="handleAdd">
+        <el-button icon="Plus" plain type="primary" @click="addTag">
           新增
         </el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete(undefined)">
+        <el-button :disabled="multiple" icon="Delete" plain type="danger" @click="deleteTags(undefined)">
           删除
         </el-button>
       </el-col>
       <!-- 右侧工具栏 -->
-      <right-tool-bar v-model:show-search="showSearch" @queryTable="getList"/>
+      <right-tool-bar v-model:show-search="showSearch" @queryTable="getTagList" />
     </el-row>
     <!-- 表格 -->
-    <el-table :data="tagList" v-loading="loading"
-              @selection-change="handleSelectionChange">
-      <el-table-column type="selection" align="center"/>
-      <el-table-column prop="tagName" label="标签名" min-width="150"
-                       align="center"/>
-      <el-table-column prop="articleCount" label="文章数量" min-width="100" align="center"/>
-      <el-table-column prop="createTime" label="创建时间" min-width="150"
-                       align="center">
+    <el-table v-loading="loading" :data="tagList" @selection-change="changeSelectedId">
+      <el-table-column align="center" type="selection" />
+      <el-table-column align="center" label="标签名" min-width="150" prop="tagName" />
+      <el-table-column align="center" label="文章数量" min-width="100" prop="articleCount" />
+      <el-table-column align="center" label="创建时间" min-width="150" prop="createTime">
         <template #default="scope">
           <div class="create-time">
             <el-icon>
-              <clock/>
+              <clock />
             </el-icon>
             <span style="margin-left: 10px">
-              {{ formatDate(scope.row.createTime) }}
+              {{ formatDate(scope['row']['createTime']) }}
             </span>
           </div>
         </template>
       </el-table-column>
       <!-- 操作 -->
-      <el-table-column label="操作" align="center" min-width="150">
+      <el-table-column align="center" label="操作" min-width="150">
         <template #default="scope">
-          <el-button type="primary" icon="Edit" link
-                     @click="handleUpdate(scope.row)">
+          <el-button icon="Edit" link type="primary" @click="updateTag(scope.row)">
             修改
           </el-button>
-          <el-button type="danger" icon="Delete" link
-                     @click="handleDelete(scope.row.id)">
+          <el-button icon="Delete" link type="danger" @click="deleteTags(scope.row.id)">
             删除
           </el-button>
         </template>
       </el-table-column>
     </el-table>
     <!-- 分页工具 -->
-    <pagination v-if="count > 0" :total="count" v-model:page="queryParams.current" v-model:limit="queryParams.size"
-                @pagination="getList"/>
+    <pagination v-if="count > 0" v-model:limit="queryParams.size" v-model:page="queryParams.current" :total="count"
+                @pagination="getTagList" />
     <!-- 添加或修改对话框 -->
-    <el-dialog :title="title" v-model="open" width="500px"
-               append-to-body>
-      <el-form ref="tagFormRef" label-width="100px" :model="tagForm"
-               :rules="rules"
-               @submit.native.prevent>
+    <el-dialog v-model="open" :title="title" append-to-body width="500px">
+      <el-form ref="tagFormRef" :model="tagForm" :rules="rules" label-width="100px" @submit.prevent>
         <el-form-item label="标签名称" prop="tagName">
-          <el-input placeholder="请输入标签名称" @keyup.enter="submitForm"
-                    v-model="tagForm.tagName" style="width: 250px;"/>
+          <el-input v-model="tagForm.tagName" placeholder="请输入标签名称" style="width: 250px;"
+                    @keyup.enter="submitForm" />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -90,14 +81,14 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { reactive, ref, toRefs } from 'vue';
 import { Clock } from '@element-plus/icons-vue';
 import { formatDate } from '@/utils/date';
 import type { FormInstance, FormRules } from 'element-plus';
-import { messageConfirm, notifySuccess } from '@/utils/modal';
+import { modal } from '@/utils/modal';
 import type { Tag, TagForm, TagQuery } from '@/api/tag/types';
-import { addTag, deleteTags, getTagList, updateTag } from '@/api/tag';
+import { tagApi } from '@/api/tag';
 
 const tagFormRef = ref<FormInstance>();
 const rules = reactive<FormRules>({
@@ -111,7 +102,7 @@ const count = ref(0);
 const showSearch = ref(true);
 const loading = ref(false);
 const title = ref('');
-const multiple = ref(false);
+const multiple = ref(true);
 const open = ref(false);
 const tagIdList = ref<number[]>([]);
 const tagList = ref<Tag[]>([]);
@@ -131,7 +122,7 @@ const { queryParams, tagForm } = toRefs(data);
 /**
  * 添加标签
  */
-const handleAdd = (): void => {
+const addTag = (): void => {
   tagFormRef.value?.clearValidate();
   title.value = '添加标签';
   tagForm.value = {
@@ -145,7 +136,7 @@ const handleAdd = (): void => {
  * 修改标签
  * @param tag
  */
-const handleUpdate = (tag: Tag): void => {
+const updateTag = (tag: Tag): void => {
   tagFormRef.value?.clearValidate();
   title.value = '修改标签';
   tagForm.value = {
@@ -163,20 +154,16 @@ const submitForm = (): void => {
     if (valid) {
       // 有id表示修改
       if (tagForm.value.id !== undefined) {
-        updateTag(tagForm.value).then(({ data }) => {
-          if (data.flag) {
-            notifySuccess(data.msg);
-            getList();
-          }
+        tagApi.updateTag(tagForm.value).then(() => {
+          modal.notifySuccess('修改成功');
+          getTagList();
           open.value = false;
         });
       } else {
         // 无id表示新增
-        addTag(tagForm.value).then(({ data }) => {
-          if (data.flag) {
-            notifySuccess(data.msg);
-            getList();
-          }
+        tagApi.addTag(tagForm.value).then(() => {
+          modal.notifySuccess('添加成功');
+          getTagList();
           open.value = false;
         });
       }
@@ -188,7 +175,7 @@ const submitForm = (): void => {
  * 多选处理
  * @param selection 选择项
  */
-const handleSelectionChange = (selection: Tag[]): void => {
+const changeSelectedId = (selection: Tag[]): void => {
   tagIdList.value = selection.map(item => item.id);
   multiple.value = !selection.length;
 };
@@ -197,19 +184,17 @@ const handleSelectionChange = (selection: Tag[]): void => {
  * 删除标签 无id参数代表批量删除
  * @param id 标签id
  */
-const handleDelete = (id?: number): void => {
+const deleteTags = (id?: number): void => {
   let idList: number[] = [];
   if (id == undefined) {
     idList = tagIdList.value;
   } else {
     idList.push(id);
   }
-  messageConfirm('确认删除已选中的数据项?').then(() => {
-    deleteTags(idList).then(({ data }) => {
-      if (data.flag) {
-        notifySuccess(data.msg);
-        getList();
-      }
+  modal.messageConfirm('确认删除已选中的数据项?').then(() => {
+    tagApi.deleteTags(idList).then(() => {
+      modal.notifySuccess('删除成功');
+      getTagList();
     });
   }).catch(() => {
   });
@@ -218,9 +203,9 @@ const handleDelete = (id?: number): void => {
 /**
  * 获取标签数据
  */
-const getList = (): void => {
+const getTagList = (): void => {
   loading.value = true;
-  getTagList(queryParams.value).then(({ data }) => {
+  tagApi.getTagList(queryParams.value).then(({ data }) => {
     tagList.value = data.data.recordList;
     count.value = data.data.count;
     loading.value = false;
@@ -228,11 +213,11 @@ const getList = (): void => {
 };
 
 /**
- * 搜索
+ * 搜索标签
  */
-const handleQuery = (): void => {
+const queryTags = (): void => {
   queryParams.value.current = 1;
-  getList();
+  getTagList();
 };
 
 /**
@@ -241,16 +226,16 @@ const handleQuery = (): void => {
 const resetQuery = (): void => {
   queryParams.value.keywords = '';
   queryParams.value.current = 1;
-  getList();
+  getTagList();
 };
 
 // 初始化时加载数据
 onMounted(() => {
-  getList();
+  getTagList();
 });
 
 </script>
 
-<style scoped lang='scss'>
+<style lang="scss" scoped>
 
 </style>

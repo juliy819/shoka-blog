@@ -15,7 +15,9 @@ import static com.juliy.enums.StatusCodeEnum.SUCCESS;
 @Schema(description = "结果返回类")
 public class Result<T> {
 
-    /** 返回状态 */
+    /**
+     * 返回状态
+     */
     @Schema(description = "返回状态")
     private Boolean flag;
 

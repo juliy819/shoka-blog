@@ -3,8 +3,8 @@ package com.juliy.model.vo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,7 +13,6 @@ import java.util.List;
  * @date 2023/3/25 11:18
  */
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "分页返回类")
 public class PageResult<T> {
@@ -29,4 +28,10 @@ public class PageResult<T> {
      */
     @Schema(description = "总数")
     private Long count;
+
+    public PageResult() {
+        // 无参构造中赋初始值，避免没有数据时返回null
+        this.recordList = new ArrayList<>();
+        this.count = 0L;
+    }
 }

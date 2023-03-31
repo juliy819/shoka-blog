@@ -33,8 +33,8 @@ public class UserServiceImpl implements UserService {
         int userId = StpUtil.getLoginIdAsInt();
         // 获取用户信息
         User user = userMapper.selectOne(new LambdaQueryWrapper<User>()
-                                                 .select(User::getAvatar)
-                                                 .eq(User::getId, userId));
+                .select(User::getAvatar)
+                .eq(User::getId, userId));
         List<String> roleList = StpUtil.getRoleList();
         // 去重、去空
         List<String> permissionList = StpUtil.getPermissionList()

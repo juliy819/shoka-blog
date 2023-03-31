@@ -1,7 +1,7 @@
 import type { PermissionState } from '@/store/interface';
 import type { RouteRecordRaw } from 'vue-router';
 import { constantRoutes } from '@/router';
-import { getRouters } from '@/api/login';
+import { loginApi } from '@/api/login';
 import { defineStore } from 'pinia';
 import ParentView from '@/components/ParentView/index.vue';
 import Layout from '@/layout/index.vue';
@@ -20,18 +20,16 @@ const usePermissionStore = defineStore('usePermissionStore', {
     generateRoutes(): Promise<RouteRecordRaw[]> {
       return new Promise((resolve, reject) => {
         // 向后端请求路由数据
-        getRouters()
-            .then(({ data }) => {
-              if (data.flag) {
-                const routeData = data.data;
-                const asyncRoutes = filterAsyncRoutes(routeData);
-                this.setRoutes(asyncRoutes);
-                resolve(asyncRoutes);
-              }
-            })
-            .catch(error => {
-              reject(error);
-            });
+        loginApi.getRouters()
+          .then(({ data }) => {
+            const routeData = data.data;
+            const asyncRoutes = filterAsyncRoutes(routeData);
+            this.setRoutes(asyncRoutes);
+            resolve(asyncRoutes);
+          })
+          .catch(error => {
+            reject(error);
+          });
       });
     }
   }

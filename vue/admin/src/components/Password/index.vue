@@ -5,35 +5,17 @@
 -->
 <template>
   <div>
-    <svg-icon
-      icon-class="password"
-      size="1.2rem"
-      @click="openDialog"></svg-icon>
-    <el-dialog
-      v-model="open"
-      :before-close="handleClose"
-      title="修改密码"
-      width="500px">
-      <el-form
-        ref="ruleFormRef"
-        :model="ruleForm"
-        :rules="rules"
-        label-width="120px"
-        status-icon>
+    <svg-icon icon-class="password" size="1.2rem" @click="openDialog"></svg-icon>
+    <el-dialog v-model="open" :before-close="handleClose" title="修改密码" width="500px">
+      <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" label-width="120px" status-icon>
         <el-form-item label="旧密码" prop="oldPassword">
-          <el-input
-            v-model="ruleForm.oldPassword"
-            autocomplete="false"></el-input>
+          <el-input v-model="ruleForm.oldPassword" autocomplete="false"></el-input>
         </el-form-item>
         <el-form-item label="新密码" prop="newPassword">
-          <el-input
-            v-model="ruleForm.newPassword"
-            autocomplete="false"></el-input>
+          <el-input v-model="ruleForm.newPassword" autocomplete="false"></el-input>
         </el-form-item>
         <el-form-item label="确认密码" prop="checkPassword">
-          <el-input
-            v-model="ruleForm.checkPassword"
-            autocomplete="false"></el-input>
+          <el-input v-model="ruleForm.checkPassword" autocomplete="false"></el-input>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -48,8 +30,8 @@
 import { reactive, ref } from 'vue';
 import type { FormInstance, FormRules } from 'element-plus';
 import type { Password } from '@/api/user/types';
-import { updateAdminPassword } from '@/api/user';
-import { messageConfirm, notifySuccess } from '@/utils/modal';
+import { userApi } from '@/api/user';
+import { modal } from '@/utils/modal';
 
 const open = ref(false);
 const ruleFormRef = ref<FormInstance>();
@@ -92,21 +74,19 @@ const openDialog = () => {
 };
 
 const handleClose = (done: () => void) => {
-  messageConfirm('确定要关闭窗口吗')
-      .then(() => {
-        done();
-      })
-      .catch(() => {
-      });
+  modal.messageConfirm('确定要关闭窗口吗')
+    .then(() => {
+      done();
+    })
+    .catch(() => {
+    });
 };
 
 const submitForm = () => {
   ruleFormRef.value?.validate((valid) => {
     if (valid) {
-      updateAdminPassword(ruleForm.value).then(({ data }) => {
-        if (data.flag) {
-          notifySuccess(data.msg);
-        }
+      userApi.updateAdminPassword(ruleForm.value).then(() => {
+        modal.notifySuccess('密码修改成功');
         open.value = false;
       });
     }

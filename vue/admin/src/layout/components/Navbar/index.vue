@@ -5,10 +5,7 @@
 -->
 <template>
   <div class="navbar">
-    <Hamburger
-        :is-active="appStore.sidebar.opened"
-        class="hamburger-container"
-        @toggle="toggleSidebar"></Hamburger>
+    <Hamburger :is-active="appStore.sidebar.opened" class="hamburger-container" @toggle="toggleSidebar"></Hamburger>
     <Breadcrumb></Breadcrumb>
     <!-- 右侧菜单 -->
     <div class="right-menu">
@@ -35,16 +32,13 @@
         </el-tooltip>
         <!-- 布局大小 -->
         <el-tooltip content="布局大小">
-          <size-select class="right-menu-item hover-effect"/>
+          <size-select class="right-menu-item hover-effect" />
         </el-tooltip>
       </template>
-      <el-dropdown
-          class="right-menu-item hover-effect avatar-container"
-          trigger="click"
-          @command="handleCommand">
+      <el-dropdown class="right-menu-item hover-effect avatar-container" trigger="click" @command="handleCommand">
         <!-- 头像 -->
         <div class="avatar-wrapper">
-          <img :src="userStore.avatar" alt="" class="user-avatar"/>
+          <img :src="userStore.avatar" alt="" class="user-avatar" />
         </div>
         <!-- 选项 -->
         <template #dropdown>
@@ -64,7 +58,7 @@
 
 <script lang="ts" setup>
 import useStore from '@/store';
-import { messageConfirm } from '@/utils/modal';
+import { modal } from '@/utils/modal';
 
 const { appStore, userStore } = useStore();
 const device = computed(() => appStore.device);
@@ -92,7 +86,7 @@ const setLayout = () => {
 };
 
 const logout = () => {
-  messageConfirm('确定注销并退出系统吗？').then(() => {
+  modal.messageConfirm('确定注销并退出系统吗？').then(() => {
     userStore.logout().then(() => {
       location.href = '/login';
     });

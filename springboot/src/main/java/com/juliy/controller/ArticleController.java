@@ -102,8 +102,8 @@ public class ArticleController {
      */
     @Operation(summary = "回收文章")
     @SaCheckPermission("article:recycle")
-    @DeleteMapping("/recycle/{articleIds}")
-    public Result<?> recycleArticles(@PathVariable List<Integer> articleIds) {
+    @PutMapping("/recycle")
+    public Result<?> recycleArticles(@RequestBody List<Integer> articleIds) {
         articleService.recycleArticles(articleIds);
         return Result.success();
     }
@@ -114,8 +114,8 @@ public class ArticleController {
      */
     @Operation(summary = "恢复文章")
     @SaCheckPermission("article:recover")
-    @DeleteMapping("/recover/{articleIds}")
-    public Result<?> recoverArticles(@PathVariable List<Integer> articleIds) {
+    @PutMapping("/recover")
+    public Result<?> recoverArticles(@RequestBody List<Integer> articleIds) {
         articleService.recoverArticles(articleIds);
         return Result.success();
     }

@@ -12,7 +12,6 @@ import java.util.List;
 
 /**
  * 分类mapper
- *
  * @author juliy
  * @date 2023/3/25 10:36
  */
@@ -21,20 +20,19 @@ public interface CategoryMapper extends BaseMapper<Category> {
 
     /**
      * 查询分类列表
-     *
      * @return 分类列表
      */
     List<CategoryVO> selectCategories();
 
     /**
      * 查询后台分类列表
-     *
      * @param current   页码
      * @param size      数量
      * @param condition 查询条件
      * @return 后台分类列表
      */
-    List<CategoryAdminVO> selectCategoriesAdmin(@Param("current") Long current, @Param("size") Long size, @Param("condition") ConditionDTO condition);
+    List<CategoryAdminVO> selectCategoriesAdmin(@Param("current") Long current, @Param("size") Long size, @Param(
+            "condition") ConditionDTO condition);
 
 
 }

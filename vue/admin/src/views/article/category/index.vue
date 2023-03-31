@@ -6,81 +6,70 @@
 <template>
   <div class="app-container">
     <!-- 搜索栏 -->
-    <el-form :inline="true" v-show="showSearch">
+    <el-form v-show="showSearch" :inline="true">
       <el-form-item label="分类名称">
-        <el-input v-model="queryParams.keywords" @keyup.enter="handleQuery"
-                  style="width: 200px"
-                  placeholder="请输入分类名称" clearable/>
+        <el-input v-model="queryParams.keywords" clearable placeholder="请输入分类名称" style="width: 200px"
+                  @keyup.enter="queryCategories" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+        <el-button icon="Search" type="primary" @click="queryCategories">搜索
+        </el-button>
         <el-button icon="Refresh" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
     <!-- 操作按钮 -->
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button type="primary" plain icon="Plus"
-                   @click="handleAdd">
+        <el-button icon="Plus" plain type="primary" @click="addCategory">
           新增
         </el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button type="danger" plain icon="Delete"
-                   :disabled="multiple"
-                   @click="handleDelete(undefined)">
+        <el-button :disabled="multiple" icon="Delete" plain type="danger" @click="deleteCategories(undefined)">
           删除
         </el-button>
       </el-col>
       <!-- 右侧工具栏 -->
-      <right-tool-bar v-model:show-search="showSearch" @queryTable="getList"/>
+      <right-tool-bar v-model:show-search="showSearch" @queryTable="getCategoryList" />
     </el-row>
     <!-- 表格 -->
-    <el-table :data="categoryList" v-loading="loading"
-              @selection-change="handleSelectionChange">
-      <el-table-column type="selection" align="center"/>
-      <el-table-column prop="categoryName" label="分类名" min-width="150"
-                       align="center"/>
-      <el-table-column prop="articleCount" label="文章数量" min-width="100" align="center"/>
-      <el-table-column prop="createTime" label="创建时间" min-width="150"
-                       align="center">
+    <el-table v-loading="loading" :data="categoryList" @selection-change="changeSelectedId">
+      <el-table-column align="center" type="selection" />
+      <el-table-column align="center" label="分类名" min-width="150" prop="categoryName" />
+      <el-table-column align="center" label="文章数量" min-width="100" prop="articleCount" />
+      <el-table-column align="center" label="创建时间" min-width="150" prop="createTime">
         <template #default="scope">
           <div class="create-time">
             <el-icon>
-              <clock/>
+              <clock />
             </el-icon>
             <span style="margin-left: 10px">
-              {{ formatDate(scope.row.createTime) }}
+              {{ formatDate(scope['row']['createTime']) }}
             </span>
           </div>
         </template>
       </el-table-column>
       <!-- 操作 -->
-      <el-table-column label="操作" align="center" min-width="150">
+      <el-table-column align="center" label="操作" min-width="150">
         <template #default="scope">
-          <el-button type="primary" icon="Edit" link
-                     @click="handleUpdate(scope.row)">
+          <el-button icon="Edit" link type="primary" @click="updateCategory(scope.row)">
             修改
           </el-button>
-          <el-button type="danger" icon="Delete" link
-                     @click="handleDelete(scope.row.id)">
+          <el-button icon="Delete" link type="danger" @click="deleteCategories(scope.row.id)">
             删除
           </el-button>
         </template>
       </el-table-column>
     </el-table>
     <!-- 分页工具 -->
-    <pagination v-if="count > 0" :total="count" v-model:page="queryParams.current" v-model:limit="queryParams.size"
-                @pagination="getList"/>
+    <pagination v-if="count > 0" v-model:limit="queryParams.size" v-model:page="queryParams.current" :total="count"
+                @pagination="getCategoryList" />
     <!-- 添加或修改对话框 -->
-    <el-dialog :title="title" v-model="open" width="500px"
-               append-to-body>
-      <el-form ref="categoryFormRef" label-width="100px" :model="categoryForm"
-               :rules="rules"
-               @submit.native.prevent>
+    <el-dialog v-model="open" :title="title" append-to-body width="500px">
+      <el-form ref="categoryFormRef" :model="categoryForm" :rules="rules" label-width="100px" @submit.prevent>
         <el-form-item label="分类名称" prop="categoryName">
-          <el-input placeholder="请输入分类名称" @keyup.enter="submitForm"
-                    v-model="categoryForm.categoryName" style="width: 250px;"/>
+          <el-input v-model="categoryForm.categoryName" placeholder="请输入分类名称" style="width: 250px;"
+                    @keyup.enter="submitForm" />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -93,14 +82,14 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { reactive, ref, toRefs } from 'vue';
 import type { Category, CategoryForm, CategoryQuery } from '@/api/category/types';
 import { Clock } from '@element-plus/icons-vue';
 import { formatDate } from '@/utils/date';
 import type { FormInstance, FormRules } from 'element-plus';
-import { addCategory, deleteCategories, getCategoryList, updateCategory } from '@/api/category';
-import { messageConfirm, notifySuccess } from '@/utils/modal';
+import { categoryApi } from '@/api/category';
+import { modal } from '@/utils/modal';
 
 const categoryFormRef = ref<FormInstance>();
 const rules = reactive<FormRules>({
@@ -114,7 +103,7 @@ const count = ref(0);
 const showSearch = ref(true);
 const loading = ref(false);
 const title = ref('');
-const multiple = ref(false);
+const multiple = ref(true);
 const open = ref(false);
 const categoryIdList = ref<number[]>([]);
 const categoryList = ref<Category[]>([]);
@@ -133,7 +122,7 @@ const { queryParams, categoryForm } = toRefs(data);
 /**
  * 添加分类
  */
-const handleAdd = (): void => {
+const addCategory = (): void => {
   categoryFormRef.value?.clearValidate();
   title.value = '添加分类';
   categoryForm.value = {
@@ -147,7 +136,7 @@ const handleAdd = (): void => {
  * 修改分类
  * @param category
  */
-const handleUpdate = (category: Category): void => {
+const updateCategory = (category: Category): void => {
   categoryFormRef.value?.clearValidate();
   title.value = '修改分类';
   categoryForm.value = {
@@ -165,20 +154,16 @@ const submitForm = (): void => {
     if (valid) {
       // 有id表示修改
       if (categoryForm.value.id !== undefined) {
-        updateCategory(categoryForm.value).then(({ data }) => {
-          if (data.flag) {
-            notifySuccess(data.msg);
-            getList();
-          }
+        categoryApi.updateCategory(categoryForm.value).then(() => {
+          modal.notifySuccess('修改成功');
+          getCategoryList();
           open.value = false;
         });
       } else {
         // 无id表示新增
-        addCategory(categoryForm.value).then(({ data }) => {
-          if (data.flag) {
-            notifySuccess(data.msg);
-            getList();
-          }
+        categoryApi.addCategory(categoryForm.value).then(() => {
+          modal.notifySuccess('添加成功');
+          getCategoryList();
           open.value = false;
         });
       }
@@ -190,7 +175,7 @@ const submitForm = (): void => {
  * 多选处理
  * @param selection 选择项
  */
-const handleSelectionChange = (selection: Category[]): void => {
+const changeSelectedId = (selection: Category[]): void => {
   categoryIdList.value = selection.map(item => item.id);
   multiple.value = !selection.length;
 };
@@ -199,19 +184,17 @@ const handleSelectionChange = (selection: Category[]): void => {
  * 删除分类 无id参数代表批量删除
  * @param id 分类id
  */
-const handleDelete = (id?: number): void => {
+const deleteCategories = (id?: number): void => {
   let idList: number[] = [];
   if (id == undefined) {
     idList = categoryIdList.value;
   } else {
     idList.push(id);
   }
-  messageConfirm('确认删除已选中的数据项?').then(() => {
-    deleteCategories(idList).then(({ data }) => {
-      if (data.flag) {
-        notifySuccess(data.msg);
-        getList();
-      }
+  modal.messageConfirm('确认删除已选中的数据项?').then(() => {
+    categoryApi.deleteCategories(idList).then(() => {
+      modal.notifySuccess('删除成功');
+      getCategoryList();
     });
   }).catch(() => {
   });
@@ -220,9 +203,9 @@ const handleDelete = (id?: number): void => {
 /**
  * 获取分类数据
  */
-const getList = (): void => {
+const getCategoryList = (): void => {
   loading.value = true;
-  getCategoryList(queryParams.value).then(({ data }) => {
+  categoryApi.getCategoryList(queryParams.value).then(({ data }) => {
     categoryList.value = data.data.recordList;
     count.value = data.data.count;
     loading.value = false;
@@ -230,11 +213,11 @@ const getList = (): void => {
 };
 
 /**
- * 搜索
+ * 搜索分类
  */
-const handleQuery = (): void => {
+const queryCategories = (): void => {
   queryParams.value.current = 1;
-  getList();
+  getCategoryList();
 };
 
 /**
@@ -243,16 +226,12 @@ const handleQuery = (): void => {
 const resetQuery = (): void => {
   queryParams.value.keywords = '';
   queryParams.value.current = 1;
-  getList();
+  getCategoryList();
 };
 
 // 初始化时加载数据
 onMounted(() => {
-  getList();
+  getCategoryList();
 });
 
 </script>
-
-<style scoped lang='scss'>
-
-</style>

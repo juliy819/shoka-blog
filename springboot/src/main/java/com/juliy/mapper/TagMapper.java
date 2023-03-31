@@ -31,7 +31,8 @@ public interface TagMapper extends BaseMapper<Tag> {
      * @param condition 查询条件
      * @return 后台标签列表
      */
-    List<TagAdminVO> selectTagsAdmin(@Param("current") Long current, @Param("size") Long size, @Param("condition") ConditionDTO condition);
+    List<TagAdminVO> selectTagsAdmin(@Param("current") Long current, @Param("size") Long size,
+                                     @Param("condition") ConditionDTO condition);
 
     /**
      * 根据文章id查询标签名称

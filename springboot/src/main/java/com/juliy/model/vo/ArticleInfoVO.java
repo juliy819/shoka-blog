@@ -72,7 +72,7 @@ public class ArticleInfoVO {
      * 是否推荐 (0否 1是)
      */
     @Schema(description = "是否推荐 (0否 1是)")
-    private Integer isRecommend;
+    private Integer isFeatured;
 
     /**
      * 状态 (1公开 2私密 3草稿)

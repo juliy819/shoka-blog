@@ -18,17 +18,17 @@ const useTagStore = defineStore('useTagStore', {
       if (view.meta?.affix) {
         // 若是固定标签页，则添加到开头
         this.visitedViews.unshift(
-            // 设置标签名，若没有则设为'no-name'
-            Object.assign({}, view, {
-              title: view.meta?.title || 'no-name'
-            })
+          // 设置标签名，若没有则设为'no-name'
+          Object.assign({}, view, {
+            title: view.meta?.title || 'no-name'
+          })
         );
       } else {
         // 若不是固定标签页，则添加到末尾
         this.visitedViews.push(
-            Object.assign({}, view, {
-              title: view.meta?.title || 'no-name'
-            })
+          Object.assign({}, view, {
+            title: view.meta?.title || 'no-name'
+          })
         );
       }
     },
@@ -54,7 +54,7 @@ const useTagStore = defineStore('useTagStore', {
     delOtherViews(view: TagsView): Promise<TagsView[]> {
       return new Promise(resolve => {
         this.visitedViews = this.visitedViews.filter(
-            v => v.meta?.affix || v.path === view.path
+          v => v.meta?.affix || v.path === view.path
         );
         resolve([...this.visitedViews]);
       });
@@ -67,13 +67,13 @@ const useTagStore = defineStore('useTagStore', {
     delLeftViews(view: TagsView): Promise<TagsView[]> {
       return new Promise(resolve => {
         const currentIndex = this.visitedViews.findIndex(
-            v => v.path === view.path
+          v => v.path === view.path
         );
         if (currentIndex === -1) {
           return;
         }
         this.visitedViews = this.visitedViews.filter(
-            (v, index) => !!(index >= currentIndex || v.meta?.affix)
+          (v, index) => !!(index >= currentIndex || v.meta?.affix)
         );
         resolve([...this.visitedViews]);
       });
@@ -86,13 +86,13 @@ const useTagStore = defineStore('useTagStore', {
     delRightViews(view: TagsView): Promise<TagsView[]> {
       return new Promise(resolve => {
         const currentIndex = this.visitedViews.findIndex(
-            v => v.path === view.path
+          v => v.path === view.path
         );
         if (currentIndex === -1) {
           return;
         }
         this.visitedViews = this.visitedViews.filter(
-            (v, index) => !!(index <= currentIndex || v.meta?.affix)
+          (v, index) => !!(index <= currentIndex || v.meta?.affix)
         );
         resolve([...this.visitedViews]);
       });

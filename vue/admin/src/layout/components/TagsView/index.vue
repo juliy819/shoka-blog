@@ -6,62 +6,48 @@
 <template>
   <div class="tags-view-container">
     <scroll-pane class="tags-view-wrapper">
-      <span v-for="tag in visitedViews" class="tags-view-item">
-        <router-link
-            :key="tag.path"
-            :class="isActive(tag) ? 'active' : ''"
-            :to="{ path: tag.path, query: tag.query }"
-            class="tags-view-title"
-            @contextmenu.prevent="openMenu(tag, $event)"
-            @click.middle="handleMiddleClick(tag)">
-          {{ tag.title }}
-          <span
-              v-if="!isAffix(tag)"
-              class="close-icon"
-              @click.prevent="closeSelectedTag(tag)">
-          <svg-icon icon-class="close" size="0.9rem"/>
+      <router-link v-for="tag in visitedViews" :key="tag.path" :class="isActive(tag) ? 'active' : ''"
+                   :data-path="tag.path" :to="{ path: tag.path, query: tag.query }" class="tags-view-item" tag="span"
+                   @contextmenu.prevent="openMenu(tag, $event)" @click.middle="handleMiddleClick(tag)">
+        {{ tag.title }} <span v-if="!isAffix(tag)" class="close-icon" @click.prevent="closeSelectedTag(tag)">
+          <svg-icon icon-class="close" size="0.9rem" />
         </span>
-        </router-link>
-      </span>
-
+      </router-link>
     </scroll-pane>
-    <ul
-        v-show="menuVisible"
-        :style="{ left: left + 'px', top: top + 'px' }"
-        class="context-menu">
+    <ul v-show="menuVisible" :style="{ left: left + 'px', top: top + 'px' }" class="context-menu">
       <li>
         <el-icon class="menu-icon">
-          <refresh-right/>
+          <refresh-right />
         </el-icon>
         刷新页面
       </li>
       <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">
         <el-icon class="menu-icon">
-          <close/>
+          <close />
         </el-icon>
         关闭当前
       </li>
       <li @click="closeOtherTags">
         <el-icon class="menu-icon">
-          <circle-close/>
+          <circle-close />
         </el-icon>
         关闭其它
       </li>
       <li v-if="!isFirstTag()" @click="closeLeftTags">
         <el-icon class="menu-icon">
-          <back/>
+          <back />
         </el-icon>
         关闭左侧
       </li>
       <li v-if="!isLastTag()" @click="closeRightTags">
         <el-icon class="menu-icon">
-          <right/>
+          <right />
         </el-icon>
         关闭右侧
       </li>
       <li @click="closeAllTags">
         <el-icon class="menu-icon">
-          <circle-close/>
+          <circle-close />
         </el-icon>
         全部关闭
       </li>
@@ -162,7 +148,7 @@ const isFirstTag = (): boolean => {
   // 首次加载时selectedTag为undefined，会报错
   try {
     return (selectedTag.value as TagsView).path === '/index' ||
-        (selectedTag.value as TagsView).fullPath === visitedViews.value[1].fullPath;
+      (selectedTag.value as TagsView).fullPath === visitedViews.value[1].fullPath;
   } catch {
     return false;
   }
@@ -242,9 +228,8 @@ const closeLeftTags = (): void => {
 
 /**
  * 关闭右侧标签页
- * @param tag 标签
  */
-const closeRightTags = (tag: TagsView): void => {
+const closeRightTags = (): void => {
   tagStore.delRightViews(selectedTag.value).then(visitedViews => {
     // 若关闭了当前浏览的标签页，则跳转至选中的标签页
     if (!visitedViews.find(tag => tag.fullPath === route.fullPath)) {
@@ -276,12 +261,11 @@ const toLastView = (visitedViews: TagsView[], tag?: TagsView): void => {
     router.push(latestView.fullPath);
   } else {
     // 若没有标签页，则重定向至首页
-    // if (tag?.name === '首页') {
-    //   router.replace({path: '/redirect' + tag.fullPath});
-    // } else {
-    //   router.push('/');
-    // }
-    console.error('123123123123123123123');
+    if (tag?.name === '首页') {
+      router.replace({ path: '/redirect' + tag.fullPath });
+    } else {
+      router.push('/');
+    }
   }
 };
 
@@ -344,27 +328,27 @@ const getNormalPath = (p: string): string => {
 
 // 只要路由发生变化，便更新标签状态
 watch(
-    route,
-    () => {
-      addTag();
-      moveToCurrentTag();
-    },
-    {
-      // 初始化立即执行
-      immediate: true
-    }
+  route,
+  () => {
+    addTag();
+    moveToCurrentTag();
+  },
+  {
+    // 初始化立即执行
+    immediate: true
+  }
 );
 
 // 打开右键菜单后，点击任意位置隐藏菜单
 watch(
-    menuVisible,
-    value => {
-      if (value) {
-        document.body.addEventListener('click', closeMenu);
-      } else {
-        document.body.removeEventListener('click', closeMenu);
-      }
+  menuVisible,
+  value => {
+    if (value) {
+      document.body.addEventListener('click', closeMenu);
+    } else {
+      document.body.removeEventListener('click', closeMenu);
     }
+  }
 );
 
 // 页面加载时添加固定标签
@@ -383,6 +367,20 @@ onMounted(() => {
 
   .tags-view-wrapper {
     .tags-view-item {
+      display: inline-block;
+      position: relative;
+      cursor: pointer;
+      height: 26px;
+      line-height: 26px;
+      margin-top: 4px;
+      margin-right: 6px;
+      padding: 0 8px;
+      border: 1px solid #d8dce5;
+      border-radius: 8px;
+      color: #495060;
+      background: #fff;
+      font-size: 12px;
+
       &:first-child {
         margin-left: 15px;
       }
@@ -391,50 +389,26 @@ onMounted(() => {
         margin-right: 15px;
       }
 
-      .tags-view-title {
-        display: inline-block;
-        position: relative;
-        cursor: pointer;
-        height: 26px;
-        line-height: 26px;
-        margin-top: 4px;
-        margin-right: 6px;
-        padding: 0 8px;
-        border: 1px solid #d8dce5;
-        border-radius: 8px;
-        color: #495060;
-        background: #fff;
-        font-size: 12px;
-
-        &:hover {
-          background-color: rgba(0, 0, 0, 0.12);
-        }
-
-        // 选中标签的样式
-        &.active {
-          background-color: var(--el-color-primary);
-          color: #fff;
-          border-color: var(--el-color-primary);
-          // 在标题前画个小圆点
-          &::before {
-            content: "";
-            background: #fff;
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            position: relative;
-            margin-right: 5px;
-          }
-
-          & + .tags-view-divider {
-            visibility: hidden;
-          }
-        }
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.12);
       }
 
-      .tags-view-divider {
-        margin: 0 0;
+      // 选中标签的样式
+      &.active {
+        background-color: var(--el-color-primary);
+        color: #fff;
+        border-color: var(--el-color-primary);
+        // 在标题前画个小圆点
+        &::before {
+          content: "";
+          background: #fff;
+          display: inline-block;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          position: relative;
+          margin-right: 5px;
+        }
       }
 
       // 关闭图标

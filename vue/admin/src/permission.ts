@@ -3,7 +3,7 @@ import { getToken } from '@/utils/token';
 import NProgress from 'nprogress';
 import { isReLogin } from '@/utils/request';
 import useStore from '@/store';
-import { msgError } from '@/utils/modal';
+import { modal } from '@/utils/modal';
 
 NProgress.configure({
   easing: 'ease',
@@ -28,31 +28,30 @@ router.beforeEach((to, from, next) => {
         isReLogin.show = true;
         // 判断当前用户是否已拉取完user_info信息
         userStore
-            .getAdminUserInfo()
-            .then(() => {
-              isReLogin.show = false;
-              permissionStore.generateRoutes().then(accessRoutes => {
-                // 根据roles权限生成可访问的路由表
-                accessRoutes.forEach(route => {
-                  // 动态添加可访问路由表
-                  router.addRoute(route);
-                });
-                // hack方法 确保addRoutes已完成
-                // 原理: 若addRoute并未完成，路由守卫会一层一层的执行执行，直到addRoute完成，找到对应的路由
-                // 作用: 若addRoute还未完成时就访问对应路由，则会因为找不到刚添加的路由而白屏
-                next({ ...to, replace: true });
+          .getAdminUserInfo()
+          .then(() => {
+            isReLogin.show = false;
+            permissionStore.generateRoutes().then(accessRoutes => {
+              // 根据roles权限生成可访问的路由表
+              accessRoutes.forEach(route => {
+                // 动态添加可访问路由表
+                router.addRoute(route);
               });
-            })
-            .catch(err => {
-              // 信息拉取失败则注销账户并重新转到登录页
-              userStore.logout().then(() => {
-                msgError(err);
-                next({ path: '/login' });
-              }).catch(() => {
-                msgError("123");
-                next({ path: '/login' });
-              });
+              // hack方法 确保addRoutes已完成
+              // 原理: 若addRoute并未完成，路由守卫会一层一层的执行执行，直到addRoute完成，找到对应的路由
+              // 作用: 若addRoute还未完成时就访问对应路由，则会因为找不到刚添加的路由而白屏
+              next({ ...to, replace: true });
             });
+          })
+          .catch(err => {
+            // 信息拉取失败则注销账户并重新转到登录页
+            userStore.logout().then(() => {
+              modal.msgError(err);
+              next({ path: '/login' });
+            }).catch(() => {
+              next({ path: '/login' });
+            });
+          });
       } else {
         next();
       }

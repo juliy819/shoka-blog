@@ -32,9 +32,9 @@ public class LoginServiceImpl implements LoginService {
     public String login(LoginDTO loginDTO) {
         // 按输入的用户名、密码查询账户，若用户名或密码有误则user为null
         User user = userMapper.selectOne(new LambdaQueryWrapper<User>()
-                                                 .select(User::getId)
-                                                 .eq(User::getUsername, loginDTO.getUsername())
-                                                 .eq(User::getPassword, SecurityUtils.sha256Encrypt(loginDTO.getPassword())));
+                .select(User::getId)
+                .eq(User::getUsername, loginDTO.getUsername())
+                .eq(User::getPassword, SecurityUtils.sha256Encrypt(loginDTO.getPassword())));
         if (user == null) {
             throw new ServiceException(StatusCodeEnum.UNAUTHORIZED, "用户名或密码错误");
         }

@@ -171,7 +171,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public void updateArticleTop(ArticleTopDTO articleTopDTO) {
         Article article = Article.builder()
-                .id(articleTopDTO.getArticleId())
+                .id(articleTopDTO.getId())
                 .isTop(articleTopDTO.getIsTop())
                 .build();
         this.updateById(article);
@@ -180,7 +180,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public void updateArticleFeatured(ArticleFeaturedDTO articleFeaturedDTO) {
         Article article = Article.builder()
-                .id(articleFeaturedDTO.getArticleId())
+                .id(articleFeaturedDTO.getId())
                 .isFeatured(articleFeaturedDTO.getIsFeatured())
                 .build();
         this.updateById(article);
@@ -246,7 +246,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     private void saveTags(List<String> tagNameList, Integer articleId) {
         // 先删除文章对应的标签
         articleTagMapper.delete(new LambdaQueryWrapper<ArticleTag>()
-                .eq(ArticleTag::getArticleId, articleId));
+                                        .eq(ArticleTag::getArticleId, articleId));
 
         if (CollectionUtils.isNotEmpty(tagNameList)) {
             // 查询已存在的标签，并分别获取标签id和标签名称

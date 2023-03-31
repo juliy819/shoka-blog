@@ -11,34 +11,22 @@
   opacity: 0;
 }
 
-/* fade-transform */
-.fade-transform-leave-active,
-.fade-transform-enter-active {
-  transition: all 0.5s;
-}
-
-.fade-transform-enter {
-  opacity: 0;
-  transform: translateX(-30px);
-}
-
-.fade-transform-leave-to {
-  opacity: 0;
-  transform: translateX(30px);
-}
-
 /* 面包屑过渡动画 */
 .breadcrumb-enter-active,
 .breadcrumb-leave-active {
-  transition: all 1s ease;
+  transition: all .5s ease;
 }
 
-.breadcrumb-enter-from {
+.breadcrumb-enter,
+.breadcrumb-leave-active {
   opacity: 0;
   transform: translateX(20px);
 }
 
+.breadcrumb-move {
+  transition: all .5s;
+}
+
 .breadcrumb-leave-active {
   position: absolute;
-  z-index: -1;
 }

@@ -8,5 +8,5 @@ export const errorCode: ErrorCode = {
   '401': '认证失败',
   '404': '访问资源不存在',
   '500': '操作失败',
-  default: '系统未知错误，请反馈给管理员',
+  default: '系统未知错误，请反馈给管理员'
 };

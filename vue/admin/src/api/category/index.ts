@@ -1,61 +1,31 @@
-import type { Category, CategoryForm, CategoryQuery } from './types';
-import type { AxiosPromise } from 'axios';
-import type { PageResult, Result } from '@/model';
+import type { CategoryApi } from './types';
 import request from '@/utils/request';
 
 /**
- * 获取分类列表
- * @param params 查询条件
- * @return 分类列表
+ * 分类api
  */
-export const getCategoryList = (
-    params: CategoryQuery
-): AxiosPromise<Result<PageResult<Category[]>>> => {
-  return request({
+export const categoryApi: CategoryApi = {
+
+  getCategoryList: (categoryQuery) => request({
     url: '/category/admin/list',
     method: 'get',
-    params
-  });
-};
+    params: categoryQuery
+  }),
 
-
-/**
- * 添加分类
- * @param data 分类信息
- */
-export const addCategory = (
-    data: CategoryForm
-): AxiosPromise<Result<null>> => {
-  return request({
+  addCategory: (categoryForm) => request({
     url: '/category',
     method: 'post',
-    data
-  });
-};
-
-/**
- * 修改分类
- * @param data 分类信息
- */
-export const updateCategory = (
-    data: CategoryForm
-): AxiosPromise<Result<null>> => {
-  return request({
+    data: categoryForm
+  }),
+  updateCategory: (categoryForm) => request({
     url: '/category',
     method: 'put',
-    data
-  });
-};
+    data: categoryForm
+  }),
 
-/**
- * 删除分类
- * @param categoryIds 标签id列表
- */
-export const deleteCategories = (
-    categoryIds: number[]
-): AxiosPromise<Result<null>> => {
-  return request({
+  deleteCategories: (categoryIds) => request({
     url: '/category/' + categoryIds,
     method: 'delete'
-  });
+  })
+
 };

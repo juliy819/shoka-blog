@@ -22,11 +22,11 @@ public class SpringbootApplication {
         String port = env.getProperty("server.port");
 
         System.out.println("----------------------------------------------------------\n\t" +
-                                   "Application  is running! Access URLs:\n\t" +
-                                   "Local访问网址: \t\thttp://localhost:" + port + "\n\t" +
-                                   "External访问网址: \thttp://" + ip + ":" + port + "\n\t" +
-                                   "文档地址: \t\t\thttp://localhost:" + port + "/doc.html\n" +
-                                   "----------------------------------------------------------");
+                "Application  is running! Access URLs:\n\t" +
+                "Local访问网址: \t\thttp://localhost:" + port + "\n\t" +
+                "External访问网址: \thttp://" + ip + ":" + port + "\n\t" +
+                "文档地址: \t\t\thttp://localhost:" + port + "/doc.html\n" +
+                "----------------------------------------------------------");
     }
 
 }

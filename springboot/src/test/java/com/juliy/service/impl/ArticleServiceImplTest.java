@@ -95,7 +95,7 @@ class ArticleServiceImplTest {
     @Test
     void updateArticleTopTestCase1() {
         ArticleTopDTO top = new ArticleTopDTO();
-        top.setArticleId(1);
+        top.setId(1);
         top.setIsTop(0);
         articleService.updateArticleTop(top);
     }
@@ -103,7 +103,7 @@ class ArticleServiceImplTest {
     @Test
     void updateArticleTopTestCase2() {
         ArticleTopDTO top = new ArticleTopDTO();
-        top.setArticleId(1);
+        top.setId(1);
         top.setIsTop(1);
         articleService.updateArticleTop(top);
     }
@@ -111,7 +111,7 @@ class ArticleServiceImplTest {
     @Test
     void updateArticleFeaturedTestCase1() {
         ArticleFeaturedDTO featured = new ArticleFeaturedDTO();
-        featured.setArticleId(1);
+        featured.setId(1);
         featured.setIsFeatured(0);
         articleService.updateArticleFeatured(featured);
     }
@@ -119,7 +119,7 @@ class ArticleServiceImplTest {
     @Test
     void updateArticleFeaturedTestCase2() {
         ArticleFeaturedDTO featured = new ArticleFeaturedDTO();
-        featured.setArticleId(1);
+        featured.setId(1);
         featured.setIsFeatured(1);
         articleService.updateArticleFeatured(featured);
     }

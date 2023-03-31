@@ -32,7 +32,8 @@ public interface ArticleMapper extends BaseMapper<Article> {
      * @param condition 查询条件
      * @return 后台文章列表
      */
-    List<ArticleAdminVO> selectArticlesAdmin(@Param("limit") Long limit, @Param("size") Long size, @Param("condition") ConditionDTO condition);
+    List<ArticleAdminVO> selectArticlesAdmin(@Param("limit") Long limit, @Param("size") Long size,
+                                             @Param("condition") ConditionDTO condition);
 
     /**
      * 根据id查询文章信息

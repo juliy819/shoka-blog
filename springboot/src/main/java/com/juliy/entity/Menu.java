@@ -63,10 +63,14 @@ public class Menu {
      */
     private String perms;
 
-    /** 是否隐藏 (0否 1是) */
+    /**
+     * 是否隐藏 (0否 1是)
+     */
     private Integer isHidden;
 
-    /** 是否禁用 (0否 1是) */
+    /**
+     * 是否禁用 (0否 1是)
+     */
     private Integer isDisable;
 
     /**

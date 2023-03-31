@@ -24,43 +24,58 @@ import static com.juliy.enums.StatusCodeEnum.*;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    /** 处理业务异常 */
+    /**
+     * 处理业务异常
+     */
     @ExceptionHandler(value = ServiceException.class)
     public Result<?> handleBizException(ServiceException e) {
         return Result.fail(e.getMessage());
     }
 
-    /** 处理Assert异常 */
+    /**
+     * 处理Assert异常
+     */
     @ExceptionHandler(value = IllegalArgumentException.class)
     public Result<?> handleIllegalArgumentException(IllegalArgumentException e) {
         return Result.fail(e.getMessage());
     }
 
-    /** 处理参数校验异常 */
+    /**
+     * 处理参数校验异常
+     */
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public Result<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        return Result.fail(VALID_ERROR.getCode(), Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage());
+        return Result.fail(VALID_ERROR.getCode(), Objects.requireNonNull(e.getBindingResult().getFieldError())
+                .getDefaultMessage());
     }
 
-    /** 处理权限不足 */
+    /**
+     * 处理权限不足
+     */
     @ExceptionHandler(value = NotPermissionException.class)
     public Result<?> handleNotPermissionException() {
         return Result.fail("权限不足");
     }
 
-    /** 处理账号封禁 */
+    /**
+     * 处理账号封禁
+     */
     @ExceptionHandler(value = DisableServiceException.class)
     public Result<?> handleDisableServiceExceptionException() {
         return Result.fail("此账号已被禁止访问服务");
     }
 
-    /** 处理无此角色异常 */
+    /**
+     * 处理无此角色异常
+     */
     @ExceptionHandler(value = NotRoleException.class)
     public Result<?> handleNotRoleException() {
         return Result.fail("权限不足");
     }
 
-    /** 处理SaToken异常 */
+    /**
+     * 处理SaToken异常
+     */
     @ExceptionHandler(value = NotLoginException.class)
     public Result<?> handlerNotLoginException(NotLoginException nle) {
         // 判断场景值，定制化异常信息
@@ -78,7 +93,9 @@ public class GlobalExceptionHandler {
         return Result.fail(UNAUTHORIZED.getCode(), message);
     }
 
-    /** 处理系统异常 */
+    /**
+     * 处理系统异常
+     */
     @ExceptionHandler(value = Exception.class)
     public Result<?> handleSystemException(Exception e) {
         log.error("系统异常\n", e);

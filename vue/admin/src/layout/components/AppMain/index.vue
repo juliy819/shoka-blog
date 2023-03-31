@@ -1,9 +1,9 @@
 <template>
   <section class="app-main">
     <router-view v-slot="{ Component, route }">
-      <transition mode="out-in" name="fade-transform">
+      <transition mode="out-in" name="el-fade-in-linear">
         <keep-alive>
-          <component :is="Component" :key="route.fullPath"/>
+          <component :is="Component" :key="route.fullPath" />
         </keep-alive>
       </transition>
     </router-view>

@@ -6,29 +6,28 @@
 <template>
   <div :class="classObj" class="app-wrapper">
     <!-- 菜单背景 -->
-    <div v-if="device === 'mobile' && appStore.sidebar.opened" class="drawer-bg"
-         @click="handleClickOutside"/>
+    <div v-if="device === 'mobile' && appStore.sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
     <!-- 侧边栏 -->
-    <SideBar class="sidebar-container"/>
+    <sidebar class="sidebar-container" />
     <div :class="{ 'hasTagsView': needTagsView }" class="main-container">
       <div :class="{ 'fixed-header': fixedHeader }">
         <!-- 导航栏 -->
-        <NavBar @setLayout="setLayout"/>
+        <navbar @setLayout="setLayout" />
         <!-- 标签栏 -->
-        <TagsView v-if="needTagsView"/>
+        <tags-view v-if="needTagsView" />
       </div>
       <!-- 主页面 -->
-      <AppMain/>
+      <app-main />
       <!-- 设置 -->
-      <Settings ref="settingsRef"/>
+      <settings ref="settingsRef" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import AppMain from './components/AppMain/index.vue';
-import NavBar from './components/NavBar/index.vue';
-import SideBar from './components/SideBar/index.vue';
+import Navbar from '@/layout/components/Navbar/index.vue';
+import Sidebar from '@/layout/components/Sidebar/index.vue';
 import TagsView from './components/TagsView/index.vue';
 import { useWindowSize } from '@vueuse/core';
 import useStore from '@/store';

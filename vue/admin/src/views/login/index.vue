@@ -1,33 +1,18 @@
 <template>
   <div class="login-view">
-    <el-form
-        ref="ruleFormRef"
-        :model="loginForm"
-        :rules="rules"
-        class="login-form">
+    <el-form ref="ruleFormRef" :model="loginForm" :rules="rules" class="login-form">
       <h3 class="title">博客后台管理系统</h3>
 
       <el-form-item prop="username">
-        <el-input
-            v-model="loginForm.username"
-            class="form-input"
-            placeholder="账号"
-            size="large"
-            type="text">
+        <el-input v-model="loginForm.username" class="form-input" placeholder="账号" size="large" type="text">
           <template #prefix>
             <svg-icon icon-class="user"></svg-icon>
           </template>
         </el-input>
       </el-form-item>
       <el-form-item prop="password">
-        <el-input
-            v-model="loginForm.password"
-            class="form-input"
-            placeholder="密码"
-            show-password
-            size="large"
-            type="password"
-            @keyup.enter="handleLogin(ruleFormRef)">
+        <el-input v-model="loginForm.password" class="form-input" placeholder="密码" show-password size="large"
+                  type="password" @keyup.enter="handleLogin(ruleFormRef)">
           <template #prefix>
             <el-icon :size="20">
               <svg-icon icon-class="password"></svg-icon>
@@ -36,13 +21,8 @@
         </el-input>
       </el-form-item>
       <el-form-item>
-        <el-button
-            :loading="loading"
-            class="login-button"
-            type="primary"
-            @click.prevent="handleLogin(ruleFormRef)">
-          <span v-if="!loading">登 录</span>
-          <span v-else>登 录 中 ...</span>
+        <el-button :loading="loading" class="login-button" type="primary" @click.prevent="handleLogin(ruleFormRef)">
+          <span v-if="!loading">登 录</span> <span v-else>登 录 中 ...</span>
         </el-button>
       </el-form-item>
     </el-form>
@@ -98,14 +78,14 @@ const handleLogin = async (formEl: FormInstance | undefined) => {
     if (valid) {
       loading.value = true;
       userStore
-          .login(loginForm)
-          .then(() => {
-            router.push({ path: '/' });
-            loading.value = false;
-          })
-          .catch(() => {
-            loading.value = false;
-          });
+        .login(loginForm)
+        .then(() => {
+          router.push({ path: '/' });
+          loading.value = false;
+        })
+        .catch(() => {
+          loading.value = false;
+        });
     } else {
       return false;
     }

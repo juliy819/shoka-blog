@@ -1,14 +1,14 @@
-import type { Password } from '@/api/user/types';
+import type { UserApi } from '@/api/user/types';
 import request from '@/utils/request';
 
 /**
- * 修改管理员密码
- * @param data 密码
+ * 用户api
  */
-export function updateAdminPassword(data: Password) {
-  return request({
+export const userApi: UserApi = {
+
+  updateAdminPassword: (password) => request({
     url: '/admin/password',
     method: 'put',
-    data,
-  });
-}
+    data: password
+  })
+};
