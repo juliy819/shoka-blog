@@ -25,12 +25,12 @@
 </template>
 
 <script lang="ts" setup>
-import AppMain from './components/AppMain/index.vue';
-import Navbar from '@/layout/components/Navbar/index.vue';
+import AppMain from './components/AppMain.vue';
+import Navbar from '@/layout/components/Navbar.vue';
 import Sidebar from '@/layout/components/Sidebar/index.vue';
 import TagsView from './components/TagsView/index.vue';
 import { useWindowSize } from '@vueuse/core';
-import useStore from '@/store';
+import useStore from '@/stores';
 
 const { appStore, settingStore } = useStore();
 const { width } = useWindowSize();

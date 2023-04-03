@@ -57,8 +57,8 @@
 
 <script lang="ts" setup>
 import ScrollPane from '@/layout/components/TagsView/ScrollPane.vue';
-import useStore from '@/store';
-import type { TagsView } from '@/store/interface';
+import useStore from '@/stores';
+import type { TagsView } from '@/stores/interface';
 import { Back, CircleClose, Close, RefreshRight, Right } from '@element-plus/icons-vue';
 import type { ComponentInternalInstance } from 'vue';
 import { ref } from 'vue';

@@ -2,7 +2,7 @@ import router from '@/router';
 import { getToken } from '@/utils/token';
 import NProgress from 'nprogress';
 import { isReLogin } from '@/utils/request';
-import useStore from '@/store';
+import useStore from '@/stores';
 import { modal } from '@/utils/modal';
 
 NProgress.configure({

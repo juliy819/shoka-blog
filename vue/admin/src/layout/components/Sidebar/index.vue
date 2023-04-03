@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts" setup>
-import useStore from '@/store';
+import useStore from '@/stores';
 import variables from '@/assets/styles/variables.module.scss';
 import Logo from '@/layout/components/Sidebar/Logo.vue';
 import SidebarItem from '@/layout/components/Sidebar/SidebarItem.vue';

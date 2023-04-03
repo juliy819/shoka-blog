@@ -1,4 +1,4 @@
-import type { SettingState } from '@/store/interface';
+import type { SettingState } from '@/stores/interface';
 
 const defaultSettings: SettingState = {
   dynamicTitle: false,

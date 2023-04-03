@@ -30,7 +30,7 @@
         </el-button>
       </el-col>
       <!-- 右侧工具栏 -->
-      <right-tool-bar v-model:show-search="showSearch" @queryTable="getCategoryList" />
+      <right-toolbar v-model:show-search="showSearch" @queryTable="getCategoryList" />
     </el-row>
     <!-- 表格 -->
     <el-table v-loading="loading" :data="categoryList" @selection-change="changeSelectedId">

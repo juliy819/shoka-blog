@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import piniaPersist from 'pinia-plugin-persist';
-import SvgIcon from '@/components/SvgIcon/index.vue';
+import SvgIcon from '@/components/SvgIcon.vue';
 import * as ElementPlusIconsVue from '@element-plus/icons-vue';
 import ElementPlus from 'element-plus';
 import '@/permission';
@@ -20,7 +20,6 @@ import createEmojiPlugin from '@kangc/v-md-editor/lib/plugins/emoji/index';
 import '@kangc/v-md-editor/lib/plugins/emoji/emoji.css';
 import createTodoListPlugin from '@kangc/v-md-editor/lib/plugins/todo-list/index';
 import '@kangc/v-md-editor/lib/plugins/todo-list/todo-list.css';
-
 
 const app = createApp(App);
 const pinia = createPinia();

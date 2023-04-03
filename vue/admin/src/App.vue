@@ -5,7 +5,7 @@
 <script lang="ts" setup>
 
 import { handleThemeStyle } from '@/utils/theme';
-import useSettingStore from '@/store/modules/setting';
+import useSettingStore from '@/stores/modules/setting';
 
 onMounted(() => {
   nextTick(() => {

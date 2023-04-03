@@ -1,6 +1,6 @@
 import type { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import axios from 'axios';
-import useStore from '@/store';
+import useStore from '@/stores';
 import { modal } from './modal';
 import { getToken, token_prefix } from './token';
 import { errorCode } from '@/utils/errorCode';

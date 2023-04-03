@@ -19,7 +19,7 @@
 
 <script lang="ts" setup>
 import variables from '@/assets/styles/variables.module.scss';
-import useStore from '@/store/index';
+import useStore from '@/stores/index';
 import logo from '@/assets/logo.svg';
 
 defineProps({

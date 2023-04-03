@@ -135,7 +135,7 @@ import type { AxiosResponse } from 'axios';
 import { getToken, token_prefix } from '@/utils/token';
 import type { Awaitable } from 'element-plus/es/utils';
 import { modal } from '@/utils/modal';
-import useStore from '@/store';
+import useStore from '@/stores';
 import router from '@/router';
 
 const articleFormRef = ref<FormInstance>();

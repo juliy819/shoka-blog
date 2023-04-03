@@ -29,7 +29,7 @@
         </el-button>
       </el-col>
       <!-- 右侧工具栏 -->
-      <right-tool-bar v-model:show-search="showSearch" @queryTable="getTagList" />
+      <right-toolbar v-model:show-search="showSearch" @queryTable="getTagList" />
     </el-row>
     <!-- 表格 -->
     <el-table v-loading="loading" :data="tagList" @selection-change="changeSelectedId">

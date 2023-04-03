@@ -1,0 +1,10 @@
+.underline-a {
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: var(--primary-color);
+
+  &:hover {
+    opacity: 0.5;
+    color: var(--primary-color);
+  }
+}

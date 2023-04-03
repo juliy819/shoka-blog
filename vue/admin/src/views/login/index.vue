@@ -38,7 +38,7 @@
 import type { FormInstance, FormRules } from 'element-plus';
 import { ElInput } from 'element-plus';
 import { reactive, ref } from 'vue';
-import useStore from '@/store';
+import useStore from '@/stores';
 import router from '@/router';
 
 const { userStore } = useStore();

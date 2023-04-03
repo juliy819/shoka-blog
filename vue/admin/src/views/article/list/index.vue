@@ -70,11 +70,11 @@
         </el-button>
       </el-col>
       <!-- 右侧工具栏 -->
-      <right-tool-bar v-model:show-search="showSearch" @queryTable="getArticleList" />
+      <right-toolbar v-model:show-search="showSearch" @queryTable="getArticleList" />
     </el-row>
     <el-table v-loading="loading" :data="articleList" @selection-change="changeSelectedArticleId">
       <!-- 选择列 -->
-      <el-table-column type="selection" width="55" align="center"></el-table-column>
+      <el-table-column type="selection" width="30" align="center"></el-table-column>
       <!-- 封面 -->
       <el-table-column align="center" label="封面" prop="articleCover" width="180">
         <template #default="scope">
@@ -107,9 +107,9 @@
         </template>
       </el-table-column>
       <!-- 文章分类 -->
-      <el-table-column align="center" label="分类" prop="categoryName" min-width="90" />
+      <el-table-column align="center" label="分类" prop="categoryName" width="100" />
       <!-- 文章标签 -->
-      <el-table-column align="center" label="标签" prop="tagList" min-width="100">
+      <el-table-column align="center" label="标签" prop="tagList" width="120">
         <template #default="scope">
           <el-tag size="large" v-for="item of scope.row.tagList" :key="item.id"
                   style="margin-right: 0.3rem; margin-top: 0.3rem">
