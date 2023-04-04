@@ -4,20 +4,16 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
-import ElementPlus from 'unplugin-element-plus/vite';
+import { NaiveUiResolver } from 'unplugin-vue-components/resolvers';
 import path from 'path';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 
 export default defineConfig({
   plugins: [
     vue(),
-    //自动引入element-plus样式
-    ElementPlus({}),
     //自动导包
     AutoImport({
       include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
-      resolvers: [ElementPlusResolver()],
       imports: ['vue', 'vue-router', 'pinia'],
       // eslint报错解决
       eslintrc: {
@@ -32,7 +28,7 @@ export default defineConfig({
     Components({
       dirs: ['src/components'],
       include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
-      resolvers: [ElementPlusResolver()],
+      resolvers: [NaiveUiResolver()],
       dts: 'src/types/components.d.ts'
     }),
     //引入所有svg图片

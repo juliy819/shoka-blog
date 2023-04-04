@@ -4,7 +4,7 @@
  * @date 2023/4/3 19:58
 -->
 <template>
-  <el-drawer v-model="appStore.sideDrawerOpen"></el-drawer>
+  <n-drawer v-model:show="appStore.sideDrawerOpen"></n-drawer>
 </template>
 
 <script setup lang="ts">

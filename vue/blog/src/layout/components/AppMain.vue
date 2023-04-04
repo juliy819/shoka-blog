@@ -4,13 +4,13 @@
  * @date 2023/4/2 22:07
 -->
 <template>
-  <section class="main-wrapper">
+  <main class="main-wrapper">
     <router-view v-slot="{ Component, route }">
       <keep-alive>
         <component :is="Component" :key="route.fullPath" />
       </keep-alive>
     </router-view>
-  </section>
+  </main>
 </template>
 
 <script setup lang="ts">

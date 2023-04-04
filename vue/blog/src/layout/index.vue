@@ -4,13 +4,15 @@
  * @date 2023/4/1 16:46
 -->
 <template>
-  <div class="app-wrapper">
-    <the-header />
-    <app-main />
-    <the-footer />
-    <!-- 其它 -->
-    <side-drawer />
-  </div>
+  <naive-provider>
+    <div class="app-wrapper">
+      <the-header />
+      <app-main />
+      <the-footer />
+      <!-- 其它 -->
+      <side-drawer />
+    </div>
+  </naive-provider>
 </template>
 
 <script setup lang="ts">

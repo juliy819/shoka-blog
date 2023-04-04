@@ -37,14 +37,12 @@
     </div>
     <!-- 登录 -->
     <div class="menu-item sub-menu">
-      <a v-if="!userStore.id" class="menu-btn" @click="showLoginDialog = true">
+      <a v-if="userStore.id" class="menu-btn" @click="showLoginDialog = true">
         <svg-icon icon-class="user" />
         登录
       </a>
       <template v-else>
-        <el-avatar class="avatar" :src="userStore.avatar ? userStore.avatar : defAva" :size="30">
-          user
-        </el-avatar>
+        <n-avatar round class="avatar" :src="userStore.avatar ? userStore.avatar : defAva" :size="30" />
         <ul class="sub-menu-dropdown">
           <li class="sub-menu-item" :class="{ active: route.path === '/user' }">
             <router-link to="/user" class="sub-menu-link">
@@ -63,14 +61,18 @@
     </div>
   </div>
 
-  <el-dialog v-model="showLoginDialog" append-to-body>
+  <n-modal v-model:show="showLoginDialog">
+    <n-card style="width: 300px" size="huge" role="dialog" aria-modal="true" :bordered="true">
+      <n-button @click="logout">注销登录</n-button>
+    </n-card>
 
-  </el-dialog>
+  </n-modal>
 </template>
 
 <script lang="ts" setup>
 import useStore from '@/stores';
 import defAva from '@/assets/images/defAva.png';
+import { modal } from '@/utils/modal';
 
 const route = useRoute();
 const router = useRouter();
@@ -130,7 +132,7 @@ const menuItems: MenuItem[] = [
 ];
 
 const logout = () => {
-
+  modal.msgSuccess('注销成功');
 };
 
 

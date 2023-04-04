@@ -1,4 +1,4 @@
-import { dayjs } from 'element-plus';
+import dayjs from 'dayjs';
 
 export const formatDate = (date: string | Date, format = 'YYYY-MM-DD'): string => {
   if (date == null) {
