@@ -26,7 +26,7 @@ const obj = reactive({
   isEnd: false,
   speed: 120,
   singleBack: false,
-  sleep: 3000,
+  sleep: 5000,
   type: 'rollback',
   backSpeed: 50,
   sentencePause: false
@@ -67,10 +67,10 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+@use "@/assets/styles/mixin";
+
 .brand {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include mixin.flex;
   flex-direction: column;
   position: fixed;
   padding: 0 1rem;
@@ -90,10 +90,10 @@ onMounted(() => {
   }
 
   .typer-cursor {
-    margin-left: 0.625rem;
+    margin-left: 0.5rem;
     opacity: 1;
-    animation: blink 0.7s infinite;
-    -webkit-animation: blink 0.7s infinite;
+    animation: blink 0.8s infinite;
+    -webkit-animation: blink 0.8s infinite;
   }
 
   @media (min-width: 760px) {

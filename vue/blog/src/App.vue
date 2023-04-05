@@ -4,41 +4,42 @@
 
 <script lang="ts" setup>
 import Layout from '@/layout';
-import blogApi from '@/api/blog';
 import useStore from '@/stores';
 import type { BlogInfo, SiteConfig } from '@/api/blog/types';
+import blogApi from '@/api/blog';
 
 const { blogStore } = useStore();
 
 onMounted(() => {
   blogApi.getBlogInfo().then(({ data }) => {
     blogStore.setBlogInfo(data.data);
-  }).catch(() => {
-    initBlogInfo();
+  }).catch(error => {
+    setTimeout(initBlogInfo, 1000);
   });
 });
 
 const initBlogInfo = () => {
   const siteConfig: SiteConfig = {
     aboutMe: '',
-    authorAvatar: '',
+    authorAvatar: 'http://static.juliy.top/site-imgs/author-avatar.jpg',
     bilibili: '',
     commentCheck: 0,
     createSiteTime: '2023',
     emailNotice: 0,
     gitee: '',
     github: '',
-    id: 0,
+    id: 1,
     loginList: '',
     messageCheck: 0,
     qq: '',
     recordNumber: '苏ICP备XXXXXXXXXXX号-1',
     siteAddress: '',
     siteAuthor: 'juliy',
-    siteIntro: '',
+    siteIntro: '(●ˇ∀ˇ●) 哎嘿~',
     siteName: 'shoka-blog',
-    siteNotice: '',
-    socialList: '',
+    siteNotice: '这是一条测试公告<br/>可以显示html内容<br/>如:<b>加粗</b>,<span style="color: red">变色</span>,' +
+      '或者是<a class="underline-a" href="https://bing.com">超链接</a>等',
+    socialList: 'gitee,github,qq,bilibili',
     touristAvatar: '',
     userAvatar: ''
   };

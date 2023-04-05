@@ -38,25 +38,25 @@
   &:nth-child(1) {
     animation-delay: -2s;
     animation-duration: 7s;
-    fill: var(--grey-1-a7);
+    fill: var(--grey-0-a7);
   }
 
   &:nth-child(2) {
     animation-delay: -3s;
     animation-duration: 10s;
-    fill: var(--grey-1-a5);
+    fill: var(--grey-0-a5);
   }
 
   &:nth-child(3) {
     animation-delay: -4s;
     animation-duration: 13s;
-    fill: var(--grey-1-a3);
+    fill: var(--grey-0-a3);
   }
 
   &:nth-child(4) {
     animation-delay: -5s;
     animation-duration: 20s;
-    fill: var(--grey-1);
+    fill: var(--grey-0);
   }
 }
 

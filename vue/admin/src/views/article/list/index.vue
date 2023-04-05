@@ -257,8 +257,6 @@ const resetQuery = (): void => {
  * @param id 文章id
  */
 const deleteArticles = (id?: number): void => {
-  console.log(id);
-
   let ids: number[] = [];
   if (id === undefined) {
     ids = articleIdList.value;

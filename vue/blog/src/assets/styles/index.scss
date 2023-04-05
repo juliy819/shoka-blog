@@ -2,6 +2,7 @@
 @import 'common';
 @import 'markdown';
 @import 'transition';
+@import 'naive';
 
 body {
   background: var(--grey-0);
@@ -63,7 +64,6 @@ li {
   list-style: none;
 }
 
-
 .clearfix:after {
   visibility: hidden;
   clear: both;
@@ -74,4 +74,20 @@ li {
 
 .clearfix {
   zoom: 1;
+}
+
+.mb5 {
+  margin-bottom: 0.3125rem;
+}
+
+.mb8 {
+  margin-bottom: 0.5rem;
+}
+
+.mb10 {
+  margin-bottom: 0.625rem;
+}
+
+.mb20 {
+  margin-bottom: 1.25rem;
 }

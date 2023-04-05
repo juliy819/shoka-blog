@@ -1,10 +1,91 @@
+.main-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: calc(100% - 0.625rem);
+  padding-bottom: 1.75rem;
+  margin: 1rem auto 0;
+  animation: slideUpIn 1s;
+}
+
+.left-container {
+  width: calc(100% - 18.75rem);
+  box-shadow: 0 0 1rem var(--box-bg-shadow);
+  border-radius: 0.5rem;
+  transition: all 0.3s;
+}
+
+.right-container {
+  position: sticky;
+  top: 1rem;
+  width: 18rem;
+  margin-left: 0.8rem;
+  margin-right: 0.5rem;
+}
+
+// 侧边栏卡片
+.side-card {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 1rem var(--box-bg-shadow);
+  transition: all 0.2s ease-in-out 0s;
+
+  &:not(:first-child) {
+    margin-top: 1.25rem;
+  }
+
+  &:hover {
+    box-shadow: 0 2rem 5rem var(--box-bg-shadow);
+    scale: 1.02 1.02;
+  }
+}
+
+.card-title {
+  font-size: 1.2em;
+}
+
+.bg {
+  background-color: var(--grey-0);
+}
+
+.bg-gray {
+  background-color: var(--grey-3);
+}
+
+@media (min-width: 1200px) {
+  .main-container {
+    width: 72.5rem;
+  }
+}
+
+@media (max-width: 991px) {
+  .left-container {
+    width: 100%;
+  }
+
+  .right-container {
+    display: none;
+    width: 100%;
+  }
+}
+
 .underline-a {
   border-bottom-width: 1px;
   border-bottom-style: solid;
   border-bottom-color: var(--primary-color);
+  color: var(--primary-color);
+  transition: all 0.2s ease-in-out;
 
   &:hover {
-    opacity: 0.5;
+    opacity: 0.6;
     color: var(--primary-color);
+  }
+}
+
+.card-shadow {
+  box-shadow: 0 0.625rem 1.875rem -0.9375rem var(--box-bg-shadow);
+
+  &:hover {
+    box-shadow: 0 0 2rem var(--box-bg-shadow);
   }
 }

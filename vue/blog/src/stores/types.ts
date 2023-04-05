@@ -34,27 +34,62 @@ export interface UserState {
   /**
    * 用户id
    */
-  id: number | null;
+  id?: number;
 
   /**
-   * token
-   */
-  token: string | undefined;
-
-  /**
-   * 用户头像
+   * 头像
    */
   avatar: string;
 
   /**
-   * 角色
+   * 昵称
    */
-  roles: string[];
+  nickname: string;
 
   /**
-   * 权限
+   * 用户名
    */
-  permissions: string[];
+  username: string;
+
+  /**
+   * 邮箱
+   */
+  email: string;
+
+  /**
+   * 个人网站
+   */
+  webSite: string;
+
+  /**
+   * 个人简介
+   */
+  intro: string;
+
+  /**
+   * 登录方式
+   */
+  loginType?: number;
+
+  /**
+   * 第三方登录之前的path
+   */
+  path: string;
+
+  /**
+   * 文章点赞集合
+   */
+  articleLikeSet: number[];
+
+  /**
+   * 评论点赞集合
+   */
+  commentLikeSet: number[];
+  
+  /**
+   * 说说点赞集合
+   */
+  talkLikeSet: number[];
 }
 
 

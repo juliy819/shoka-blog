@@ -5,25 +5,34 @@
 -->
 <template>
   <image-carousel />
-  <div class="page-header">
+  <div class="home-header">
     <brand />
     <waves />
     <!-- 向下按钮 -->
     <svg-icon class="arrow-down" icon-class="down" size="32px" @click="scrollDown" />
   </div>
-
-  <n-card>
-    <n-button>123</n-button>
-  </n-card>
+  <div class="bg">
+    <div class="main-container">
+      <div class="left-container">
+        <talk-swiper />
+        <featured-swiper />
+        <article-list />
+      </div>
+      <sidebar class="right-container" />
+    </div>
+  </div>
 
 </template>
 
 <script setup lang="ts">
 import ImageCarousel from '@/views/Home/ImageCarousel.vue';
 import Brand from '@/views/Home/Brand.vue';
+import TalkSwiper from '@/views/Home/TalkSwipper.vue';
+import FeaturedSwiper from '@/views/Home/FeaturedSwiper.vue';
+import ArticleList from '@/views/Home/ArticleList.vue';
+import Sidebar from '@/views/Home/Sidebar';
 
 const scrollDown = () => {
-  console.log(123);
   window.scrollTo({
     behavior: 'smooth',
     top: document.documentElement.clientHeight
@@ -33,10 +42,10 @@ const scrollDown = () => {
 </script>
 
 <style scoped lang="scss">
-.page-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+@use "@/assets/styles/mixin";
+
+.home-header {
+  @include mixin.flex;
   flex-direction: column;
   position: relative;
   width: 100%;

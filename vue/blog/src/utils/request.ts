@@ -5,9 +5,6 @@ import { modal } from '@/utils/modal';
 import { getToken, token_prefix } from '@/utils/token';
 import { errorCode } from '@/utils/errorCode';
 
-// 是否显示重新登录
-export const isReLogin = { show: false };
-
 // 创建axios实例
 const requests = axios.create({
   // axios中请求配置有baseURL选项，表示请求URL公共部分
@@ -30,7 +27,7 @@ requests.interceptors.request.use(
     return config;
   },
   (error: AxiosError) => {
-    console.log(error);
+    console.error(error);
     return Promise.reject(error);
   }
 );
@@ -43,22 +40,9 @@ requests.interceptors.response.use(
     // 获取错误信息
     const message = response.data.msg || errorCode[code] || errorCode['default'];
 
-    const { userStore } = useStore();
-
     if (code === 401) {
-      if (!isReLogin.show) {
-        isReLogin.show = true;
-        modal.messageConfirm('登录状态已过期，您可以继续留在该页面，或者重新登录')
-          .then(() => {
-            isReLogin.show = false;
-            userStore.logout().then(() => {
-              location.href = '/login';
-            });
-          })
-          .catch(() => {
-            isReLogin.show = false;
-          });
-      }
+      const { userStore } = useStore();
+      userStore.forceLogout();
       return Promise.reject('无效的会话，或者会话已过期，请重新登录。');
     } else if (code === 601) {
       modal.notifyError(message);

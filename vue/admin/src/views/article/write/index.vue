@@ -226,7 +226,6 @@ const searchCategory = (keywords: string, cb: (arg: CategoryOption[]) => void): 
     ? categoryList.value.filter(category =>
       category.categoryName.indexOf(keywords) !== -1)
     : categoryList.value;
-  console.log(results);
   cb(results);
 };
 
@@ -328,15 +327,13 @@ const uploadImage = (event: any, insertImage: any, files: Array<File>) => {
  */
 const beforeUpload = (rawFile: UploadRawFile): Awaitable<boolean | void | File | Blob | null | undefined> => {
   return new Promise(resolve => {
-    if (rawFile.size / 1024 / 1024 < 2) {
+    if (rawFile.size / 1024 < 200) {
       resolve(rawFile);
     } else {
-      // 若图片超过2MB，则将其压缩至2MB
+      // 若图片超过200KB，则将其压缩至200KB
       imageConversion
-        .compressAccurately(rawFile, 2048)
+        .compressAccurately(rawFile, 200)
         .then(res => {
-          console.log('压缩前图片:', rawFile);
-          console.log('压缩后图片:', res);
           resolve(res);
         });
     }
@@ -427,7 +424,6 @@ onMounted(() => {
     }
     articleApi.editArticle(Number(articleId)).then(({ data }) => {
       articleForm.value = data.data;
-      console.log(articleForm.value);
     }).catch(() => {
       tagStore.delView({ path: `/article/write/${articleId}` });
       router.push({ path: '/article/list' });

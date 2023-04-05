@@ -25,6 +25,8 @@ const imageList = [
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/styles/mixin';
+
 .imgs {
   position: fixed;
   top: 0;
@@ -36,9 +38,7 @@ const imageList = [
   overflow: hidden;
 
   .item {
-    position: absolute;
-    top: 0;
-    left: 0;
+    @include mixin.absolute;
     width: 100%;
     height: 100%;
     background: no-repeat 50% 50% / cover;
@@ -69,11 +69,9 @@ const imageList = [
 
     // 变暗的遮罩层
     &::before {
+      @include mixin.absolute;
       content: '';
       display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
       width: 100%;
       height: 100%;
       background-color: rgba(0, 0, 0, .2);
