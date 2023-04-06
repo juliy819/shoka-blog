@@ -3,8 +3,10 @@
 @import 'markdown';
 @import 'transition';
 @import 'naive';
+@import "mixin";
 
 body {
+  @include none-select;
   background: var(--grey-0);
   color: var(--text-color);
   -moz-osx-font-smoothing: grayscale;

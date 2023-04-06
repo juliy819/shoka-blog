@@ -42,7 +42,8 @@
         登录
       </a>
       <template v-else>
-        <n-avatar round class="avatar" :src="userStore.avatar ? userStore.avatar : defAva" :size="30" />
+        <n-avatar round class="avatar" :src="userStore.avatar ? userStore.avatar : blogStore.siteConfig.touristAvatar"
+                  :size="30" />
         <ul class="sub-menu-dropdown">
           <li class="sub-menu-item" :class="{ active: route.path === '/user' }">
             <router-link to="/user" class="sub-menu-link">
@@ -71,7 +72,6 @@
 
 <script lang="ts" setup>
 import useStore from '@/stores';
-import defAva from '@/assets/images/defAva.png';
 import { modal } from '@/utils/modal';
 
 const route = useRoute();
@@ -142,7 +142,6 @@ const logout = () => {
 .avatar {
   display: flex;
 }
-
 
 .menu {
   display: flex;
@@ -231,7 +230,6 @@ const logout = () => {
     transform: none;
   }
 }
-
 
 .sub-menu-item {
   display: block;

@@ -15,5 +15,12 @@
 
   &:hover {
     box-shadow: 0 0 2rem var(--box-bg-shadow);
+    scale: 1.005 1.005;
   }
+}
+
+@mixin none-select {
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
 }

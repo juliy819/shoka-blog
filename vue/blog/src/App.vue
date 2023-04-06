@@ -40,8 +40,8 @@ const initBlogInfo = () => {
     siteNotice: '这是一条测试公告<br/>可以显示html内容<br/>如:<b>加粗</b>,<span style="color: red">变色</span>,' +
       '或者是<a class="underline-a" href="https://bing.com">超链接</a>等',
     socialList: 'gitee,github,qq,bilibili',
-    touristAvatar: '',
-    userAvatar: ''
+    touristAvatar: 'http://static.juliy.top/site-imgs/def-avatar.png',
+    userAvatar: 'http://static.juliy.top/site-imgs/def-avatar.png'
   };
 
   const blogInfo: BlogInfo = {

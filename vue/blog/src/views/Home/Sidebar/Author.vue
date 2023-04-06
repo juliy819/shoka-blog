@@ -141,7 +141,7 @@ const showSocial = computed(() => (social: string) => blogStore.siteConfig.socia
     font-weight: 800;
     font-size: 1.4rem;
     text-align: center;
-    color: var(--grey-7);
+    color: var(--primary-color);
 
     &:hover {
       animation: rubberBand 1s ease-in-out;
@@ -153,7 +153,7 @@ const showSocial = computed(() => (social: string) => blogStore.siteConfig.socia
     margin-top: 0.5rem;
     font-size: 1em;
     text-align: center;
-    color: var(--grey-5);
+    color: var(--primary-color-darker);
 
     &:hover {
       animation: jello 1s ease-in-out;

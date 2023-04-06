@@ -22,9 +22,12 @@ import createEmojiPlugin from '@kangc/v-md-editor/lib/plugins/emoji/index';
 import '@kangc/v-md-editor/lib/plugins/emoji/emoji.css';
 import createTodoListPlugin from '@kangc/v-md-editor/lib/plugins/todo-list/index';
 import '@kangc/v-md-editor/lib/plugins/todo-list/todo-list.css';
+import { animate } from '@/directive/animate';
 
 const app = createApp(App);
 const pinia = createPinia();
+
+app.directive('animate', animate);
 
 VueMarkdownEditor.use(vuepressTheme);
 VueMarkdownEditor.use(createEmojiPlugin());
