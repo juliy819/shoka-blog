@@ -15,13 +15,17 @@ public enum FilePathEnum {
     /**
      * 头像路径
      */
-    AVATAR("/avatar/", "/avatar", "头像路径"),
+    AVATAR("avatar/", "/avatar", "头像路径"),
 
     /**
      * 文章图片路径
      */
-    ARTICLE("/article/", "/article", "文章图片路径");
+    ARTICLE("article/", "/article", "文章图片路径"),
 
+    /**
+     * 网站配置路径
+     */
+    CONFIG("config/", "/config", "网站配置路径");
 
     /**
      * 路径

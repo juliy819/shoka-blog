@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.juliy.mapper.VisitLogMapper">
+
+    <select id="selectVisitLogs" resultType="com.juliy.entity.VisitLog">
+        SELECT
+        tvl.id,
+        page,
+        ip_address,
+        ip_source,
+        os,
+        browser,
+        create_time
+        FROM ( SELECT id FROM t_visit_log
+        <where>
+            <if test="keyword!=null">
+                page like concat('%',#{keyword},'%')
+            </if>
+        </where>
+        ORDER BY id DESC LIMIT #{limit},#{size} ) temp
+        LEFT JOIN t_visit_log tvl ON temp.id = tvl.id
+    </select>
+
+    <select id="selectUserViews" resultType="com.juliy.model.vo.UserViewVO">
+        SELECT COUNT(DISTINCT ip_address)           as uv,
+               COUNT(id)                            as pv,
+               DATE_FORMAT(create_time, '%Y-%m-%d') as `date`
+        FROM t_visit_log
+        WHERE create_time > #{startTime}
+          AND create_time &lt;= #{endTime}
+        GROUP BY DATE_FORMAT(create_time, '%Y-%m-%d')
+    </select>
+
+</mapper>

@@ -1,14 +1,14 @@
 package com.juliy.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.juliy.entity.BlogFile;
+import com.juliy.entity.SiteConfig;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 博客文件mapper
+ * mapper
  * @author juliy
- * @date 2023/3/29 14:23
+ * @date 2023/4/8 13:10
  */
 @Mapper
-public interface BlogFileMapper extends BaseMapper<BlogFile> {
+public interface SiteConfigMapper extends BaseMapper<SiteConfig> {
 }

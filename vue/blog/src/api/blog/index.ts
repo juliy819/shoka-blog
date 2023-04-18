@@ -6,7 +6,7 @@ import request from '@/utils/request';
  */
 const blogApi: BlogApi = {
   getBlogInfo: () => request({
-    url: '/',
+    url: '/info',
     method: 'get'
   })
 };

@@ -3,6 +3,7 @@ package com.juliy.service.impl;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.juliy.entity.User;
 import com.juliy.mapper.UserMapper;
 import com.juliy.model.vo.AdminUserInfoVO;
@@ -18,7 +19,7 @@ import java.util.List;
  * @date 2023/3/15 17:31
  */
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     private final UserMapper userMapper;
 
@@ -33,8 +34,8 @@ public class UserServiceImpl implements UserService {
         int userId = StpUtil.getLoginIdAsInt();
         // 获取用户信息
         User user = userMapper.selectOne(new LambdaQueryWrapper<User>()
-                .select(User::getAvatar)
-                .eq(User::getId, userId));
+                                                 .select(User::getAvatar)
+                                                 .eq(User::getId, userId));
         List<String> roleList = StpUtil.getRoleList();
         // 去重、去空
         List<String> permissionList = StpUtil.getPermissionList()

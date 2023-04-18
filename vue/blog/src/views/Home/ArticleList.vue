@@ -39,7 +39,7 @@
         <!-- 文章分类 -->
         <router-link class="article-category" :to="`/category/${article.category.id}`">
           <svg-icon icon-class="qizhi" size="0.85rem" />
-          <n-ellipsis style="max-width: 10rem">{{ article.category.categoryName }}</n-ellipsis>
+          <n-ellipsis style="max-width: 8rem">{{ article.category.categoryName }}</n-ellipsis>
         </router-link>
       </div>
       <!-- 阅读按钮 -->
@@ -49,19 +49,19 @@
 
   <!-- 骨架屏 -->
   <div v-else v-animate="['fadeInUp']" class="article-item" v-for="item in [1, 2, 3, 4, 5]" :key="item">
-    <n-skeleton class="article-cover" height="100%" />
+    <n-skeleton class="article-cover" />
     <div class="article-info">
-      <div class="article-meta">
-        <n-skeleton round width="3rem" height="1rem" style="margin-right: 1rem" />
-        <n-skeleton round width="20rem" height="1rem" />
-      </div>
+      <!--      <div class="article-meta">-->
+      <!--        <n-skeleton round width="3rem" height="1rem" style="margin-right: 1rem" />-->
+      <!--        <n-skeleton round width="10rem" height="1rem" />-->
+      <!--      </div>-->
       <n-skeleton class="article-title" width="12rem" height="2rem" round />
-      <n-skeleton class="article-content" width="24rem" round text repeat="3" />
-      <div class="article-footer">
-        <n-skeleton class="create-time" round width="7rem" height="1.5rem" />
-        <n-skeleton class="article-tag" round width="7rem" height="1.5rem" />
-        <n-skeleton class="article-tag" round width="5rem" height="1.5rem" style="margin: 0 4rem" />
-      </div>
+      <n-skeleton class="article-content" width="100%" round text :repeat="4" />
+      <!--      <div class="article-footer">-->
+      <!--        <n-skeleton class="create-time" round width="7rem" height="1.5rem" />-->
+      <!--        <n-skeleton class="article-tag" round width="7rem" height="1.5rem" />-->
+      <!--        <n-skeleton class="article-tag" round width="5rem" height="1.5rem" style="margin: 0 2rem 0 2rem" />-->
+      <!--      </div>-->
     </div>
   </div>
 
@@ -105,7 +105,7 @@ onMounted(() => {
           isTop: 1,
           articleTitle: '测试文章1 123121231212312123123131331331313313',
           articleContent: '6547654765476547654656 12312 2312312312231231 231223 12312312231231231223123',
-          articleCover: 'https://img.timelessq.com/images/2022/07/26/a11995a8254fd4a4038ba59f6bcf5a89.jpg',
+          articleCover: 'http://static.juliy.top/article/0934fbddd869380b36e1e01e335c7ac2.jpg',
           createTime: '2023-01-01',
           category: { id: 1, categoryName: '测试分类1231231231231231231231231231' },
           tagVOList: [{ id: 1, tagName: '测试标签1231231231231' }, { id: 2, tagName: '测试标签4375436543652' }, {
@@ -118,7 +118,7 @@ onMounted(() => {
           isTop: 0,
           articleTitle: '测试文章2 123121231212312123123131331331313313',
           articleContent: '测试文章2内容123121231212312123123131331331313313',
-          articleCover: 'https://img.timelessq.com/images/2022/07/26/a11995a8254fd4a4038ba59f6bcf5a89.jpg',
+          articleCover: 'http://static.juliy.top/article/687f08589d9ca5c71210608a33b5b043.jpg',
           createTime: '2023-01-01',
           category: { id: 1, categoryName: '测试分类1123121231212312123123131331331313313' },
           tagVOList: [{ id: 1, tagName: '测试标签1123121231212312123123131331331313313' }]
@@ -128,7 +128,7 @@ onMounted(() => {
           isTop: 0,
           articleTitle: '测试文章3',
           articleContent: '测试文章3内容',
-          articleCover: 'https://img.timelessq.com/images/2022/07/26/a11995a8254fd4a4038ba59f6bcf5a89.jpg',
+          articleCover: 'http://static.juliy.top/article/87d2f42092bc7340f29fe920a9398afd.jpg',
           createTime: '2023-01-01',
           category: { id: 1, categoryName: '测试分类1' },
           tagVOList: [{ id: 1, tagName: '测试标签1' }, { id: 2, tagName: '测试标签2' }]
@@ -163,7 +163,6 @@ onMounted(() => {
   animation-duration: 0.5s;
   transition: all 0.2s ease-in-out 0s;
   overflow: hidden;
-  //visibility: hidden;
 
   &:hover .cover {
     transform: scale(1.05) rotate(1deg);
@@ -174,6 +173,7 @@ onMounted(() => {
     flex-direction: row-reverse;
 
     .article-cover {
+      height: 100%;
       margin-right: auto;
       margin-left: 1.5rem;
       clip-path: polygon(0 0, 100% 0, 100% 100%, 8% 100%);
@@ -204,6 +204,7 @@ onMounted(() => {
 
 .article-cover {
   width: 50%;
+  height: 100%;
   margin-right: 1.5rem;
   clip-path: polygon(0 0, 92% 0, 100% 100%, 0 100%);
   border-radius: 0.625rem 0 0 0.625rem;
@@ -309,7 +310,7 @@ a {
 
     .article-cover {
       width: 100%;
-      height: 14rem;
+      height: 10rem;
       margin: auto;
       clip-path: polygon(0 0, 100% 0, 100% 92%, 0 100%);
       border-radius: 0.625rem 0.625rem 0 0;
@@ -330,6 +331,7 @@ a {
 
       .article-cover {
         width: 100%;
+        height: 10rem;
         margin: auto;
         clip-path: polygon(0 0, 100% 0, 100% 100%, 0 92%);
         border-radius: 0.625rem 0.625rem 0 0;

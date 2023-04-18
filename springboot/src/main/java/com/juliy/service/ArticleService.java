@@ -6,9 +6,7 @@ import com.juliy.model.dto.ArticleDTO;
 import com.juliy.model.dto.ArticleFeaturedDTO;
 import com.juliy.model.dto.ArticleTopDTO;
 import com.juliy.model.dto.ConditionDTO;
-import com.juliy.model.vo.ArticleAdminVO;
-import com.juliy.model.vo.ArticleInfoVO;
-import com.juliy.model.vo.PageResult;
+import com.juliy.model.vo.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -75,5 +73,65 @@ public interface ArticleService extends IService<Article> {
      * @param file 文件
      * @return 文章图片地址
      */
-    String saveArticleImages(MultipartFile file);
+    String saveArticleImage(MultipartFile file);
+
+    /**
+     * 搜索文章
+     * @param keyword 关键字
+     * @return 文章列表
+     */
+    List<ArticleSearchVO> listArticlesBySearch(String keyword);
+
+    /**
+     * 获取首页文章列表
+     * @return 首页文章列表
+     */
+    PageResult<ArticleHomeVO> listArticlesHomeByPage();
+
+    /**
+     * 查看文章
+     * @param articleId 文章id
+     * @return 文章
+     */
+    ArticleVO getArticleHomeById(Integer articleId);
+
+    /**
+     * 获取上一篇文章
+     * @param articleId 文章id
+     * @return 上一篇文章
+     */
+    ArticleNavigationVO getLastArticle(Integer articleId);
+
+    /**
+     * 获取下一篇文章
+     * @param articleId 文章id
+     * @return 下一篇文章
+     */
+    ArticleNavigationVO getNextArticle(Integer articleId);
+
+    /**
+     * 获取文章归档
+     * @return 文章归档
+     */
+    PageResult<ArchiveVO> listArchives();
+
+    /**
+     * 获取推荐文章
+     * @return 推荐文章
+     */
+    List<ArticleFeaturedVO> listArticlesFeatured();
+
+    /**
+     * 获取文章统计
+     * @return 文章统计
+     */
+    List<ArticleStatisticsVO> getArticleStatistics();
+
+    /**
+     * 按条件查询文章
+     * @param condition     查询条件
+     * @param conditionName 条件名称
+     * @return 文章条件列表
+     */
+    ArticleConditionList getArticlesByCondition(ConditionDTO condition, String conditionName);
 }

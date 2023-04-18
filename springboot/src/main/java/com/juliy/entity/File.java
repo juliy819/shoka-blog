@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * 博客文件
+ * 文件
  * @author juliy
  * @date 2023/3/29 14:21
  */
@@ -17,8 +17,8 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("t_blog_file")
-public class BlogFile {
+@TableName("t_file")
+public class File {
 
     /**
      * 文件id

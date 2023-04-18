@@ -30,7 +30,7 @@ const themeOverrides: GlobalThemeOverrides = {
     textColorTextPressed: 'var(--primary-color-darker)'
   },
   Drawer: {
-    color: 'currentColor'
+    color: 'var(--grey-0)'
   }
 };
 

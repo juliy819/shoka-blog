@@ -129,7 +129,7 @@ public class ArticleController {
     @SaCheckPermission("article:upload")
     @PostMapping("/upload")
     public Result<String> saveArticleImages(@RequestParam("file") MultipartFile file) {
-        return Result.success(articleService.saveArticleImages(file));
+        return Result.success(articleService.saveArticleImage(file));
     }
 
 

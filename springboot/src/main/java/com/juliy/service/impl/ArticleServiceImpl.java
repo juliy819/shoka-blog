@@ -5,20 +5,24 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.juliy.entity.*;
+import com.juliy.entity.Article;
+import com.juliy.entity.ArticleTag;
+import com.juliy.entity.Category;
+import com.juliy.entity.Tag;
+import com.juliy.enums.FilePathEnum;
 import com.juliy.exception.ServiceException;
-import com.juliy.mapper.*;
+import com.juliy.mapper.ArticleMapper;
+import com.juliy.mapper.ArticleTagMapper;
+import com.juliy.mapper.CategoryMapper;
+import com.juliy.mapper.TagMapper;
 import com.juliy.model.dto.ArticleDTO;
 import com.juliy.model.dto.ArticleFeaturedDTO;
 import com.juliy.model.dto.ArticleTopDTO;
 import com.juliy.model.dto.ConditionDTO;
-import com.juliy.model.vo.ArticleAdminVO;
-import com.juliy.model.vo.ArticleInfoVO;
-import com.juliy.model.vo.PageResult;
+import com.juliy.model.vo.*;
 import com.juliy.service.ArticleService;
-import com.juliy.strategy.context.UploadStrategyContext;
+import com.juliy.service.FileService;
 import com.juliy.utils.BeanCopyUtils;
-import com.juliy.utils.FileUtils;
 import com.juliy.utils.PageUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +30,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.juliy.constant.CommonConstant.FALSE;
 import static com.juliy.constant.CommonConstant.TRUE;
-import static com.juliy.enums.FilePathEnum.ARTICLE;
+import static com.juliy.enums.ArticleStatusEnum.PUBLIC;
 
 /**
  * 文件服务接口实现类
@@ -44,8 +47,7 @@ import static com.juliy.enums.FilePathEnum.ARTICLE;
 @Service
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements ArticleService {
 
-    private final UploadStrategyContext uploadStrategyContext;
-    private final BlogFileMapper blogFileMapper;
+    private final FileService fileService;
     private final ArticleMapper articleMapper;
     private final CategoryMapper categoryMapper;
     private final TagMapper tagMapper;
@@ -53,15 +55,13 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     private final TagServiceImpl tagService;
 
     @Autowired
-    public ArticleServiceImpl(UploadStrategyContext uploadStrategyContext,
-                              BlogFileMapper blogFileMapper,
+    public ArticleServiceImpl(FileService fileService,
                               ArticleMapper articleMapper,
                               CategoryMapper categoryMapper,
                               TagMapper tagMapper,
                               ArticleTagMapper articleTagMapper,
                               TagServiceImpl tagService) {
-        this.uploadStrategyContext = uploadStrategyContext;
-        this.blogFileMapper = blogFileMapper;
+        this.fileService = fileService;
         this.articleMapper = articleMapper;
         this.categoryMapper = categoryMapper;
         this.tagMapper = tagMapper;
@@ -91,7 +91,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public ArticleInfoVO getArticleInfoById(Integer articleId) {
         // 查询文章信息
-        ArticleInfoVO articleInfoVO = articleMapper.selectArticleInfoById(articleId);
+        ArticleInfoVO articleInfoVO = articleMapper.selectArticleInfoAdminById(articleId);
         if (Objects.isNull(articleInfoVO)) {
             throw new ServiceException("文章不存在");
         }
@@ -187,34 +187,78 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     }
 
     @Override
-    public String saveArticleImages(MultipartFile file) {
-        String url = uploadStrategyContext.executeUploadStrategy(file, ARTICLE.getPath());
-        try {
-            // 获取文件md5值及后缀名
-            String md5 = FileUtils.getMd5(file.getInputStream());
-            String suffix = FileUtils.getSuffix(file);
-            // 查找文件是否存在
-            BlogFile existFile = blogFileMapper.selectOne(
-                    new LambdaQueryWrapper<BlogFile>()
-                            .select(BlogFile::getId)
-                            .eq(BlogFile::getFileName, md5)
-                            .eq(BlogFile::getFilePath, ARTICLE.getFilePath()));
-            // 若不存在则保存文件信息
-            if (Objects.isNull(existFile)) {
-                BlogFile newFile = BlogFile.builder()
-                        .fileUrl(url)
-                        .fileName(md5)
-                        .filePath(ARTICLE.getFilePath())
-                        .extendName(suffix)
-                        .fileSize((int) file.getSize())
-                        .isDir(FALSE)
-                        .build();
-                blogFileMapper.insert(newFile);
-            }
-        } catch (IOException e) {
-            log.error("文件信息保存失败\n", e);
+    public String saveArticleImage(MultipartFile file) {
+        return fileService.saveFile(file, FilePathEnum.ARTICLE);
+    }
+
+    @Override
+    public List<ArticleSearchVO> listArticlesBySearch(String keyword) {
+        return null;
+    }
+
+    @Override
+    public PageResult<ArticleHomeVO> listArticlesHomeByPage() {
+        // 查询文章数量
+        Long count = articleMapper.selectCount(
+                new LambdaQueryWrapper<Article>()
+                        .eq(Article::getIsDelete, FALSE)
+                        .eq(Article::getStatus, PUBLIC.getStatus()));
+        if (count == 0) {
+            return new PageResult<>();
         }
-        return url;
+        // 查询首页文章
+        List<ArticleHomeVO> articleHomeList = articleMapper.selectArticles(PageUtils.getLimitCurrent(), PageUtils.getSize());
+        return new PageResult<>(articleHomeList, count);
+    }
+
+    @Override
+    public ArticleVO getArticleHomeById(Integer articleId) {
+        // todo 搜索策略
+        return null;
+    }
+
+    @Override
+    public ArticleNavigationVO getLastArticle(Integer articleId) {
+        return articleMapper.selectLastArticle(articleId);
+    }
+
+    @Override
+    public ArticleNavigationVO getNextArticle(Integer articleId) {
+        return articleMapper.selectNextArticle(articleId);
+    }
+
+    @Override
+    public PageResult<ArchiveVO> listArchives() {
+        // 查询文章数量
+        Long count = articleMapper.selectCount(
+                new LambdaQueryWrapper<Article>()
+                        .eq(Article::getIsDelete, FALSE)
+                        .eq(Article::getStatus, PUBLIC.getStatus()));
+        if (count == 0) {
+            return new PageResult<>();
+        }
+        List<ArchiveVO> archiveList = articleMapper.selectArchives(PageUtils.getLimitCurrent(), PageUtils.getSize());
+        return new PageResult<>(archiveList, count);
+    }
+
+    @Override
+    public List<ArticleFeaturedVO> listArticlesFeatured() {
+        return articleMapper.selectArticlesFeatured();
+    }
+
+    @Override
+    public List<ArticleStatisticsVO> getArticleStatistics() {
+        return articleMapper.selectArticleStatistics();
+    }
+
+    @Override
+    public ArticleConditionList getArticlesByCondition(ConditionDTO condition, String conditionName) {
+        List<ArticleConditionVO> articleConditionList = articleMapper.selectArticlesByCondition(
+                PageUtils.getLimitCurrent(), PageUtils.getSize(), condition);
+        return ArticleConditionList.builder()
+                .articleConditionList(articleConditionList)
+                .name(conditionName)
+                .build();
     }
 
     /**

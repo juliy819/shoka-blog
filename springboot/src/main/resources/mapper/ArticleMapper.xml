@@ -101,7 +101,7 @@
         LEFT JOIN t_article_tag tat ON a.id = tat.article_id
         LEFT JOIN t_tag t ON t.id = tat.tag_id
     </select>
-    <select id="selectArticleInfoById"
+    <select id="selectArticleInfoAdminById"
             resultType="com.juliy.model.vo.ArticleInfoVO">
         SELECT id,
                article_cover,
@@ -114,6 +114,147 @@
                `status`
         FROM t_article a
         WHERE id = #{articleId}
+    </select>
+    <select id="searchArticles" resultType="com.juliy.model.vo.ArticleSearchVO">
+        SELECT id,
+        article_title,
+        article_content,
+        is_delete,
+        `status`
+        FROM t_article
+        <where>
+            is_delete = 0 AND `status` = 1
+            <if test="condition.keywords != null">
+                and (article_title like concat('%', '#{condition.keywords}', '%')
+                or article_content like concat('%', '#{condition.keywords}', '%'))
+            </if>
+        </where>
+    </select>
+
+    <select id="selectArticles" resultType="com.juliy.model.vo.ArticleHomeVO">
+        SELECT a.id,
+               article_cover,
+               article_title,
+               SUBSTR(article_content, 1, 500) AS article_content,
+               a.create_time,
+               a.article_type,
+               a.is_top,
+               a.category_id,
+               category_name,
+               t.id                            AS tag_id,
+               t.tag_name
+        FROM (SELECT id,
+                     article_cover,
+                     article_title,
+                     article_content,
+                     article_type,
+                     is_top,
+                     create_time,
+                     category_id
+              FROM t_article
+              WHERE is_delete = 0
+                AND `status` = 1
+              ORDER BY is_top DESC,
+                       id DESC
+                  LIMIT #{current}, #{size}) a
+                 INNER JOIN t_category c ON a.category_id = c.id
+                 INNER JOIN t_article_tag tat ON a.id = tat.article_id
+                 INNER JOIN t_tag t ON t.id = tat.tag_id
+        ORDER BY a.is_top DESC,
+                 a.id DESC
+    </select>
+
+    <select id="selectArticleHomeById" resultType="com.juliy.model.vo.ArticleVO">
+        SELECT a.id,
+               article_cover,
+               article_title,
+               article_content,
+               article_type,
+               a.create_time,
+               a.update_time,
+               a.category_id,
+               c.category_name,
+               t.id AS tag_id,
+               tag_name
+        FROM t_article a
+                 INNER JOIN t_category c ON a.category_id = c.id
+                 INNER JOIN t_article_tag tat ON a.id = tat.article_id
+                 INNER JOIN t_tag t ON tat.tag_id = t.id
+        WHERE is_delete = 0
+          AND `status` = 1
+          AND a.id = #{articleId}
+    </select>
+
+    <select id="selectLastArticle" resultType="com.juliy.model.vo.ArticleNavigationVO">
+        SELECT id, article_cover, article_title
+        FROM t_article
+        WHERE is_delete = 0
+          AND `status` = 1
+          AND id &lt; #{articleId}
+        ORDER BY id DESC LIMIT 1
+    </select>
+
+    <select id="selectNextArticle" resultType="com.juliy.model.vo.ArticleNavigationVO">
+        SELECT id, article_cover, article_title
+        FROM t_article
+        WHERE is_delete = 0
+          AND `status` = 1
+          AND id &gt; #{articleId}
+        ORDER BY id LIMIT 1
+    </select>
+
+    <select id="selectArchives" resultType="com.juliy.model.vo.ArchiveVO">
+        select id, article_title, article_cover, create_time
+        from t_article
+        where is_delete = 0
+          and `status` = 1
+        order by create_time
+            limit #{current}, #{size}
+    </select>
+
+    <select id="selectArticleStatistics" resultType="com.juliy.model.vo.ArticleStatisticsVO">
+        SELECT DATE_FORMAT(create_time, '%Y-%m-%d') AS date,
+               COUNT(*)                             AS count
+        FROM t_article
+        GROUP BY date
+        ORDER BY date DESC
+    </select>
+
+    <select id="selectArticlesFeatured" resultType="com.juliy.model.vo.ArticleFeaturedVO">
+        SELECT id,
+               article_title,
+               article_cover,
+               create_time
+        FROM t_article
+        WHERE is_delete = 0
+          AND `status` = 1
+          AND is_featured = 1 LIMIT 5
+    </select>
+
+    <select id="selectArticlesByCondition" resultType="com.juliy.model.vo.ArticleConditionVO">
+        SELECT a.id,
+        article_cover,
+        article_title,
+        a.create_time,
+        c.id AS category_id,
+        c.category_name,
+        t.id AS tag_id,
+        tag_name
+        FROM t_article a
+        INNER JOIN t_category c ON a.category_id = c.id
+        INNER JOIN t_article_tag tat ON a.id = tat.article_id
+        INNER JOIN t_tag t ON tat.tag_id = t.id
+        <where>
+            is_delete = 0 and `status` = 1
+            <if test="condition.categoryId != null">
+                and category_id = #{condition.categoryId}
+            </if>
+            <if test="condition.tagId != null">
+                and tag_id = #{condition.tagId}
+            </if>
+        </where>
+        ORDER BY a.id DESC
+        LIMIT #{current}, #{size}
     </select>
 
 </mapper>
