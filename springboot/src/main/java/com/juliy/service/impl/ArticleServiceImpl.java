@@ -10,6 +10,7 @@ import com.juliy.entity.ArticleTag;
 import com.juliy.entity.Category;
 import com.juliy.entity.Tag;
 import com.juliy.enums.FilePathEnum;
+import com.juliy.enums.LikeTypeEnum;
 import com.juliy.exception.ServiceException;
 import com.juliy.mapper.ArticleMapper;
 import com.juliy.mapper.ArticleTagMapper;
@@ -22,6 +23,9 @@ import com.juliy.model.dto.ConditionDTO;
 import com.juliy.model.vo.*;
 import com.juliy.service.ArticleService;
 import com.juliy.service.FileService;
+import com.juliy.service.RedisService;
+import com.juliy.service.TagService;
+import com.juliy.strategy.context.LikeStrategyContext;
 import com.juliy.utils.BeanCopyUtils;
 import com.juliy.utils.PageUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -32,10 +36,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.juliy.constant.CommonConstant.FALSE;
 import static com.juliy.constant.CommonConstant.TRUE;
+import static com.juliy.constant.RedisConstant.ARTICLE_LIKE_COUNT;
+import static com.juliy.constant.RedisConstant.ARTICLE_VIEW_COUNT;
 import static com.juliy.enums.ArticleStatusEnum.PUBLIC;
 
 /**
@@ -52,7 +59,10 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     private final CategoryMapper categoryMapper;
     private final TagMapper tagMapper;
     private final ArticleTagMapper articleTagMapper;
-    private final TagServiceImpl tagService;
+    private final TagService tagService;
+    private final RedisService redisService;
+    private final LikeStrategyContext likeStrategyContext;
+
 
     @Autowired
     public ArticleServiceImpl(FileService fileService,
@@ -60,13 +70,17 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
                               CategoryMapper categoryMapper,
                               TagMapper tagMapper,
                               ArticleTagMapper articleTagMapper,
-                              TagServiceImpl tagService) {
+                              TagService tagService,
+                              RedisService redisService,
+                              LikeStrategyContext likeStrategyContext) {
         this.fileService = fileService;
         this.articleMapper = articleMapper;
         this.categoryMapper = categoryMapper;
         this.tagMapper = tagMapper;
         this.articleTagMapper = articleTagMapper;
         this.tagService = tagService;
+        this.redisService = redisService;
+        this.likeStrategyContext = likeStrategyContext;
     }
 
 
@@ -192,7 +206,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     }
 
     @Override
-    public List<ArticleSearchVO> listArticlesBySearch(String keyword) {
+    public List<ArticleSearchVO> listArticlesBySearch(String keywords) {
+        // todo 搜索策略
         return null;
     }
 
@@ -213,18 +228,26 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Override
     public ArticleVO getArticleHomeById(Integer articleId) {
-        // todo 搜索策略
-        return null;
-    }
-
-    @Override
-    public ArticleNavigationVO getLastArticle(Integer articleId) {
-        return articleMapper.selectLastArticle(articleId);
-    }
-
-    @Override
-    public ArticleNavigationVO getNextArticle(Integer articleId) {
-        return articleMapper.selectNextArticle(articleId);
+        ArticleVO article = articleMapper.selectArticleHomeById(articleId);
+        if (Objects.isNull(article)) {
+            throw new ServiceException("不存在id为" + articleId + "的文章");
+        }
+        // 浏览量加1
+        redisService.incrZet(ARTICLE_VIEW_COUNT, articleId, 1D);
+        // 查询上一篇文章
+        ArticleNavigationVO lastArticle = articleMapper.selectLastArticle(articleId);
+        // 查询下一篇文章
+        ArticleNavigationVO nextArticle = articleMapper.selectNextArticle(articleId);
+        article.setLastArticle(lastArticle);
+        article.setNextArticle(nextArticle);
+        // 查询浏览量
+        Double viewCount = Optional.ofNullable(redisService.getZsetScore(ARTICLE_VIEW_COUNT, articleId))
+                .orElse((double) 0);
+        article.setViewCount(viewCount.intValue());
+        // 查询点赞量
+        Integer likeCount = redisService.getHash(ARTICLE_LIKE_COUNT, articleId.toString());
+        article.setLikeCount(Optional.ofNullable(likeCount).orElse(0));
+        return article;
     }
 
     @Override
@@ -249,6 +272,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public List<ArticleStatisticsVO> getArticleStatistics() {
         return articleMapper.selectArticleStatistics();
+    }
+
+    @Override
+    public void likeArticle(Integer articleId) {
+        likeStrategyContext.executeLikeStrategy(LikeTypeEnum.ARTICLE, articleId);
     }
 
     @Override

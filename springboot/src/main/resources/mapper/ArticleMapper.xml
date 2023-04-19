@@ -21,6 +21,56 @@
         </collection>
     </resultMap>
 
+    <resultMap id="articleHomeVO" type="com.juliy.model.vo.ArticleHomeVO">
+        <id column="id" property="id"/>
+        <result column="article_cover" property="articleCover"/>
+        <result column="article_title" property="articleTitle"/>
+        <result column="article_content" property="articleContent"/>
+        <result column="is_top" property="isTop"/>
+        <result column="create_time" property="createTime"/>
+        <association property="category" javaType="com.juliy.model.vo.CategoryOptionVO">
+            <id column="category_id" property="id"/>
+            <result column="category_name" property="categoryName"/>
+        </association>
+        <collection property="tagList" ofType="com.juliy.model.vo.TagOptionVO">
+            <id column="tag_id" property="id"/>
+            <result column="tag_name" property="tagName"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="articleVO" type="com.juliy.model.vo.ArticleVO">
+        <id column="id" property="id"/>
+        <result column="article_cover" property="articleCover"/>
+        <result column="article_title" property="articleTitle"/>
+        <result column="article_content" property="articleContent"/>
+        <result column="article_type" property="articleType"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <association property="category" javaType="com.juliy.model.vo.CategoryOptionVO">
+            <id column="category_id" property="id"/>
+            <result column="category_name" property="categoryName"/>
+        </association>
+        <collection property="tagList" ofType="com.juliy.model.vo.TagOptionVO">
+            <id column="tag_id" property="id"/>
+            <result column="tag_name" property="tagName"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="articleConditionVO" type="com.juliy.model.vo.ArticleConditionVO">
+        <id column="id" property="id"/>
+        <result column="article_cover" property="articleCover"/>
+        <result column="article_title" property="articleTitle"/>
+        <result column="create_time" property="createTime"/>
+        <association property="category" javaType="com.juliy.model.vo.CategoryOptionVO">
+            <id column="category_id" property="id"/>
+            <result column="category_name" property="categoryName"/>
+        </association>
+        <collection property="tagList" ofType="com.juliy.model.vo.TagOptionVO">
+            <id column="tag_id" property="id"/>
+            <result column="tag_name" property="tagName"/>
+        </collection>
+    </resultMap>
+
     <select id="countArticlesAdmin" resultType="java.lang.Long">
         SELECT COUNT(DISTINCT a.id)
         FROM t_article a
@@ -131,7 +181,7 @@
         </where>
     </select>
 
-    <select id="selectArticles" resultType="com.juliy.model.vo.ArticleHomeVO">
+    <select id="selectArticles" resultMap="articleHomeVO">
         SELECT a.id,
                article_cover,
                article_title,
@@ -140,7 +190,7 @@
                a.article_type,
                a.is_top,
                a.category_id,
-               category_name,
+               c.category_name,
                t.id                            AS tag_id,
                t.tag_name
         FROM (SELECT id,
@@ -164,7 +214,7 @@
                  a.id DESC
     </select>
 
-    <select id="selectArticleHomeById" resultType="com.juliy.model.vo.ArticleVO">
+    <select id="selectArticleHomeById" resultMap="articleVO">
         SELECT a.id,
                article_cover,
                article_title,
@@ -231,7 +281,7 @@
           AND is_featured = 1 LIMIT 5
     </select>
 
-    <select id="selectArticlesByCondition" resultType="com.juliy.model.vo.ArticleConditionVO">
+    <select id="selectArticlesByCondition" resultMap="articleConditionVO">
         SELECT a.id,
         article_cover,
         article_title,

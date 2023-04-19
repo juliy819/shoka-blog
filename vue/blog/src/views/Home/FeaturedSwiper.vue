@@ -32,33 +32,23 @@ import type { ArticleFeatured } from '@/api/article/types';
 import { ref } from 'vue';
 import articleApi from '@/api/article';
 import { formatDate } from '@/utils/date';
+import useStore from '@/stores';
 
+const { blogStore } = useStore();
 const modules = [Pagination, Navigation, Mousewheel, Autoplay];
 const featuredList = ref<ArticleFeatured[]>([]);
 
-const articleCover = computed(() => (cover: string) => 'background:url(' + cover + ')');
+const articleCover = computed(() => (cover: string) => {
+  if (cover === '') {
+    cover = blogStore.siteConfig.articleCover;
+  }
+  return 'background:url(' + cover + ')';
+});
 
 onMounted(() => {
   articleApi.getArticleFeatured().then(({ data }) => {
     featuredList.value = data.data;
   }).catch(() => {
-    // todo 删除
-    setTimeout(() => {
-      featuredList.value.push(
-        {
-          id: 1,
-          createTime: '2023:01:01',
-          articleTitle: '测试1',
-          articleCover: 'https://img.timelessq.com/images/2022/07/26/a11995a8254fd4a4038ba59f6bcf5a89.jpg'
-        },
-        {
-          id: 2,
-          createTime: '2023:01:02',
-          articleTitle: '测试2',
-          articleCover: 'https://img.timelessq.com/images/2022/07/26/626f157a4ff74c7984f4110e38031524.jpg'
-        }
-      );
-    }, 1000);
   });
 });
 </script>
@@ -164,7 +154,8 @@ onMounted(() => {
   }
 
   &:hover {
-    background: rgba(255, 255, 255, .4);
+    //background: rgba(255, 255, 255, .4);
+    background: var(--grey-3);
     border-radius: 100%;
   }
 }

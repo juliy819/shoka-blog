@@ -37,7 +37,7 @@
     </div>
     <!-- 登录 -->
     <div class="menu-item sub-menu">
-      <a v-if="userStore.id" class="menu-btn" @click="showLoginDialog = true">
+      <a v-if="!userStore.id" class="menu-btn" @click="showLoginDialog = true">
         <svg-icon icon-class="user" />
         登录
       </a>
@@ -62,11 +62,12 @@
     </div>
   </div>
 
-  <n-modal v-model:show="showLoginDialog">
-    <n-card style="width: 300px" size="huge" role="dialog" aria-modal="true" :bordered="true">
-      <n-button @click="logout">注销登录</n-button>
-    </n-card>
-
+  <n-modal v-model:show="showLoginDialog" :show-icon="false" class="bg" preset="dialog" transform-origin="center"
+           :block-scroll="false">
+    <!-- todo 登录弹窗待实现 -->
+    <n-input class="mt30" placeholder="邮箱" />
+    <n-input class="mt20" placeholder="密码" type="password" show-password-on="click" />
+    <n-button class="mt20" style="width: 100%" color="#ed6ea0">登录</n-button>
   </n-modal>
 </template>
 
@@ -132,6 +133,7 @@ const menuItems: MenuItem[] = [
 ];
 
 const logout = () => {
+  userStore.logout();
   modal.msgSuccess('注销成功');
 };
 

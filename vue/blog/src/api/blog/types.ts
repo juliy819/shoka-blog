@@ -9,6 +9,11 @@ export interface BlogApi {
    * 获取博客信息
    */
   getBlogInfo(): AxiosPromise<Result<BlogInfo>>;
+
+  /**
+   * 上传访客信息
+   */
+  report(): AxiosPromise<Result<null>>;
 }
 
 /**
@@ -59,6 +64,10 @@ export interface SiteConfig {
    * 网站作者
    */
   siteAuthor: string;
+  /**
+   * 文章封面
+   */
+  articleCover: string;
   /**
    * 关于我
    */

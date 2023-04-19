@@ -7,7 +7,8 @@
   <div v-if="articleList.length > 0" v-animate="['fadeInUp']" class="article-item" v-for="article in articleList"
        :key="article.id">
     <router-link :to="`/article/${article.id}`" class="article-cover">
-      <n-image class="cover" :src="article.articleCover" preview-disabled />
+      <n-image class="cover" :src="setArticleCover(article.articleCover)"
+               :fallback-src="blogStore.siteConfig.articleCover" preview-disabled />
     </router-link>
     <div class="article-info">
       <div class="article-meta">
@@ -17,7 +18,7 @@
           置顶
         </span>
         <!-- 文章标签 -->
-        <router-link class="article-tag" v-for="tag in article.tagVOList" :key="tag.id" :to="`/tag/${tag.id}`">
+        <router-link class="article-tag" v-for="tag in article.tagList" :key="tag.id" :to="`/tag/${tag.id}`">
           <svg-icon icon-class="tag" size="0.9rem" style="margin-right: 0.15rem" />
           <n-ellipsis style="max-width: 4rem">{{ tag.tagName }}</n-ellipsis>
         </router-link>
@@ -51,17 +52,8 @@
   <div v-else v-animate="['fadeInUp']" class="article-item" v-for="item in [1, 2, 3, 4, 5]" :key="item">
     <n-skeleton class="article-cover" />
     <div class="article-info">
-      <!--      <div class="article-meta">-->
-      <!--        <n-skeleton round width="3rem" height="1rem" style="margin-right: 1rem" />-->
-      <!--        <n-skeleton round width="10rem" height="1rem" />-->
-      <!--      </div>-->
       <n-skeleton class="article-title" width="12rem" height="2rem" round />
       <n-skeleton class="article-content" width="100%" round text :repeat="4" />
-      <!--      <div class="article-footer">-->
-      <!--        <n-skeleton class="create-time" round width="7rem" height="1.5rem" />-->
-      <!--        <n-skeleton class="article-tag" round width="7rem" height="1.5rem" />-->
-      <!--        <n-skeleton class="article-tag" round width="5rem" height="1.5rem" style="margin: 0 2rem 0 2rem" />-->
-      <!--      </div>-->
     </div>
   </div>
 
@@ -75,10 +67,16 @@ import type { PageQuery } from '@/model';
 import articleApi from '@/api/article';
 import { formatDate } from '@/utils/date';
 import Pagination from '@/components/Pagination.vue';
+import useStore from '@/stores';
 
+const { blogStore } = useStore();
 const articleList = ref<Article[]>([]);
 const pageQuery = ref<PageQuery>({ current: 1, size: 5 });
 const count = ref(0);
+
+const setArticleCover = (coverSrc: string): string => {
+  return coverSrc === '' ? blogStore.siteConfig.articleCover : coverSrc;
+};
 
 watch(
   () => pageQuery.value.current,
@@ -97,55 +95,6 @@ onMounted(() => {
     articleList.value = data.data.recordList;
     count.value = data.data.count;
   }).catch(() => {
-    // todo 删除
-    setTimeout(() => {
-      articleList.value.push(
-        {
-          id: 1,
-          isTop: 1,
-          articleTitle: '测试文章1 123121231212312123123131331331313313',
-          articleContent: '6547654765476547654656 12312 2312312312231231 231223 12312312231231231223123',
-          articleCover: 'http://static.juliy.top/article/0934fbddd869380b36e1e01e335c7ac2.jpg',
-          createTime: '2023-01-01',
-          category: { id: 1, categoryName: '测试分类1231231231231231231231231231' },
-          tagVOList: [{ id: 1, tagName: '测试标签1231231231231' }, { id: 2, tagName: '测试标签4375436543652' }, {
-            id: 3,
-            tagName: '测试标签3321213123123'
-          }]
-        },
-        {
-          id: 2,
-          isTop: 0,
-          articleTitle: '测试文章2 123121231212312123123131331331313313',
-          articleContent: '测试文章2内容123121231212312123123131331331313313',
-          articleCover: 'http://static.juliy.top/article/687f08589d9ca5c71210608a33b5b043.jpg',
-          createTime: '2023-01-01',
-          category: { id: 1, categoryName: '测试分类1123121231212312123123131331331313313' },
-          tagVOList: [{ id: 1, tagName: '测试标签1123121231212312123123131331331313313' }]
-        },
-        {
-          id: 3,
-          isTop: 0,
-          articleTitle: '测试文章3',
-          articleContent: '测试文章3内容',
-          articleCover: 'http://static.juliy.top/article/87d2f42092bc7340f29fe920a9398afd.jpg',
-          createTime: '2023-01-01',
-          category: { id: 1, categoryName: '测试分类1' },
-          tagVOList: [{ id: 1, tagName: '测试标签1' }, { id: 2, tagName: '测试标签2' }]
-        },
-        {
-          id: 4,
-          isTop: 1,
-          articleTitle: '测试文章4',
-          articleContent: '测试文章4内容',
-          articleCover: 'https://img.timelessq.com/images/2022/07/26/a11995a8254fd4a4038ba59f6bcf5a89.jpg',
-          createTime: '2023-01-01',
-          category: { id: 1, categoryName: '测试分类1' },
-          tagVOList: []
-        }
-      );
-      count.value = 21;
-    }, 1000);
   });
 });
 

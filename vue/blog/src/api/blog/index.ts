@@ -8,6 +8,11 @@ const blogApi: BlogApi = {
   getBlogInfo: () => request({
     url: '/info',
     method: 'get'
+  }),
+
+  report: () => request({
+    url: '/report',
+    method: 'get'
   })
 };
 

@@ -67,7 +67,7 @@ public class ArticleVO {
      * 文章标签
      */
     @Schema(description = "文章标签")
-    private List<TagOptionVO> tagVOList;
+    private List<TagOptionVO> tagList;
 
     /**
      * 上一篇文章

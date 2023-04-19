@@ -50,7 +50,7 @@ public class BlogInfoAdminVO {
      * 标签列表
      */
     @Schema(description = "标签列表")
-    private List<TagVO> tagVOList;
+    private List<TagVO> tagList;
 
     /**
      * 文章贡献统计

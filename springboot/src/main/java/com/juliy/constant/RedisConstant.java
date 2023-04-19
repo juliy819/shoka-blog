@@ -40,17 +40,17 @@ public class RedisConstant {
     /**
      * 用户点赞文章
      */
-    public static final String USER_ARTICLE_LIKE = "user_article_like:";
+    public static final String ARTICLE_LIKE = "user_article_like:";
 
     /**
      * 用户点赞评论
      */
-    public static final String USER_COMMENT_LIKE = "user_comment_like:";
+    public static final String COMMENT_LIKE = "user_comment_like:";
 
     /**
      * 用户点赞说说
      */
-    public static final String USER_TALK_LIKE = "user_talk_like:";
+    public static final String TALK_LIKE = "user_talk_like:";
 
     /**
      * 网站配置

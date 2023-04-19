@@ -49,7 +49,7 @@ public class ArticleHomeVO {
      * 文章标签
      */
     @Schema(description = "文章标签")
-    private List<TagOptionVO> tagVOList;
+    private List<TagOptionVO> tagList;
 
     /**
      * 是否置顶 (0否 1是)

@@ -76,7 +76,7 @@ public class BlogInfoServiceImpl implements BlogInfoService {
         String uuid = ipAddress + os + browser;
         String md5 = DigestUtils.md5DigestAsHex(uuid.getBytes());
         // 判断是否为新访客
-        if (redisService.hasSetValue(UNIQUE_VISITOR, md5)) {
+        if (!redisService.hasSetValue(UNIQUE_VISITOR, md5)) {
             // 若为新访客则增加访问量并保存记录
             redisService.incr(BLOG_VIEW_COUNT, 1);
             redisService.setSet(UNIQUE_VISITOR, md5);
@@ -95,8 +95,8 @@ public class BlogInfoServiceImpl implements BlogInfoService {
         // 标签数量
         Long tagCount = tagService.count();
         // 博客访问量
-        Long count = redisService.getObject(BLOG_VIEW_COUNT);
-        Long viewCount = Optional.ofNullable(count).orElse(0L);
+        Integer count = redisService.getObject(BLOG_VIEW_COUNT);
+        Long viewCount = Optional.of(count.longValue()).orElse(0L);
         // 网站配置
         SiteConfig siteConfig = siteConfigService.getSiteConfig();
 
@@ -139,7 +139,7 @@ public class BlogInfoServiceImpl implements BlogInfoService {
         }
         return BlogInfoAdminVO.builder()
                 .articleStatisticsList(articleStatisticsList)
-                .tagVOList(tagList)
+                .tagList(tagList)
                 .viewCount(viewCount)
                 .messageCount(messageCount)
                 .userCount(userCount)

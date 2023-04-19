@@ -5,10 +5,7 @@ import com.juliy.model.dto.ArticleDTO;
 import com.juliy.model.dto.ArticleFeaturedDTO;
 import com.juliy.model.dto.ArticleTopDTO;
 import com.juliy.model.dto.ConditionDTO;
-import com.juliy.model.vo.ArticleAdminVO;
-import com.juliy.model.vo.ArticleInfoVO;
-import com.juliy.model.vo.PageResult;
-import com.juliy.model.vo.Result;
+import com.juliy.model.vo.*;
 import com.juliy.service.ArticleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -154,6 +151,69 @@ public class ArticleController {
     @PutMapping("/featured")
     public Result<?> updateArticleFeatured(@Validated @RequestBody ArticleFeaturedDTO featured) {
         articleService.updateArticleFeatured(featured);
+        return Result.success();
+    }
+
+    /**
+     * 搜索文章
+     * @param keywords 关键词
+     * @return 文章列表
+     */
+    @Operation(summary = "搜索文章")
+    @GetMapping("/search")
+    public Result<List<ArticleSearchVO>> getArticlesBySearch(String keywords) {
+        return Result.success(articleService.listArticlesBySearch(keywords));
+    }
+
+    /**
+     * 获取首页文章列表
+     * @return 首页文章列表
+     */
+    @Operation(summary = "获取首页文章列表")
+    @GetMapping("/list")
+    public Result<PageResult<ArticleHomeVO>> getArticlesByPage() {
+        return Result.success(articleService.listArticlesHomeByPage());
+    }
+
+    /**
+     * 查看文章
+     * @param articleId 文章id
+     * @return 文章
+     */
+    @Operation(summary = "查看文章")
+    @GetMapping("/{articleId}")
+    public Result<ArticleVO> getArticleById(@PathVariable Integer articleId) {
+        return Result.success(articleService.getArticleHomeById(articleId));
+    }
+
+    /**
+     * 获取推荐文章
+     * @return 推荐文章列表
+     */
+    @Operation(summary = "获取推荐文章")
+    @GetMapping("/featured")
+    public Result<List<ArticleFeaturedVO>> getArticlesFeatured() {
+        return Result.success(articleService.listArticlesFeatured());
+    }
+
+    /**
+     * 获取文章归档
+     * @return 文章归档列表
+     */
+    @Operation(summary = "获取文章归档")
+    @GetMapping("/archives/list")
+    public Result<PageResult<ArchiveVO>> listArchiveVO() {
+        return Result.success(articleService.listArchives());
+    }
+
+    /**
+     * 点赞文章
+     * @param articleId 文章id
+     */
+    @Operation(summary = "点赞文章")
+    @GetMapping("/{articleId}/like")
+    public Result<?> likeArticle(@PathVariable("articleId") Integer articleId) {
+        articleService.likeArticle(articleId);
         return Result.success();
     }
 }

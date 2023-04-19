@@ -66,7 +66,7 @@ export interface Article {
   /**
    * 文章标签
    */
-  tagVOList: TagVO[];
+  tagList: TagVO[];
 
   /**
    * 是否置顶 (0否 1是)
@@ -139,7 +139,7 @@ export interface ArticleInfo {
   /**
    * 文章标签
    */
-  tagVOList: TagVO[];
+  tagList: TagVO[];
   /**
    * 发表时间
    */
@@ -212,7 +212,7 @@ export interface ArticleCondition {
   /**
    * 文章标签
    */
-  tagVOList: TagVO[];
+  tagList: TagVO[];
 
   /**
    * 发布时间
