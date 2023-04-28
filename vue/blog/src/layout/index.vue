@@ -11,12 +11,12 @@
       <the-footer />
       <!-- 其它 -->
       <side-drawer />
+      <affix-tools />
     </div>
   </naive-provider>
 </template>
 
 <script setup lang="ts">
-
 import TheHeader from '@/layout/components/TheHeader';
 import AppMain from '@/layout/components/AppMain.vue';
 import TheFooter from '@/layout/components/TheFooter.vue';

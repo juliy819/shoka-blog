@@ -71,7 +71,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .waves {
     height: 10vh;
     min-height: 10vh;

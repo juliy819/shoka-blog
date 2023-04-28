@@ -26,9 +26,10 @@ import Navbar from '@/layout/components/TheHeader/Navbar.vue';
 import Hamburger from '@/layout/components/TheHeader/Hamburger.vue';
 import { useDark, useScroll } from '@vueuse/core';
 import { useToggle } from '@vueuse/shared';
+import useStore from '@/stores';
 
+const { appStore } = useStore();
 const { y } = useScroll(window);
-
 const isDark = useDark({
   selector: 'html',
   attribute: 'theme',
@@ -36,19 +37,22 @@ const isDark = useDark({
   valueLight: 'light'
 });
 const toggle = useToggle(isDark);
-
 const show = ref(false);
 const up = ref(true);
+
 const fixedClass = computed(() => ({
   show: show.value,
   up: up.value,
   down: !up.value
 }));
+
+const maxChangeHeight = computed(() => appStore.headerChangeHeight);
+
 // 监听滚动
 // todo 这里有个bug，在触发show的边界处，向下滚动时，是先变色再收起，很突兀，主要是由于背景为渐变，无法设置transition
 watch(y, (newValue, oldValue) => {
-  show.value = newValue > 731;
-  up.value = newValue < oldValue;
+  show.value = newValue > maxChangeHeight.value;
+  up.value = newValue < maxChangeHeight.value && newValue < oldValue;
 });
 
 </script>

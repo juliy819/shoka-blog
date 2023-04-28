@@ -274,7 +274,7 @@ const logout = () => {
   border-bottom: 0;
 }
 
-@media (max-width: 865px) {
+@media (max-width: 991px) {
   .menu {
     justify-content: center;
   }

@@ -32,7 +32,8 @@ const themeOverrides: GlobalThemeOverrides = {
     primaryColorPressed: 'var(--primary-color-darker)'
   },
   Button: {
-    textColorText: 'var(--text-color)'
+    textColorText: 'var(--text-color)',
+    rippleColor: 'var(--primary-color)'
   }
 };
 

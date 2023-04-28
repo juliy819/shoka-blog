@@ -18,7 +18,7 @@
           置顶
         </span>
         <!-- 文章标签 -->
-        <router-link class="article-tag" v-for="tag in article.tagList" :key="tag.id" :to="`/tag/${tag.id}`">
+        <router-link class="article-tag-category" v-for="tag in article.tagList" :key="tag.id" :to="`/tag/${tag.id}`">
           <svg-icon icon-class="tag" size="0.9rem" style="margin-right: 0.15rem" />
           <n-ellipsis style="max-width: 4rem">{{ tag.tagName }}</n-ellipsis>
         </router-link>
@@ -40,7 +40,7 @@
         <!-- 文章分类 -->
         <router-link class="article-category" :to="`/category/${article.category.id}`">
           <svg-icon icon-class="qizhi" size="0.85rem" />
-          <n-ellipsis style="max-width: 8rem">{{ article.category.categoryName }}</n-ellipsis>
+          <n-ellipsis style="max-width: 6rem">{{ article.category.categoryName }}</n-ellipsis>
         </router-link>
       </div>
       <!-- 阅读按钮 -->
@@ -185,12 +185,12 @@ onMounted(() => {
     .top {
       color: var(--color-orange);
       min-width: 3.5rem;
+      margin-right: 0.5rem;
     }
 
-    .article-tag {
+    .article-tag-category {
       display: flex;
       align-items: center;
-      margin-left: 0.5rem;
     }
   }
 

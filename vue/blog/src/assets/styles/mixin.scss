@@ -24,3 +24,9 @@
   -moz-user-select: none;
   -webkit-user-select: none;
 }
+
+@mixin can-select {
+  user-select: text;
+  -moz-user-select: text;
+  -webkit-user-select: text;
+}

@@ -21,6 +21,16 @@ export interface AppState {
    * 加载间隔
    */
   loadingTimeout: number;
+
+  /**
+   * 导航栏背景色变化的边界高度
+   */
+  headerChangeHeight: number;
+
+  /**
+   * 是否显示右侧容器
+   */
+  rightContainer: boolean;
 }
 
 export interface ArticleState {
@@ -85,7 +95,7 @@ export interface UserState {
    * 评论点赞集合
    */
   commentLikeSet: number[];
-  
+
   /**
    * 说说点赞集合
    */

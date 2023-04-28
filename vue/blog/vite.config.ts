@@ -7,6 +7,7 @@ import Components from 'unplugin-vue-components/vite';
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers';
 import path from 'path';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
+import { prismjsPlugin } from 'vite-plugin-prismjs';
 
 export default defineConfig({
   plugins: [
@@ -31,12 +32,35 @@ export default defineConfig({
       resolvers: [NaiveUiResolver()],
       dts: 'src/types/components.d.ts'
     }),
-    //引入所有svg图片
+    // 引入所有svg图片
     createSvgIconsPlugin({
       // 指定需要缓存的图标文件夹
       iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
       // 指定symbolId格式
       symbolId: 'icon-[dir]-[name]'
+    }),
+    // 语法高亮语言包
+    prismjsPlugin({
+      languages: [
+        'java',
+        'python',
+        'html',
+        'css',
+        'sass',
+        'less',
+        'go',
+        'cpp',
+        'c',
+        'js',
+        'ts',
+        'sql',
+        'bash',
+        'git',
+        'nginx',
+        'php'
+      ],
+      theme: 'tomorrow',
+      css: true
     })
   ],
   resolve: {

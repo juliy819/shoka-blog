@@ -8,6 +8,7 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 import ElementPlus from 'unplugin-element-plus/vite';
 import path from 'path';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
+import { prismjsPlugin } from 'vite-plugin-prismjs';
 
 export default defineConfig({
   plugins: [
@@ -41,6 +42,29 @@ export default defineConfig({
       iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
       // 指定symbolId格式
       symbolId: 'icon-[dir]-[name]'
+    }),
+    // md代码高亮
+    prismjsPlugin({
+      languages: [
+        'java',
+        'python',
+        'html',
+        'css',
+        'sass',
+        'less',
+        'go',
+        'cpp',
+        'c',
+        'js',
+        'ts',
+        'sql',
+        'bash',
+        'git',
+        'nginx',
+        'php'
+      ],
+      theme: 'tomorrow',
+      css: true
     })
   ],
   resolve: {

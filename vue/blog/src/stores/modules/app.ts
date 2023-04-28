@@ -16,7 +16,9 @@ const useAppStore = defineStore('useAppStore', {
     sideDrawerOpen: false,
     loading: false,
     npTimeout: -1,
-    loadingTimeout: -1
+    loadingTimeout: -1,
+    headerChangeHeight: 730,
+    rightContainer: true
   }),
   actions: {
 
@@ -55,7 +57,6 @@ const useAppStore = defineStore('useAppStore', {
         this.loading = false;
       }, 300);
     }
-
   }
 });
 

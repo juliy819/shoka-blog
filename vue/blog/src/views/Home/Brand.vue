@@ -96,7 +96,7 @@ onMounted(() => {
     -webkit-animation: blink 0.8s infinite;
   }
 
-  @media (min-width: 760px) {
+  @media (min-width: 768px) {
     .typer {
       font-size: 1.5rem;
     }

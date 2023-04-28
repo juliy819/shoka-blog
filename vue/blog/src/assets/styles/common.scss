@@ -1,13 +1,17 @@
+@use './mixin';
+
+// 主容器
 .main-container {
   display: flex;
   align-items: flex-start;
   justify-content: center;
   width: calc(100% - 0.625rem);
-  padding-bottom: 1.75rem;
+  padding: 0 0.8rem 0.8rem 0.8rem;
   margin: 1rem auto 0;
   animation: fadeInUp 1s;
 }
 
+// 首页左侧容器
 .left-container {
   width: calc(100% - 18.75rem);
   box-shadow: 0 0 1rem var(--box-bg-shadow);
@@ -16,12 +20,12 @@
   padding: 0.5rem 0;
 }
 
+// 首页右侧容器
 .right-container {
   position: sticky;
   top: 1rem;
   width: 18rem;
   margin-left: 0.8rem;
-  margin-right: 0.5rem;
 }
 
 // 侧边栏卡片
@@ -43,25 +47,34 @@
       background-color: var(--primary-color);
     }
   }
+
+  .card-title {
+    font-size: 1.2em;
+    display: flex;
+    align-items: center;
+
+    .svg-icon {
+      margin-right: 0.5rem;
+    }
+
+    &::before {
+      content: "";
+      display: inline-block;
+      width: 0.25rem;
+      height: 25px;
+      margin-right: 10px;
+      background-color: var(--primary-color-darker);
+    }
+  }
 }
 
-.card-title {
-  font-size: 1.2em;
-  display: flex;
-  align-items: center;
+.width-100 {
+  width: 100%;
+}
 
-  .svg-icon {
-    margin-right: 0.5rem;
-  }
-
-  &::before {
-    content: "";
-    display: inline-block;
-    width: 0.25rem;
-    height: 25px;
-    margin-right: 10px;
-    background-color: var(--primary-color-darker);
-  }
+.display-none {
+  display: none;
+  //width: 0;
 }
 
 .bg {
@@ -72,13 +85,65 @@
   background-color: var(--grey-3);
 }
 
+// 子页面的顶部
+.page-header {
+  position: relative;
+  width: 100%;
+  height: 70vh;
+  background: var(--primary-color) no-repeat center center / cover;
+  z-index: -9;
+
+  // 遮罩层
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .2);
+    transition: all .2s ease-in-out 0s;
+  }
+}
+
+// 子页面顶部标题
+.page-title {
+  @include mixin.flex;
+  flex-direction: column;
+  position: fixed;
+  width: 100%;
+  height: 50vh;
+  min-height: 10rem;
+  padding: 4rem 5rem 0;
+  font-size: 2.5em;
+  color: var(--header-text-color);
+  animation: zoomIn 1s;
+  z-index: 1;
+}
+
+// 子页面顶部封面
+.page-cover {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70vh;
+  object-fit: cover;
+}
+
 @media (min-width: 1200px) {
   .main-container {
-    width: 72.5rem;
+    width: 74.4rem;
   }
 }
 
 @media (max-width: 991px) {
+  .main-container {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
   .left-container {
     width: 100%;
   }
@@ -127,3 +192,47 @@
   padding: 1.25rem 3.125rem;
 }
 
+.article-tag-category {
+  display: inline-block;
+  position: relative;
+  font-size: 0.75em;
+  padding: 0 0.3125rem;
+  border-radius: 0.3125rem;
+  background: var(--note-bg);
+  color: var(--note-text);
+
+  &:not(:last-child) {
+    margin-right: 0.625rem;
+  }
+
+  &:hover {
+    color: #e9546b;
+
+    &:before {
+      width: 104%;
+      left: -2%;
+    }
+  }
+
+  &:before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    height: 100%;
+    width: 0;
+    right: 0;
+    background: var(--color-red-a1);
+    border-radius: 0.25rem;
+    transition: all 0.2s ease-in-out 0s;
+  }
+}
+
+::selection {
+  color: #fff;
+  background-color: var(--color-red-a5);
+}
+
+::-moz-selection {
+  color: #fff;
+  background-color: var(--color-red-a5);
+}
