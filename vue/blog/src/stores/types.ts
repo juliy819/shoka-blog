@@ -31,6 +31,11 @@ export interface AppState {
    * 是否显示右侧容器
    */
   rightContainer: boolean;
+
+  /**
+   * 是否显示登录窗口
+   */
+  loginFrame: boolean;
 }
 
 export interface ArticleState {

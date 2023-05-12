@@ -18,7 +18,8 @@ const useAppStore = defineStore('useAppStore', {
     npTimeout: -1,
     loadingTimeout: -1,
     headerChangeHeight: 730,
-    rightContainer: true
+    rightContainer: true,
+    loginFrame: false
   }),
   actions: {
 
@@ -27,6 +28,20 @@ const useAppStore = defineStore('useAppStore', {
      */
     showSideDrawer() {
       this.sideDrawerOpen = true;
+    },
+
+    /**
+     * 显示登录窗口
+     */
+    showLoginFrame() {
+      this.loginFrame = true;
+    },
+
+    /**
+     * 隐藏登录窗口
+     */
+    hideLoginFrame() {
+      this.loginFrame = false;
     },
 
     /**

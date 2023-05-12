@@ -6,6 +6,7 @@ import com.juliy.model.dto.LoginDTO;
 import com.juliy.model.vo.AdminUserInfoVO;
 import com.juliy.model.vo.Result;
 import com.juliy.model.vo.RouterVO;
+import com.juliy.model.vo.UserInfoVO;
 import com.juliy.service.LoginService;
 import com.juliy.service.MenuService;
 import com.juliy.service.UserService;
@@ -86,6 +87,16 @@ public class LoginController {
     @GetMapping("/admin/getAdminUserInfo")
     public Result<AdminUserInfoVO> getAdminUserInfo() {
         return Result.success(userService.getAdminUserInfo());
+    }
+
+    /**
+     * 获取用户信息
+     * @return 用户信息
+     */
+    @Operation(summary = "获取用户信息")
+    @GetMapping("/getUserInfo")
+    public Result<UserInfoVO> getUserInfo() {
+        return Result.success(userService.getUserInfo());
     }
 
     /**

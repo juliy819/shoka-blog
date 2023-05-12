@@ -139,7 +139,11 @@ const useUserStore = defineStore('useUserStore', {
       });
     }
   },
-  getters: {}
+  getters: {},
+  persist: {
+    enabled: true,
+    strategies: [{ storage: localStorage }]
+  }
 });
 
 export default useUserStore;

@@ -24,7 +24,7 @@ const loginApi: LoginApi = {
   }),
 
   getUserInfo: () => request({
-    url: '/user/getUserInfo',
+    url: '/getUserInfo',
     method: 'get'
   }),
 

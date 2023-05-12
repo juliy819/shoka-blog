@@ -62,7 +62,7 @@
               阅读次数 {{ article.viewCount }} 次
             </div>
             <div class="like">
-              <n-button class="like-btn">
+              <n-button class="like-btn" :class="isLike(article.id)" @click="like()">
                 <svg-icon icon-class="like" size="0.9rem" style="margin-right: 0.5rem" />
                 点赞
                 {{ article.likeCount }}
@@ -136,6 +136,7 @@ import type { CategoryVO } from '@/api/category/types';
 import useStore from '@/stores';
 import articleApi from '@/api/article';
 import { formatDate } from '@/utils/date';
+import { modal } from '@/utils/modal';
 
 const articleHref = window.location.href;
 const route = useRoute();
@@ -162,7 +163,7 @@ const article = ref<ArticleInfo>({
 });
 
 const articleCover = computed(() => (cover: string) => `background-image:url(${cover})`);
-const isLike = computed(() => (id: number) => userStore.articleLikeSet.indexOf(id) === -1 ? 'like-btn' : 'like-btn-active');
+const isLike = computed(() => (id: number) => userStore.articleLikeSet.indexOf(id) === -1 ? '' : 'active');
 
 const setArticleCover = (coverSrc: string): string => {
   return coverSrc === '' ? blogStore.siteConfig.articleCover : coverSrc;
@@ -189,6 +190,24 @@ const deleteHTMLTag = (content: string) => {
     .replace(/<\/?[^>]*>/g, '')
     .replace(/[|]*\n/, '')
     .replace(/&npsp;/gi, '');
+};
+
+const like = () => {
+  if (!userStore.id) {
+    modal.msgError('请先登录！');
+    return;
+  }
+  let articleId = article.value.id;
+  articleApi.likeArticle(articleId).then(({ data }) => {
+    if (userStore.articleLikeSet.indexOf(articleId) !== -1) {
+      article.value.likeCount -= 1;
+    } else {
+      article.value.likeCount += 1;
+    }
+    userStore.articleLike(articleId);
+  });
+
+  console.log(userStore.articleLikeSet);
 };
 
 onMounted(() => {
@@ -274,7 +293,7 @@ onMounted(() => {
     text-align: center;
 
     button {
-      background: var(--primary-color);
+      background: #999;
       border-radius: 0.5rem;
       color: var(--grey-0);
     }
@@ -283,6 +302,10 @@ onMounted(() => {
       font-size: .8125em;
       color: var(--grey-5);
       margin: 0;
+    }
+
+    .active {
+      background-color: var(--primary-color);
     }
   }
 
@@ -351,5 +374,4 @@ onMounted(() => {
     }
   }
 }
-
 </style>

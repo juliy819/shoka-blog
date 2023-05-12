@@ -37,7 +37,7 @@
     </div>
     <!-- 登录 -->
     <div class="menu-item sub-menu">
-      <a v-if="!userStore.id" class="menu-btn" @click="showLoginDialog = true">
+      <a v-if="!userStore.id" class="menu-btn" @click="appStore.showLoginFrame()">
         <svg-icon icon-class="user" />
         登录
       </a>
@@ -61,14 +61,6 @@
       </template>
     </div>
   </div>
-
-  <n-modal v-model:show="showLoginDialog" :show-icon="false" class="bg" preset="dialog" transform-origin="center"
-           :block-scroll="false">
-    <!-- todo 登录弹窗待实现 -->
-    <n-input class="mt30" placeholder="邮箱" />
-    <n-input class="mt20" placeholder="密码" type="password" show-password-on="click" />
-    <n-button class="mt20" style="width: 100%" color="#ed6ea0">登录</n-button>
-  </n-modal>
 </template>
 
 <script lang="ts" setup>
@@ -77,8 +69,7 @@ import { modal } from '@/utils/modal';
 
 const route = useRoute();
 const router = useRouter();
-const { blogStore, userStore } = useStore();
-const showLoginDialog = ref(false);
+const { blogStore, userStore, appStore } = useStore();
 
 interface MenuItem {
   title: string,

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
  * @author juliy
  * @date 2023/4/19 10:20
  */
-@Service
+@Service("CommentLikeStrategyImpl")
 public class CommentLikeStrategyImpl implements LikeStrategy {
 
     @Override

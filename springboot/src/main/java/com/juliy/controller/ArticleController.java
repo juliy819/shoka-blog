@@ -211,7 +211,7 @@ public class ArticleController {
      * @param articleId 文章id
      */
     @Operation(summary = "点赞文章")
-    @GetMapping("/{articleId}/like")
+    @PostMapping("/{articleId}/like")
     public Result<?> likeArticle(@PathVariable("articleId") Integer articleId) {
         articleService.likeArticle(articleId);
         return Result.success();

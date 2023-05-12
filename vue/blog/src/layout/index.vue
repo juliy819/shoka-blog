@@ -11,6 +11,7 @@
       <the-footer />
       <!-- 其它 -->
       <side-drawer />
+      <login-dialog />
       <affix-tools />
     </div>
   </naive-provider>

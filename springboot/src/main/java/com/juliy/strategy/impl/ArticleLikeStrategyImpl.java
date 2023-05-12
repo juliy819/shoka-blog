@@ -20,7 +20,7 @@ import static com.juliy.constant.RedisConstant.ARTICLE_LIKE_COUNT;
  * @author juliy
  * @date 2023/4/19 10:08
  */
-@Service
+@Service("ArticleLikeStrategyImpl")
 public class ArticleLikeStrategyImpl implements LikeStrategy {
 
     private final RedisService redisService;
