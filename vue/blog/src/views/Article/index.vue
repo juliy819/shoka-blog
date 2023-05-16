@@ -41,7 +41,7 @@
     <img class="page-cover" :src="setArticleCover(article.articleCover)" alt="" />
     <Waves />
   </div>
-  <div class="bg">
+  <div v-if="article.articleTitle" class="bg">
     <div class="main-container" v-if="article">
       <!-- 左侧区域 -->
       <div class="left-container" :class="!appStore.rightContainer ? 'width-100' : ''">
@@ -117,6 +117,7 @@
               </div>
             </div>
           </div>
+          <Comment :comment-type="commentType" class="comment-container" />
         </div>
       </div>
       <!-- 右侧目录 -->
@@ -126,6 +127,10 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <div v-else>
+    <n-skeleton repeat="5" />
   </div>
 </template>
 
@@ -162,7 +167,6 @@ const article = ref<ArticleInfo>({
   updateTime: ''
 });
 
-const articleCover = computed(() => (cover: string) => `background-image:url(${cover})`);
 const isLike = computed(() => (id: number) => userStore.articleLikeSet.indexOf(id) === -1 ? '' : 'active');
 
 const setArticleCover = (coverSrc: string): string => {
@@ -193,12 +197,13 @@ const deleteHTMLTag = (content: string) => {
 };
 
 const like = () => {
+
   if (!userStore.id) {
     modal.msgError('请先登录！');
     return;
   }
   let articleId = article.value.id;
-  articleApi.likeArticle(articleId).then(({ data }) => {
+  articleApi.likeArticle(articleId).then(() => {
     if (userStore.articleLikeSet.indexOf(articleId) !== -1) {
       article.value.likeCount -= 1;
     } else {
@@ -206,12 +211,10 @@ const like = () => {
     }
     userStore.articleLike(articleId);
   });
-
-  console.log(userStore.articleLikeSet);
 };
 
 onMounted(() => {
-  appStore.headerChangeHeight = 500;
+  appStore.headerChangeHeight = 480;
   articleApi.getArticle(Number(route.params.articleId)).then(({ data }) => {
     article.value = data.data;
     document.title = article.value.articleTitle;
@@ -253,6 +256,10 @@ onMounted(() => {
   @include mixin.can-select;
 }
 
+.article-nav {
+  margin: 0 2rem;
+}
+
 .extra {
   display: flex;
   align-items: center;
@@ -265,7 +272,6 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: 100%;
   margin: 0 2.5rem 0 2.5rem;
 }
 
@@ -360,8 +366,12 @@ onMounted(() => {
   opacity: 0.3;
 }
 
+.comment-container {
+  margin: 0 2rem;
+}
+
 @media (max-width: 767px) {
-  .tag-container, .article-footer, .article-nav {
+  .tag-container, .article-footer, .article-nav, .comment-container {
     margin-left: 0.5rem;
     margin-right: 0.5rem;
   }

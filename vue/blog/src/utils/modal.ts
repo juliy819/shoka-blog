@@ -79,7 +79,10 @@ export const modal: Modal = {
   },
 
   notifyError: (message) => {
-
+    window.$notification?.error({
+      title: '错误',
+      content: message
+    });
   },
 
   notifySuccess: (message) => {

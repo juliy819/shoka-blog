@@ -5,27 +5,33 @@
 -->
 <template>
   <div class="talk-swiper">
-    <svg-icon v-if="talkList.length > 0" icon-class="horn" size="1.25rem" />
-    <n-skeleton v-else circle width="20px" />
-    <swiper v-if="talkList.length > 0" class="swiper-container" direction="vertical" :modules="modules" :speed="2000"
-            :loop="true" :slides-per-view="1" :autoplay="{ delay: 3000, disableOnInteraction: false, }">
-      <swiper-slide v-for="(talk, index) in talkList" :key="index">
-        <n-button text @click="toTalk(talk.id)">
-          <div class="slide-content" v-html="talk.talkContent" />
-        </n-button>
-      </swiper-slide>
-    </swiper>
-    <n-skeleton v-else round width="90%" />
-    <n-popover v-if="talkList.length > 0" trigger="hover">
-      <template #trigger>
-        <n-button text @click="toTalk">
-          <svg-icon icon-class="right-arrow" class="arrow" />
-        </n-button>
-      </template>
-      前往说说页面
-    </n-popover>
-    <n-skeleton v-else circle width="20px" />
+    <div v-if="talkList.length > 0" class="flex-space-between">
+      <svg-icon icon-class="horn" size="1.25rem" />
+      <swiper class="swiper-container" direction="vertical" :modules="modules" :speed="2000" :loop="true"
+              :slides-per-view="1" :autoplay="{ delay: 3000, disableOnInteraction: false, }">
+        <swiper-slide v-for="(talk, index) in talkList" :key="index">
+          <n-button text @click="toTalk(talk.id)">
+            <div class="slide-content" v-html="talk.talkContent" />
+          </n-button>
+        </swiper-slide>
+      </swiper>
+      <n-popover trigger="hover">
+        <template #trigger>
+          <n-button text @click="toTalk">
+            <svg-icon icon-class="right-arrow" class="arrow" />
+          </n-button>
+        </template>
+        前往说说页面
+      </n-popover>
+    </div>
+    <div v-else class="flex-space-between">
+      <n-skeleton circle width="20px" />
+      <n-skeleton round width="90%" />
+      <n-skeleton circle width="20px" />
+    </div>
   </div>
+
+
 </template>
 
 <script setup lang="ts">
@@ -37,7 +43,7 @@ import type { TalkHome } from '@/api/talk/types';
 import talkApi from '@/api/talk';
 // 自动播放
 const modules = [Autoplay];
-
+const fail = ref(false);
 const talkList = ref<TalkHome[]>([]);
 
 const toTalk = (id?: number): void => {
@@ -51,11 +57,7 @@ const toTalk = (id?: number): void => {
 onMounted(() => {
   talkApi.getTalkHomeList().then(({ data }) => {
     talkList.value = data.data;
-  }).catch(() => {
-    // todo 删除
-    setTimeout(() => talkList.value.push({ id: 1, talkContent: '测试1' }), 1000);
-
-  });
+  }).catch(() => {fail.value = true;});
 });
 
 </script>
@@ -65,14 +67,18 @@ onMounted(() => {
 
 .talk-swiper {
   @include mixin.card-shadow;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+
   margin: 0 0.5rem;
   padding: 0.6rem 1rem;
   font-size: 0.9375rem;
   border-radius: 0.5rem;
   transition: all 0.2s ease-in-out 0s;
+
+  .talk-swiper-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 }
 
 .swiper-container {

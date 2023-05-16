@@ -28,11 +28,6 @@
         <!--            <groupId>org.springframework.boot</groupId>-->
         <!--            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>-->
         <!--        </dependency>-->
-        <!-- redis -->
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.boot</groupId>-->
-        <!--            <artifactId>spring-boot-starter-data-redis</artifactId>-->
-        <!--        </dependency>-->
         <!-- thymeleaf -->
         <!--        <dependency>-->
         <!--            <groupId>org.springframework.boot</groupId>-->
@@ -160,6 +155,18 @@
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
+        </dependency>
+        <!-- fastjson2 -->
+        <dependency>
+            <groupId>com.alibaba.fastjson2</groupId>
+            <artifactId>fastjson2</artifactId>
+            <version>2.0.25</version>
+        </dependency>
+        <!-- spring aop -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+            <version>3.0.4</version>
         </dependency>
     </dependencies>
 

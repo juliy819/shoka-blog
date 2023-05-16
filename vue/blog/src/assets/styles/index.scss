@@ -113,3 +113,15 @@ li {
 .mt30 {
   margin-top: 1.875rem;
 }
+
+.flex-space-between {
+  display: flex;
+  align-content: center;
+  justify-content: space-between;
+}
+
+.flex-center {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}

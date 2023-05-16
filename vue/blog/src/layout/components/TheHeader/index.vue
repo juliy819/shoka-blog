@@ -52,7 +52,7 @@ const maxChangeHeight = computed(() => appStore.headerChangeHeight);
 // todo 这里有个bug，在触发show的边界处，向下滚动时，是先变色再收起，很突兀，主要是由于背景为渐变，无法设置transition
 watch(y, (newValue, oldValue) => {
   show.value = newValue > maxChangeHeight.value;
-  up.value = newValue < maxChangeHeight.value && newValue < oldValue;
+  up.value = newValue < oldValue;
 });
 
 </script>

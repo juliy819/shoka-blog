@@ -43,7 +43,7 @@ const scrollDown = () => {
 const { appStore } = useStore();
 
 onMounted(() => {
-  appStore.headerChangeHeight = 730;
+  appStore.headerChangeHeight = 700;
 });
 
 </script>

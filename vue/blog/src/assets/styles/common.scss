@@ -1,5 +1,9 @@
 @use './mixin';
 
+.load-fail {
+  color: var(--grey-4);
+}
+
 // 主容器
 .main-container {
   display: flex;

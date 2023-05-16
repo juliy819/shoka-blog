@@ -9,10 +9,10 @@
       <svg-icon :icon-class="appStore.rightContainer ? 'narrow' : 'expand'" size="1.5rem"></svg-icon>
     </div>
     <div class="item" v-if="commentShow(route.name as string)" @click="handleToComment">
-      <svg-icon icon-class="comments" size="1.2rem"></svg-icon>
+      <svg-icon icon-class="comment" size="1.2rem" />
     </div>
     <div class="item back-to-top" @click="handleBackToTop" style="margin-top:0.2rem">
-      <svg-icon icon-class="up" size="0.9rem"></svg-icon>
+      <svg-icon icon-class="up" size="0.9rem" />
       <span class="count">{{ process }}%</span>
     </div>
   </div>
@@ -45,7 +45,7 @@ const handleSide = () => {
   appStore.rightContainer = !appStore.rightContainer;
 };
 const handleToComment = () => {
-  document.getElementById('reply-wrap')?.scrollIntoView({
+  document.getElementById('comment-wrap')?.scrollIntoView({
     block: 'start',
     inline: 'nearest',
     behavior: 'smooth'

@@ -43,12 +43,10 @@ requests.interceptors.response.use(
     if (code === 401) {
       const { userStore } = useStore();
       userStore.forceLogout();
+      modal.msgError('无效的会话，或者会话已过期，请重新登录。');
       return Promise.reject('无效的会话，或者会话已过期，请重新登录。');
-    } else if (code === 601) {
-      modal.notifyError(message);
-      return Promise.reject(new Error(message));
     } else if (code != 200) {
-      modal.notifyError(message);
+      modal.msgError(message);
       return Promise.reject(message);
     } else {
       return Promise.resolve(response);
@@ -57,13 +55,11 @@ requests.interceptors.response.use(
   (error: AxiosError) => {
     let { message } = error;
     if (message === 'Network Error') {
-      message = '后端接口连接异常';
+      modal.msgError('后端接口连接异常');
+      modal.msgError(message);
     } else if (message.includes('timeout')) {
-      message = '系统接口请求超时';
-    } else if (message.includes('Request failed with status code')) {
-      message = '系统接口' + message.substring(message.length - 3) + '异常';
+      modal.msgError('系统接口请求超时');
     }
-    modal.msgError(message);
     return Promise.reject(error);
   }
 );

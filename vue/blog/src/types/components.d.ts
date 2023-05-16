@@ -11,6 +11,7 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AffixTools: typeof import('./../components/AffixTools.vue')['default']
     Catalog: typeof import('./../components/Catalog.vue')['default']
+    Comment: typeof import('./../components/comment/index.vue')['default']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElDialog: typeof import('element-plus/es')['ElDialog']
@@ -18,6 +19,7 @@ declare module '@vue/runtime-core' {
     ElDropdown: typeof import('element-plus/es')['ElDropdown']
     ElLink: typeof import('element-plus/es')['ElLink']
     ElText: typeof import('element-plus/es')['ElText']
+    Emoji: typeof import('./../components/Emoji.vue')['default']
     LoginDialog: typeof import('./../components/dialog/LoginDialog.vue')['default']
     NaiveProvider: typeof import('./../components/NaiveProvider.vue')['default']
     NAvatar: typeof import('naive-ui')['NAvatar']
@@ -46,6 +48,7 @@ declare module '@vue/runtime-core' {
     NThemeEditor: typeof import('naive-ui')['NThemeEditor']
     NTooltip: typeof import('naive-ui')['NTooltip']
     Pagination: typeof import('./../components/Pagination.vue')['default']
+    ReplyBox: typeof import('./../components/comment/ReplyBox.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SvgIcon: typeof import('./../components/SvgIcon.vue')['default']

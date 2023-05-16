@@ -17,7 +17,7 @@ const useAppStore = defineStore('useAppStore', {
     loading: false,
     npTimeout: -1,
     loadingTimeout: -1,
-    headerChangeHeight: 730,
+    headerChangeHeight: 700,
     rightContainer: true,
     loginFrame: false
   }),

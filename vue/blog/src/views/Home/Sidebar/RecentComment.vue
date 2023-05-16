@@ -47,50 +47,14 @@
 import { ref } from 'vue';
 import type { RecentComment } from '@/api/comment/types';
 import commentApi from '@/api/comment';
-import useStore from '@/stores';
 import { formatDate } from '@/utils/date';
 
 const commentList = ref<RecentComment[]>([]);
-const { blogStore } = useStore();
 
 onMounted(() => {
   commentApi.getRecentComments().then(({ data }) => {
     commentList.value = data.data;
-  }).catch(() => {
-    // todo 删除
-    setTimeout(() => {
-      commentList.value.push(
-        {
-          avatar: blogStore.siteConfig.touristAvatar,
-          id: 1,
-          nickname: '测试用户123456789123456789123456789123456789',
-          commentContent: '测试一下如果评论过长会咋样  去问人体由于i哦地方豆腐花123大分割',
-          createTime: '2023-01-01'
-        },
-        {
-          avatar: blogStore.siteConfig.touristAvatar,
-          id: 2,
-          nickname: '测试用户2',
-          commentContent: '测试',
-          createTime: '2023-01-01'
-        },
-        {
-          avatar: blogStore.siteConfig.touristAvatar,
-          id: 3,
-          nickname: '测试用户3',
-          commentContent: '测试',
-          createTime: '2023-01-01'
-        },
-        {
-          avatar: blogStore.siteConfig.touristAvatar,
-          id: 4,
-          nickname: '测试用户4',
-          commentContent: '测试',
-          createTime: '2023-01-01'
-        }
-      );
-    }, 1000);
-  });
+  }).catch(() => {});
 });
 
 </script>

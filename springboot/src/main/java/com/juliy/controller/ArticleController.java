@@ -1,6 +1,8 @@
 package com.juliy.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.juliy.annotation.AccessLimit;
 import com.juliy.model.dto.ArticleDTO;
 import com.juliy.model.dto.ArticleFeaturedDTO;
 import com.juliy.model.dto.ArticleTopDTO;
@@ -210,6 +212,8 @@ public class ArticleController {
      * 点赞文章
      * @param articleId 文章id
      */
+    @SaCheckLogin
+    @AccessLimit(seconds = 60, maxCount = 10)
     @Operation(summary = "点赞文章")
     @PostMapping("/{articleId}/like")
     public Result<?> likeArticle(@PathVariable("articleId") Integer articleId) {

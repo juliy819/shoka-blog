@@ -9,13 +9,18 @@
       <svg-icon icon-class="web" size="1.1875rem" />
       网站信息
     </div>
-    <div class="web-item">
-      <div class="web-name">运行时长</div>
-      <div class="web-count">{{ runTime }}</div>
+    <div v-if="blogStore.siteConfig.id">
+      <div class="web-item">
+        <div class="web-name">运行时长</div>
+        <div class="web-count">{{ runTime }}</div>
+      </div>
+      <div class="web-item">
+        <div class="web-name">总访问量</div>
+        <div class="web-count">{{ blogStore.viewCount }}</div>
+      </div>
     </div>
-    <div class="web-item">
-      <div class="web-name">总访问量</div>
-      <div class="web-count">{{ blogStore.viewCount }}</div>
+    <div v-else>
+      <n-skeleton text repeat="2" />
     </div>
   </div>
 </template>
