@@ -1,6 +1,7 @@
 package com.juliy.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.juliy.annotation.OptLogger;
 import com.juliy.model.dto.CategoryDTO;
 import com.juliy.model.dto.ConditionDTO;
 import com.juliy.model.vo.*;
@@ -11,6 +12,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.juliy.constant.OptTypeConstant.*;
 
 /**
  * 分类控制器
@@ -69,6 +72,7 @@ public class CategoryController {
      */
     @Operation(summary = "删除分类")
     @SaCheckPermission("category:delete")
+    @OptLogger(value = DELETE)
     @DeleteMapping("/{categoryIds}")
     public Result<?> deleteCategories(@PathVariable Integer[] categoryIds) {
         categoryService.removeCategories(List.of(categoryIds));
@@ -81,6 +85,7 @@ public class CategoryController {
      */
     @Operation(summary = "添加分类")
     @SaCheckPermission("category:add")
+    @OptLogger(value = ADD)
     @PostMapping
     public Result<?> addCategory(@Validated @RequestBody CategoryDTO categoryDTO) {
         categoryService.saveOrUpdateCategory(categoryDTO);
@@ -93,6 +98,7 @@ public class CategoryController {
      */
     @Operation(summary = "修改分类")
     @SaCheckPermission("category:update")
+    @OptLogger(value = UPDATE)
     @PutMapping
     public Result<?> updateCategory(@Validated @RequestBody CategoryDTO categoryDTO) {
         categoryService.saveOrUpdateCategory(categoryDTO);

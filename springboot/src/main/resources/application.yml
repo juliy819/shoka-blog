@@ -134,7 +134,7 @@ mybatis-plus:
       # 数据库表前缀
       table-prefix: t_
 
-  # 文件上传策略
+# 文件上传策略
 upload:
   # 策略选择
   strategy: qiniu
@@ -151,3 +151,11 @@ upload:
     bucketName: juliy-blog
     region: huadong
     url: http://static.juliy.top
+
+# 线程池配置
+thread:
+  pool:
+    core-pool-size: 5
+    max-pool-size: 10
+    queue-capacity: 50
+    keep-alive-seconds: 60

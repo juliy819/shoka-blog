@@ -3,7 +3,7 @@ package com.juliy.config;
 import com.juliy.exception.ServiceException;
 import com.qiniu.storage.Region;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -13,20 +13,17 @@ import org.springframework.context.annotation.Configuration;
  */
 @Data
 @Configuration
+@ConfigurationProperties(prefix = "upload.qiniu")
 public class QiniuConfig {
-    @Value("${upload.qiniu.accessKey}")
-    private String AccessKey;
 
-    @Value("${upload.qiniu.secretKey}")
-    private String SecretKey;
+    private String accessKey;
 
-    @Value("${upload.qiniu.bucketName}")
-    private String BucketName;
+    private String secretKey;
 
-    @Value("${upload.qiniu.region}")
+    private String bucketName;
+
     private String region;
 
-    @Value("${upload.qiniu.url}")
     private String url;
 
     /**

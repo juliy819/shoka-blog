@@ -1,6 +1,7 @@
 package com.juliy.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.juliy.annotation.OptLogger;
 import com.juliy.entity.SiteConfig;
 import com.juliy.model.vo.Result;
 import com.juliy.service.SiteConfigService;
@@ -9,6 +10,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import static com.juliy.constant.OptTypeConstant.UPDATE;
+import static com.juliy.constant.OptTypeConstant.UPLOAD;
 
 /**
  * 网站配置控制器
@@ -44,6 +48,7 @@ public class SiteConfigController {
      */
     @Operation(summary = "修改网站配置")
     @SaCheckPermission("site:update")
+    @OptLogger(value = UPDATE)
     @PutMapping
     public Result<?> updateSiteConfig(@RequestBody SiteConfig siteConfig) {
         siteConfigService.updateSiteConfig(siteConfig);
@@ -57,6 +62,7 @@ public class SiteConfigController {
      */
     @Operation(summary = "上传网站配置图片")
     @SaCheckPermission("web:site:upload")
+    @OptLogger(value = UPLOAD)
     @PostMapping("/upload")
     public Result<String> saveSiteImg(@RequestParam("file") MultipartFile file) {
         return Result.success(siteConfigService.saveSiteImage(file));

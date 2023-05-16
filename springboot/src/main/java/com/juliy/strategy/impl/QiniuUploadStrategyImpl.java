@@ -52,6 +52,9 @@ public class QiniuUploadStrategyImpl extends AbstractUploadStrategyImpl {
 
     @Override
     public void upload(String path, String fileName, InputStream inputStream) throws IOException {
+        if (path.startsWith("/")) {
+            path = path.substring(1);
+        }
         Response res = uploadManager.put(inputStream, path + fileName, token, null, null);
         // 判断是否需要重传，最大重传次数为3
         int retry = 0;

@@ -3,6 +3,8 @@ package com.juliy.controller;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.juliy.annotation.AccessLimit;
+import com.juliy.annotation.OptLogger;
+import com.juliy.annotation.VisitLogger;
 import com.juliy.model.dto.ArticleDTO;
 import com.juliy.model.dto.ArticleFeaturedDTO;
 import com.juliy.model.dto.ArticleTopDTO;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+
+import static com.juliy.constant.OptTypeConstant.*;
 
 /**
  * 文章控制器
@@ -53,6 +57,7 @@ public class ArticleController {
      */
     @Operation(summary = "添加文章")
     @SaCheckPermission("article:add")
+    @OptLogger(value = ADD)
     @PostMapping
     public Result<?> addArticle(@Validated @RequestBody ArticleDTO articleDTO) {
         articleService.saveOrUpdateArticle(articleDTO);
@@ -65,6 +70,7 @@ public class ArticleController {
      */
     @Operation(summary = "修改文章")
     @SaCheckPermission("article:update")
+    @OptLogger(value = UPDATE)
     @PutMapping
     public Result<?> updateArticle(@Validated @RequestBody ArticleDTO articleDTO) {
         articleService.saveOrUpdateArticle(articleDTO);
@@ -89,6 +95,7 @@ public class ArticleController {
      */
     @Operation(summary = "删除文章")
     @SaCheckPermission("article:delete")
+    @OptLogger(value = DELETE)
     @DeleteMapping("/{articleIds}")
     public Result<?> deleteArticles(@PathVariable List<Integer> articleIds) {
         articleService.deleteArticles(articleIds);
@@ -101,6 +108,7 @@ public class ArticleController {
      */
     @Operation(summary = "回收文章")
     @SaCheckPermission("article:recycle")
+    @OptLogger(value = UPDATE)
     @PutMapping("/recycle")
     public Result<?> recycleArticles(@RequestBody List<Integer> articleIds) {
         articleService.recycleArticles(articleIds);
@@ -113,6 +121,7 @@ public class ArticleController {
      */
     @Operation(summary = "恢复文章")
     @SaCheckPermission("article:recover")
+    @OptLogger(value = UPDATE)
     @PutMapping("/recover")
     public Result<?> recoverArticles(@RequestBody List<Integer> articleIds) {
         articleService.recoverArticles(articleIds);
@@ -126,6 +135,7 @@ public class ArticleController {
      */
     @Operation(summary = "保存文章图片")
     @SaCheckPermission("article:upload")
+    @OptLogger(value = UPLOAD)
     @PostMapping("/upload")
     public Result<String> saveArticleImages(@RequestParam("file") MultipartFile file) {
         return Result.success(articleService.saveArticleImage(file));
@@ -138,6 +148,7 @@ public class ArticleController {
      */
     @Operation(summary = "置顶文章")
     @SaCheckPermission("article:top")
+    @OptLogger(value = UPDATE)
     @PutMapping("/top")
     public Result<?> updateArticleTop(@Validated @RequestBody ArticleTopDTO top) {
         articleService.updateArticleTop(top);
@@ -150,6 +161,7 @@ public class ArticleController {
      */
     @Operation(summary = "推荐文章")
     @SaCheckPermission("article:featured")
+    @OptLogger(value = UPDATE)
     @PutMapping("/featured")
     public Result<?> updateArticleFeatured(@Validated @RequestBody ArticleFeaturedDTO featured) {
         articleService.updateArticleFeatured(featured);
@@ -171,6 +183,7 @@ public class ArticleController {
      * 获取首页文章列表
      * @return 首页文章列表
      */
+    @VisitLogger(value = "首页")
     @Operation(summary = "获取首页文章列表")
     @GetMapping("/list")
     public Result<PageResult<ArticleHomeVO>> getArticlesByPage() {
@@ -182,6 +195,7 @@ public class ArticleController {
      * @param articleId 文章id
      * @return 文章
      */
+    @VisitLogger(value = "文章")
     @Operation(summary = "查看文章")
     @GetMapping("/{articleId}")
     public Result<ArticleVO> getArticleById(@PathVariable Integer articleId) {
@@ -202,6 +216,7 @@ public class ArticleController {
      * 获取文章归档
      * @return 文章归档列表
      */
+    @VisitLogger(value = "归档")
     @Operation(summary = "获取文章归档")
     @GetMapping("/archives/list")
     public Result<PageResult<ArchiveVO>> listArchiveVO() {

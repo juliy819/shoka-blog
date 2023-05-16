@@ -1,6 +1,7 @@
 package com.juliy.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.juliy.annotation.OptLogger;
 import com.juliy.model.dto.ConditionDTO;
 import com.juliy.model.dto.TagDTO;
 import com.juliy.model.vo.*;
@@ -12,6 +13,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.juliy.constant.OptTypeConstant.*;
 
 /**
  * 标签控制器
@@ -71,6 +74,7 @@ public class TagController {
      */
     @Operation(summary = "添加标签")
     @SaCheckPermission("tag:add")
+    @OptLogger(value = ADD)
     @PostMapping
     public Result<?> addTag(@Validated @RequestBody TagDTO tagDTO) {
         tagService.saveOrUpdateTag(tagDTO);
@@ -83,6 +87,7 @@ public class TagController {
      */
     @Operation(summary = "修改标签")
     @SaCheckPermission("tag:update")
+    @OptLogger(value = UPDATE)
     @PutMapping
     public Result<?> updateTag(@Validated @RequestBody TagDTO tagDTO) {
         tagService.saveOrUpdateTag(tagDTO);
@@ -95,6 +100,7 @@ public class TagController {
      */
     @Operation(summary = "删除标签")
     @SaCheckPermission("tag:delete")
+    @OptLogger(value = DELETE)
     @DeleteMapping("/{tagIds}")
     public Result<?> deleteTag(@PathVariable Integer[] tagIds) {
         tagService.removeTags(List.of(tagIds));

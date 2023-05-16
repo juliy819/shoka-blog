@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.juliy.mapper.ExceptionLogMapper">
+    <select id="selectExceptionLogList" resultType="com.juliy.entity.ExceptionLog">
+        SELECT
+        id,
+        `module`,
+        uri,
+        `name`,
+        description,
+        error_method,
+        message,
+        request_method,
+        ip_address,
+        ip_source,
+        os,
+        browser,
+        create_time
+        FROM t_exception_log tel
+        <where>
+            <if test="condition.optModule!=null">
+                `module` like concat('%',#{condition.optModule},'%')
+            </if>
+            <if test="condition.keywords!=null">
+                OR description like concat('%',#{condition.keywords},'%')
+            </if>
+        </where>
+        ORDER BY id DESC
+        LIMIT #{current},#{size}
+    </select>
+</mapper>

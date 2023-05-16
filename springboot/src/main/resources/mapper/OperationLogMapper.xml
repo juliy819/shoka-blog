@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.juliy.mapper.OperationLogMapper">
+    <select id="selectOperationLogList" resultType="com.juliy.entity.OperationLog">
+        SELECT
+        id,
+        `module`,
+        uri,
+        type,
+        `name`,
+        description,
+        method,
+        params,
+        `data`,
+        user_id,
+        nickname,
+        ip_address,
+        ip_source,
+        times,
+        create_time
+        FROM t_operation_log
+        <where>
+            <if test="condition.optModule!=null">
+                `module` like concat('%',#{condition.optModule},'%')
+            </if>
+            <if test="condition.keywords!=null">
+                OR description like concat('%',#{condition.keywords},'%')
+            </if>
+        </where>
+        ORDER BY id DESC
+        LIMIT #{limit},#{size}
+    </select>
+</mapper>
