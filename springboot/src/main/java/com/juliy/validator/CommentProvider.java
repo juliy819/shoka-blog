@@ -26,10 +26,9 @@ public class CommentProvider implements DefaultGroupSequenceProvider<CommentDTO>
             if (commentDTO.getCommentType().equals(LINK.getType())) {
                 defaultGroupSequence.add(ValidationGroups.FriendLink.class);
             }
-            if (Objects.isNull(commentDTO.getParentId())) {
+            if (Objects.isNull(commentDTO.getParentId()) || commentDTO.getParentId().equals(0)) {
                 defaultGroupSequence.add(ValidationGroups.ParentIdNull.class);
-            }
-            if (Objects.nonNull(commentDTO.getParentId())) {
+            } else {
                 defaultGroupSequence.add(ValidationGroups.ParentIdNotNull.class);
             }
         }

@@ -20,7 +20,7 @@ import org.hibernate.validator.group.GroupSequenceProvider;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@GroupSequenceProvider(value = CommentProvider.class)
+@GroupSequenceProvider(CommentProvider.class)
 @Schema(description = "评论DTO")
 public class CommentDTO {
 
@@ -43,8 +43,6 @@ public class CommentDTO {
     /**
      * 父评论id
      */
-    @Null(groups = {ValidationGroups.ParentIdNull.class})
-    @NotNull(groups = {ValidationGroups.ParentIdNotNull.class})
     @Schema(description = "父评论id")
     private Integer parentId;
 

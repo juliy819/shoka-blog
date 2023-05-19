@@ -6,7 +6,7 @@
 <template>
   <div class="reply-box" v-if="show">
     <div class="box-normal">
-      <div class="reply-box-avatar">
+      <div class="reply-avatar">
         <n-avatar size="large" round :src="userStore.avatar ? userStore.avatar : blogStore.siteConfig.touristAvatar" />
       </div>
       <div class="reply-box-wrap">
@@ -27,11 +27,12 @@
 import type { CommentForm } from '@/api/comment/types';
 import useStore from '@/stores';
 import emojiList from '@/utils/emoji';
-import commentApi from '@/api/comment/index';
 import { modal } from '@/utils/modal';
 import Emoji from '@/components/Emoji.vue';
 import { ref } from 'vue';
+import commentApi from '@/api/comment';
 
+const entrys = Object.entries(emojiList);
 const { userStore, blogStore, appStore } = useStore();
 const inputActiveClass = {
   lineHeight: 'normal',
@@ -63,7 +64,7 @@ const commentForm = ref<CommentForm>({
   commentContent: ''
 });
 const placeholderText = computed(() =>
-  nickname.value ? `回复 @${nickname.value}：` : '发一条友善的评论'
+    nickname.value ? `回复 @${nickname.value}：` : '发一条友善的评论'
 );
 const isContentEmpty = computed(() => commentContent.value.length === 0);
 
@@ -80,12 +81,15 @@ const handleAdd = () => {
     return;
   }
   // 解析表情
-  commentForm.value.commentContent = commentContent.value.replace(/\[.+?\]/g, (str) => {
-    return (
-      '<img src= \'' +
-      emojiList[str] +
-      '\' width=\'21\' height=\'21\' style=\'margin: 0 1px;vertical-align: text-bottom\' alt=""/>'
-    );
+  commentForm.value.commentContent = commentContent.value.replace(/\[.+?]/g, (str) => {
+    if (str in emojiList) {
+      return (
+          '<img src= \'' +
+          emojiList[str as keyof typeof emojiList] +
+          '\' width=\'21\' height=\'21\' style=\'margin: 0 1px;vertical-align: text-bottom\' alt=""/>'
+      );
+    }
+    return str;
   });
   commentApi.addComment(commentForm.value).then(() => {
     commentContent.value = '';
@@ -136,7 +140,7 @@ defineExpose({ commentForm, nickname, setReply });
   }
 }
 
-.reply-box-avatar {
+.reply-avatar {
   @include mixin.flex;
   width: 3rem;
   height: 3.125rem;

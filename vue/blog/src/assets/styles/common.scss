@@ -231,6 +231,23 @@
   }
 }
 
+/* 加载更多按钮 */
+.loading-wrap {
+  @include mixin.flex;
+  margin: 1rem 0 0.5rem 0;
+
+  .loading-btn {
+    letter-spacing: 1.25px;
+    color: var(--grey-0) !important;
+    background-image: linear-gradient(to right, var(--color-pink) 0, var(--color-orange) 100%);
+  }
+}
+
+/* 点赞 */
+.like-flag {
+  color: var(--primary-color);
+}
+
 ::selection {
   color: #fff;
   background-color: var(--color-red-a5);

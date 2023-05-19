@@ -12,7 +12,8 @@ const commentApi: CommentApi = {
 
   getCommentList: (commentQuery) => request({
     url: 'comment/list',
-    method: 'get'
+    method: 'get',
+    params: commentQuery
   }),
 
   getReplyList: (commentId, pageQuery) => request({

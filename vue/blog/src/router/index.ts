@@ -18,7 +18,7 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/Archive/index.vue')
   },
   {
-    path: '/article/:articleId',
+    path: '/article/:id',
     name: 'article',
     component: () => import('@/views/Article/index.vue')
   },
@@ -28,7 +28,7 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/Category/index.vue')
   },
   {
-    path: '/category/:categoryId',
+    path: '/category/:id',
     name: 'category',
     component: () => import('@/views/Category/ArticleList.vue')
   },
@@ -43,7 +43,7 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/Tag/index.vue')
   },
   {
-    path: '/tag/:tagId',
+    path: '/tag/:id',
     name: 'tag',
     component: () => import('@/views/Tag/ArticleList.vue')
   },
@@ -53,12 +53,12 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/Talk/index.vue')
   },
   {
-    path: '/talk/:talkId',
+    path: '/talk/:id',
     name: 'talk',
     component: () => import('@/views/Talk/Talk.vue')
   },
   {
-    path: '/user/:userId',
+    path: '/user/:id',
     name: 'user',
     component: () => import('@/views/User/index.vue')
   },

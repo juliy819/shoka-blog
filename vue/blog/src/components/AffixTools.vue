@@ -34,11 +34,11 @@ const commentShow = computed(() => (value: string) => commentList.includes(value
 
 useEventListener(document, 'scroll', () => {
   process.value = Number(
-    (
-      (window.pageYOffset /
-        (document.documentElement.scrollHeight - window.innerHeight)) *
-      100
-    ).toFixed(0)
+      (
+          (window.pageYOffset /
+              (document.documentElement.scrollHeight - window.innerHeight)) *
+          100
+      ).toFixed(0)
   );
 });
 const handleSide = () => {

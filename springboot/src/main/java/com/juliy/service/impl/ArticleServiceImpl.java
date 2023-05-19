@@ -1,6 +1,7 @@
 package com.juliy.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
@@ -11,7 +12,6 @@ import com.juliy.entity.Category;
 import com.juliy.entity.Tag;
 import com.juliy.enums.FilePathEnum;
 import com.juliy.enums.LikeTypeEnum;
-import com.juliy.exception.ServiceException;
 import com.juliy.mapper.ArticleMapper;
 import com.juliy.mapper.ArticleTagMapper;
 import com.juliy.mapper.CategoryMapper;
@@ -106,9 +106,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     public ArticleInfoVO getArticleInfoById(Integer articleId) {
         // 查询文章信息
         ArticleInfoVO articleInfoVO = articleMapper.selectArticleInfoAdminById(articleId);
-        if (Objects.isNull(articleInfoVO)) {
-            throw new ServiceException("文章不存在");
-        }
+        Assert.notNull(articleInfoVO, "文章不存在");
         // 查询分类名称
         String categoryName = categoryMapper.selectOne(
                         new LambdaQueryWrapper<Category>()
@@ -229,9 +227,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public ArticleVO getArticleHomeById(Integer articleId) {
         ArticleVO article = articleMapper.selectArticleHomeById(articleId);
-        if (Objects.isNull(article)) {
-            throw new ServiceException("不存在id为" + articleId + "的文章");
-        }
+        Assert.notNull(article, "不存在id为" + articleId + "的文章");
         // 浏览量加1
         redisService.incrZet(ARTICLE_VIEW_COUNT, articleId, 1D);
         // 查询上一篇文章

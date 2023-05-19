@@ -117,7 +117,7 @@
               </div>
             </div>
           </div>
-          <Comment :comment-type="commentType" class="comment-container" />
+          <Comment :comment-type="commentType" />
         </div>
       </div>
       <!-- 右侧目录 -->
@@ -130,7 +130,7 @@
   </div>
 
   <div v-else>
-    <n-skeleton repeat="5" />
+    <n-skeleton :repeat="5" />
   </div>
 </template>
 
@@ -191,9 +191,9 @@ const formatWordNum = (value: number) => {
  */
 const deleteHTMLTag = (content: string) => {
   return content
-    .replace(/<\/?[^>]*>/g, '')
-    .replace(/[|]*\n/, '')
-    .replace(/&npsp;/gi, '');
+      .replace(/<\/?[^>]*>/g, '')
+      .replace(/[|]*\n/, '')
+      .replace(/&npsp;/gi, '');
 };
 
 const like = () => {
@@ -215,7 +215,7 @@ const like = () => {
 
 onMounted(() => {
   appStore.headerChangeHeight = 480;
-  articleApi.getArticle(Number(route.params.articleId)).then(({ data }) => {
+  articleApi.getArticle(Number(route.params.id)).then(({ data }) => {
     article.value = data.data;
     document.title = article.value.articleTitle;
     wordNum.value = deleteHTMLTag(article.value.articleContent).length;
@@ -269,6 +269,7 @@ onMounted(() => {
 }
 
 .tag-container {
+  @include mixin.none-select;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -276,6 +277,7 @@ onMounted(() => {
 }
 
 .article-footer {
+  @include mixin.none-select;
   margin: 0 2.5rem 0 2.5rem;
 
   &::before {
@@ -326,6 +328,7 @@ onMounted(() => {
 }
 
 .article-nav {
+  @include mixin.none-select;
   display: flex;
   border-radius: 0.625rem;
   overflow: hidden;
@@ -364,10 +367,6 @@ onMounted(() => {
 
 .nav-cover:hover::before {
   opacity: 0.3;
-}
-
-.comment-container {
-  margin: 0 2rem;
 }
 
 @media (max-width: 767px) {

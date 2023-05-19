@@ -1,4 +1,4 @@
-const emojiList = {
+export default {
   '[热]': 'https://static.ttkwsd.top/emoji/re.png',
   '[冷]': 'https://static.ttkwsd.top/emoji/leng.png',
   '[脱单doge]': 'https://static.ttkwsd.top/emoji/doge.png',
@@ -76,4 +76,3 @@ const emojiList = {
   '[电视_微笑]': 'https://static.ttkwsd.top/emoji/tvwx.png',
   '[电视_斜眼笑]': 'https://static.ttkwsd.top/emoji/tvxyx.png'
 };
-export default emojiList;

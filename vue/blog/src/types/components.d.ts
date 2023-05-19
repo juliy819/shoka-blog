@@ -48,6 +48,7 @@ declare module '@vue/runtime-core' {
     NThemeEditor: typeof import('naive-ui')['NThemeEditor']
     NTooltip: typeof import('naive-ui')['NTooltip']
     Pagination: typeof import('./../components/Pagination.vue')['default']
+    Paging: typeof import('./../components/Paging.vue')['default']
     ReplyBox: typeof import('./../components/comment/ReplyBox.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
