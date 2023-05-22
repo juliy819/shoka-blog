@@ -3,6 +3,7 @@ import type { BlogInfo, SiteConfig } from '@/api/blog/types';
 
 const useBlogStore = defineStore('useBlogStore', {
   state: (): BlogInfo => ({
+    status: 0,
     articleCount: 0,
     categoryCount: 0,
     tagCount: 0,
@@ -20,6 +21,14 @@ const useBlogStore = defineStore('useBlogStore', {
       this.tagCount = blogInfo.tagCount;
       this.viewCount = blogInfo.viewCount;
       this.siteConfig = blogInfo.siteConfig;
+    },
+
+    /**
+     * 设置数据状态
+     * @param status 数据状态
+     */
+    setStatus(status: number) {
+      this.status = status;
     }
   },
   getters: {},

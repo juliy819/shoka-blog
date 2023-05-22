@@ -11,38 +11,53 @@
   </div>
   <div class="bg">
     <div class="page-container">
-      <n-grid v-if="hasArticle" x-gap="20" y-gap="20" cols="1 s:2 m:3" responsive="screen">
-        <n-grid-item class="article-item" v-for="article of articleList" :key="article.id">
-          <div class="article-cover">
-            <router-link :to="`/article/${article.id}`">
-              <my-image :src="article.articleCover" />
-            </router-link>
-          </div>
-          <div class="article-info">
-            <div class="article-title">
-              <router-link :to="`/article/${article.id}`">{{ article.articleTitle }}</router-link>
-            </div>
-            <div class="article-time">
+      <load-viewer :status="status" no-data-msg="该分类下暂时还没有文章哦~" failed-msg="文章加载失败">
+        <template #data>
+          <n-grid x-gap="20" y-gap="20" cols="1 s:2 m:3" responsive="screen">
+            <n-grid-item class="article-item" v-for="article of articleList" :key="article.id">
+              <div class="article-cover">
+                <router-link :to="`/article/${article.id}`">
+                  <my-image :src="article.articleCover" />
+                </router-link>
+              </div>
+              <div class="article-info">
+                <div class="article-title">
+                  <router-link :to="`/article/${article.id}`">{{ article.articleTitle }}</router-link>
+                </div>
+                <div class="article-time">
               <span>
                 <svg-icon icon-class="calendar" size="0.95rem" />
                 {{ formatDate(article.createTime) }}
               </span>
-            </div>
-            <div class="tag-info">
-              <router-link :to="`/tag/${tag.id}`" class="article-tag-category" v-for="tag in article.tagList"
-                           :key="tag.id">
-                <svg-icon icon-class="tag" size="0.8rem"></svg-icon>
-                {{ tag.tagName }}
-              </router-link>
-            </div>
-          </div>
-        </n-grid-item>
-      </n-grid>
-      <n-space v-else justify="center">
-        <n-gradient-text type="error" style="font-weight: bold">
-          该分类下暂时还没有文章哦~
-        </n-gradient-text>
-      </n-space>
+                </div>
+                <div class="tag-info">
+                  <router-link :to="`/tag/${tag.id}`" class="article-tag-category" v-for="tag in article.tagList"
+                               :key="tag.id">
+                    <svg-icon icon-class="tag" size="0.8rem"></svg-icon>
+                    {{ tag.tagName }}
+                  </router-link>
+                </div>
+              </div>
+            </n-grid-item>
+          </n-grid>
+        </template>
+        <template #loading>
+          <n-grid x-gap="20" y-gap="20" cols="1 s:2 m:3" responsive="screen">
+            <n-grid-item class="article-item" v-for="index of [1,2,3,4,5,6]" :key="index">
+              <n-skeleton class="article-cover" />
+              <div class="article-info">
+                <n-skeleton round class="article-title" style="width: 12rem;" />
+                <n-skeleton round class="article-time mb10" style="width: 6rem;" />
+                <n-space justify="start">
+                  <n-skeleton round style="width: 4rem;" />
+                  <n-skeleton round style="width: 4rem;" />
+                  <n-skeleton round style="width: 4rem;" />
+                </n-space>
+              </div>
+            </n-grid-item>
+          </n-grid>
+        </template>
+      </load-viewer>
     </div>
   </div>
 </template>
@@ -55,7 +70,7 @@ import { formatDate } from '@/utils/date';
 import MyImage from '@/components/MyImage.vue';
 
 const route = useRoute();
-const hasArticle = ref(false);
+const status = ref<number>(0);
 const name = ref('');
 const articleList = ref<ArticleCondition[]>([]);
 const articleQuery = ref<ArticleQuery>({
@@ -69,17 +84,17 @@ onMounted(() => {
   categoryApi.getCategoryArticleList(articleQuery.value).then(({ data }) => {
     articleList.value = data.data.articleConditionList;
     name.value = data.data.name;
-    hasArticle.value = articleList.value.length > 0;
-  });
+    if (articleList.value.length > 0) {
+      status.value = 1;
+    } else {
+      status.value = 2;
+    }
+  }).catch(() => {status.value = -1;});
 });
 </script>
 
 <style lang="scss" scoped>
 @use '@/assets/styles/mixin';
-
-.category-name {
-  text-align: center;
-}
 
 .article-item {
   display: flex;

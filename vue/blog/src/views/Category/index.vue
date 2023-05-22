@@ -11,13 +11,20 @@
   </div>
   <div class="bg">
     <div class="page-container">
-      <echarts class="echarts" :options="categoryOption" />
-      <ul class="category-list">
-        <li class="category-item" v-for="category in categoryList" :key="category.id">
-          <router-link :to="`/category/${category.id}`">{{ category.categoryName }}</router-link>
-          <span class="category-count">({{ category.articleCount }})</span>
-        </li>
-      </ul>
+      <load-viewer :status="status" no-data-msg="暂时还没有分类哦~" failed-msg="分类加载失败">
+        <template #data>
+          <echarts class="echarts" :options="categoryOption" />
+          <ul class="category-list">
+            <li class="category-item" v-for="category in categoryList" :key="category.id">
+              <router-link :to="`/category/${category.id}`">{{ category.categoryName }}</router-link>
+              <span class="category-count">({{ category.articleCount }})</span>
+            </li>
+          </ul>
+        </template>
+        <template #loading>
+          <n-skeleton text round :repeat="5" />
+        </template>
+      </load-viewer>
     </div>
   </div>
 </template>
@@ -76,6 +83,8 @@ let categoryOption = reactive({
   ]
 
 });
+
+const status = ref<number>(0);
 const categoryList = ref<Category[]>([]);
 onMounted(() => {
   categoryApi.getCategoryList().then(({ data }) => {
@@ -88,7 +97,12 @@ onMounted(() => {
         });
       });
     }
-  });
+    if (categoryList.value.length > 0) {
+      status.value = 1;
+    } else {
+      status.value = 2;
+    }
+  }).catch(() => {status.value = -1;});
 });
 </script>
 

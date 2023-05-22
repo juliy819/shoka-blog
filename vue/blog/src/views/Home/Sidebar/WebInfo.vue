@@ -9,19 +9,21 @@
       <svg-icon icon-class="web" size="1.1875rem" />
       网站信息
     </div>
-    <div v-if="blogStore.siteConfig.id">
-      <div class="web-item">
-        <div class="web-name">运行时长</div>
-        <div class="web-count">{{ runTime }}</div>
-      </div>
-      <div class="web-item">
-        <div class="web-name">总访问量</div>
-        <n-number-animation class="web-count" from="0" :to="blogStore.viewCount" />
-      </div>
-    </div>
-    <div v-else>
-      <n-skeleton text repeat="2" />
-    </div>
+    <load-viewer :status="blogStore.status" failed-msg="网站信息加载失败">
+      <template #data>
+        <div class="web-item">
+          <div class="web-name">运行时长</div>
+          <div class="web-count">{{ runTime }}</div>
+        </div>
+        <div class="web-item">
+          <div class="web-name">总访问量</div>
+          <div class="web-count">{{ blogStore.viewCount }}</div>
+        </div>
+      </template>
+      <template #loading>
+        <n-skeleton round text repeat="2" />
+      </template>
+    </load-viewer>
   </div>
 </template>
 
@@ -32,6 +34,7 @@ import dayjs from 'dayjs';
 
 const { blogStore } = useStore();
 const runTime = ref('');
+
 setInterval(() => {
   const days = dayjs().diff(blogStore.siteConfig.createSiteTime, 'days');
   const now = new Date();

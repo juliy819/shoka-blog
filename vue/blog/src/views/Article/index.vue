@@ -130,7 +130,7 @@
   </div>
 
   <div v-else>
-    <n-skeleton :repeat="5" />
+    <n-skeleton text round :repeat="5" />
   </div>
 </template>
 

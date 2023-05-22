@@ -2,6 +2,7 @@ package com.juliy.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.juliy.annotation.OptLogger;
+import com.juliy.annotation.VisitLogger;
 import com.juliy.model.dto.ConditionDTO;
 import com.juliy.model.dto.TagDTO;
 import com.juliy.model.vo.*;
@@ -105,5 +106,17 @@ public class TagController {
     public Result<?> deleteTag(@PathVariable Integer[] tagIds) {
         tagService.removeTags(List.of(tagIds));
         return Result.success();
+    }
+
+    /**
+     * 查看分类下的文章
+     * @param condition 查询条件
+     * @return 文章列表
+     */
+    @VisitLogger(value = "分类文章")
+    @Operation(description = "查看分类下的文章")
+    @GetMapping("/article")
+    public Result<ArticleConditionList> listTagArticles(ConditionDTO condition) {
+        return Result.success(tagService.listTagArticles(condition));
     }
 }

@@ -1,3 +1,22 @@
+import type { Result } from '@/model';
+import type { AxiosPromise } from 'axios';
+import type { ArticleConditionList, ArticleQuery } from '@/api/article/types';
+
+export interface TagApi {
+  /**
+   * 查看文章标签
+   * @returns 文章标签
+   */
+  getTagList(): AxiosPromise<Result<Tag[]>>;
+
+  /**
+   * 查看标签文章
+   * @returns 文章分类
+   */
+  getTagArticleList(articleQuery: ArticleQuery): AxiosPromise<Result<ArticleConditionList>>;
+
+}
+
 /**
  * 标签
  */

@@ -4,25 +4,29 @@
  * @date 2023/4/4 23:27
 -->
 <template>
-  <swiper v-if="featuredList.length > 0" :autoplay="{ delay: 5000, disableOnInteraction: false, }" :loop="true"
-          :modules="modules" :pagination="{ clickable: true }" :slides-per-view="1" class="swiper-container" mousewheel
-          navigation>
-    <swiper-slide v-for="article in featuredList" :key="article.id">
-      <div :style="articleCover(article.articleCover)" class="slide-content">
-        <router-link :to="`/article/${article.id}`" class="slide-title">
-          {{ article.articleTitle }}
-        </router-link>
-        <span class="slide-time">发布时间:{{ formatDate(article.createTime) }}</span>
+  <load-viewer :status="status" :display-when-empty="false" :display-when-failed="false">
+    <template #data>
+      <swiper :autoplay="{ delay: 5000, disableOnInteraction: false, }" :loop="true" :modules="modules"
+              :pagination="{ clickable: true }" :slides-per-view="1" class="swiper-container" mousewheel navigation>
+        <swiper-slide v-for="article in featuredList" :key="article.id">
+          <div :style="articleCover(article.articleCover)" class="slide-content">
+            <router-link :to="`/article/${article.id}`" class="slide-title">
+              {{ article.articleTitle }}
+            </router-link>
+            <span class="slide-time">发布时间:{{ formatDate(article.createTime) }}</span>
+          </div>
+        </swiper-slide>
+      </swiper>
+    </template>
+    <template #loading>
+      <div class="swiper-container bg-gray">
+        <div class="slide-content">
+          <n-skeleton round class="slide-title" width="200px" />
+          <n-skeleton round class="slide-time" width="200px" />
+        </div>
       </div>
-    </swiper-slide>
-  </swiper>
-  <!-- 骨架屏 -->
-  <div v-else class="swiper-container bg-gray">
-    <div class="slide-content">
-      <n-skeleton round class="slide-title" width="200px" />
-      <n-skeleton round class="slide-time" width="200px" />
-    </div>
-  </div>
+    </template>
+  </load-viewer>
 </template>
 
 <script lang="ts" setup>
@@ -37,6 +41,7 @@ import useStore from '@/stores';
 const { blogStore } = useStore();
 const modules = [Pagination, Navigation, Mousewheel, Autoplay];
 const featuredList = ref<ArticleFeatured[]>([]);
+const status = ref<number>(0);
 
 const articleCover = computed(() => (cover: string) => {
   if (cover === '') {
@@ -48,8 +53,13 @@ const articleCover = computed(() => (cover: string) => {
 onMounted(() => {
   articleApi.getArticleFeatured().then(({ data }) => {
     featuredList.value = data.data;
-  }).catch(() => {
-  });
+    if (featuredList.value.length > 0) {
+      status.value = 1;
+    } else {
+      status.value = 2;
+    }
+  }).catch(() => { status.value = -1; });
+
 });
 </script>
 

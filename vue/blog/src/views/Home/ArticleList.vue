@@ -4,59 +4,63 @@
  * @date 2023/4/5 17:01
 -->
 <template>
-  <div v-if="articleList.length > 0" v-animate="['fadeInUp']" class="article-item" v-for="article in articleList"
-       :key="article.id">
-    <router-link :to="`/article/${article.id}`" class="article-cover">
-      <my-image :src="setArticleCover(article.articleCover)" />
-    </router-link>
-    <div class="article-info">
-      <div class="article-time">
-        <!-- 置顶 -->
-        <span class="top" v-if="article.isTop === 1">
+  <load-viewer :status="status" no-data-msg="暂时还没有发布过文章哦~" failed-msg="文章加载失败">
+    <template #data>
+      <div v-animate="['fadeInUp']" class="article-item" v-for="article in articleList" :key="article.id">
+        <router-link :to="`/article/${article.id}`" class="article-cover">
+          <my-image :src="setArticleCover(article.articleCover)" />
+        </router-link>
+        <div class="article-info">
+          <div class="article-time">
+            <!-- 置顶 -->
+            <span class="top" v-if="article.isTop === 1">
           <svg-icon icon-class="top" size="0.85rem" style="margin-right: 0.15rem" />
           置顶
         </span>
-        <!-- 文章标签 -->
-        <router-link class="article-tag-category" v-for="tag in article.tagList" :key="tag.id" :to="`/tag/${tag.id}`">
-          <svg-icon icon-class="tag" size="0.9rem" style="margin-right: 0.15rem" />
-          <n-ellipsis style="max-width: 4rem">{{ tag.tagName }}</n-ellipsis>
-        </router-link>
-      </div>
-      <!-- 文章标题 -->
-      <h3 class="article-title">
-        <router-link :to="`/article/${article.id}`">
-          {{ article.articleTitle }}
-        </router-link>
-      </h3>
-      <!-- 文章内容 -->
-      <div class="article-content">{{ article.articleContent }}</div>
-      <div class="article-footer">
-        <!-- 发表时间 -->
-        <div class="create-time">
-          <svg-icon icon-class="calendar" size="0.9rem" />
-          <span>{{ formatDate(article.createTime) }} </span>
+            <!-- 文章标签 -->
+            <router-link class="article-tag-category" v-for="tag in article.tagList" :key="tag.id"
+                         :to="`/tag/${tag.id}`">
+              <svg-icon icon-class="tag" size="0.9rem" style="margin-right: 0.15rem" />
+              <n-ellipsis style="max-width: 4rem">{{ tag.tagName }}</n-ellipsis>
+            </router-link>
+          </div>
+          <!-- 文章标题 -->
+          <h3 class="article-title">
+            <router-link :to="`/article/${article.id}`">
+              {{ article.articleTitle }}
+            </router-link>
+          </h3>
+          <!-- 文章内容 -->
+          <div class="article-content">{{ article.articleContent }}</div>
+          <div class="article-footer">
+            <!-- 发表时间 -->
+            <div class="create-time">
+              <svg-icon icon-class="calendar" size="0.9rem" />
+              <span>{{ formatDate(article.createTime) }} </span>
+            </div>
+            <!-- 文章分类 -->
+            <router-link class="article-category" :to="`/category/${article.category.id}`">
+              <svg-icon icon-class="flag" size="0.85rem" />
+              <n-ellipsis style="max-width: 6rem">{{ article.category.categoryName }}</n-ellipsis>
+            </router-link>
+          </div>
+          <!-- 阅读按钮 -->
+          <router-link class="article-btn" :to="`/article/${article.id}`">more...</router-link>
         </div>
-        <!-- 文章分类 -->
-        <router-link class="article-category" :to="`/category/${article.category.id}`">
-          <svg-icon icon-class="qizhi" size="0.85rem" />
-          <n-ellipsis style="max-width: 6rem">{{ article.category.categoryName }}</n-ellipsis>
-        </router-link>
       </div>
-      <!-- 阅读按钮 -->
-      <router-link class="article-btn" :to="`/article/${article.id}`">more...</router-link>
-    </div>
-  </div>
+      <pagination v-model:current="pageQuery.current" :total="Math.ceil(count / 5)" />
+    </template>
+    <template #loading>
+      <div v-animate="['fadeInUp']" class="article-item" v-for="item in [1, 2, 3, 4, 5]" :key="item">
+        <n-skeleton class="article-cover" />
+        <div class="article-info">
+          <n-skeleton class="article-title" width="12rem" height="2rem" round />
+          <n-skeleton class="article-content" width="100%" round text :repeat="4" />
+        </div>
+      </div>
+    </template>
+  </load-viewer>
 
-  <!-- 骨架屏 -->
-  <div v-else v-animate="['fadeInUp']" class="article-item" v-for="item in [1, 2, 3, 4, 5]" :key="item">
-    <n-skeleton class="article-cover" />
-    <div class="article-info">
-      <n-skeleton class="article-title" width="12rem" height="2rem" round />
-      <n-skeleton class="article-content" width="100%" round text :repeat="4" />
-    </div>
-  </div>
-
-  <pagination v-model:current="pageQuery.current" :total="Math.ceil(count / 5)" />
 </template>
 
 <script setup lang="ts">
@@ -72,6 +76,7 @@ const { blogStore } = useStore();
 const articleList = ref<Article[]>([]);
 const pageQuery = ref<PageQuery>({ current: 1, size: 5 });
 const count = ref(0);
+const status = ref<number>(0);
 
 const setArticleCover = (coverSrc: string): string => {
   return coverSrc === '' ? blogStore.siteConfig.articleCover : coverSrc;
@@ -93,8 +98,12 @@ onMounted(() => {
   articleApi.getArticleList(pageQuery.value).then(({ data }) => {
     articleList.value = data.data.recordList;
     count.value = data.data.count;
-  }).catch(() => {
-  });
+    if (count.value > 0) {
+      status.value = 1;
+    } else {
+      status.value = 2;
+    }
+  }).catch(() => {status.value = -1;});
 });
 
 </script>

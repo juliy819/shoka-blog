@@ -9,37 +9,36 @@
       <svg-icon icon-class="comment" size="1.1875rem" />
       最新评论
     </div>
-    <div v-if="commentList.length > 0">
-      <div class="comment-item" v-for="comment in commentList" :key="comment.id">
-        <n-avatar circle :size="55" :src="comment.avatar" alt="" />
-        <div class="comment-content">
-          <div class="info">
-            <div class="nickname">{{ comment.nickname }}</div>
-            <div>{{ formatDate(comment.createTime) }}</div>
-          </div>
-          <n-ellipsis class="content" :line-clamp="2">
-            {{ comment.commentContent }}
-          </n-ellipsis>
-        </div>
-      </div>
-    </div>
-
-    <div v-else>
-      <div v-for="item in [1, 2, 3, 4, 5]" :key="item">
-        <div class="comment-item">
-          <n-skeleton circle width="55px" />
+    <load-viewer :status="status" no-data-msg="暂时还没有评论哦~" failed-msg="评论加载失败">
+      <template #data>
+        <div class="comment-item" v-for="comment in commentList" :key="comment.id">
+          <n-avatar circle :size="55" :src="comment.avatar" alt="" />
           <div class="comment-content">
             <div class="info">
-              <n-skeleton class="mb5" text width="5rem" height="0.8rem" />
-              <n-skeleton class="mb8" width="2rem" />
+              <div class="nickname">{{ comment.nickname }}</div>
+              <div>{{ formatDate(comment.createTime) }}</div>
             </div>
-            <n-skeleton class="content" />
+            <n-ellipsis class="content" :line-clamp="2">
+              {{ comment.commentContent }}
+            </n-ellipsis>
           </div>
         </div>
-      </div>
-    </div>
-
-
+      </template>
+      <template #loading>
+        <div v-for="item in [1, 2, 3, 4, 5]" :key="item">
+          <div class="comment-item">
+            <n-skeleton circle width="55px" />
+            <div class="comment-content">
+              <div class="info">
+                <n-skeleton class="mb5" text width="5rem" height="0.8rem" />
+                <n-skeleton class="mb8" width="2rem" />
+              </div>
+              <n-skeleton class="content" />
+            </div>
+          </div>
+        </div>
+      </template>
+    </load-viewer>
   </div>
 </template>
 
@@ -50,11 +49,17 @@ import commentApi from '@/api/comment';
 import { formatDate } from '@/utils/date';
 
 const commentList = ref<RecentComment[]>([]);
+const status = ref<number>(0);
 
 onMounted(() => {
   commentApi.getRecentComments().then(({ data }) => {
     commentList.value = data.data;
-  }).catch(() => {});
+    if (commentList.value.length > 0) {
+      status.value = 1;
+    } else {
+      status.value = 2;
+    }
+  }).catch(() => {status.value = -1;});
 });
 
 </script>

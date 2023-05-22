@@ -21,6 +21,7 @@ declare module '@vue/runtime-core' {
     ElLink: typeof import('element-plus/es')['ElLink']
     ElText: typeof import('element-plus/es')['ElText']
     Emoji: typeof import('./../components/Emoji.vue')['default']
+    LoadViewer: typeof import('./../components/LoadViewer.vue')['default']
     LoginDialog: typeof import('./../components/dialog/LoginDialog.vue')['default']
     MyImage: typeof import('./../components/MyImage.vue')['default']
     NaiveProvider: typeof import('./../components/NaiveProvider.vue')['default']

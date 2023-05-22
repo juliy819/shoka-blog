@@ -114,6 +114,12 @@ export interface SiteConfig {
  * 网站信息
  */
 export interface BlogInfo {
+
+  /**
+   * 数据加载状态
+   */
+  status: number;
+
   /**
    * 文章数量
    */

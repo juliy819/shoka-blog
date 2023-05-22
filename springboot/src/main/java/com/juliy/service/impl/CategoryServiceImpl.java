@@ -107,9 +107,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         List<ArticleConditionVO> articleList = articleMapper.selectArticlesByCondition(PageUtils.getLimitCurrent(),
                                                                                        PageUtils.getSize(),
                                                                                        condition);
-        String name = categoryMapper.selectOne(new LambdaQueryWrapper<Category>()
-                                                       .select(Category::getCategoryName)
-                                                       .eq(Category::getId, condition.getCategoryId()))
+        String name = this.getOne(new LambdaQueryWrapper<Category>()
+                                          .select(Category::getCategoryName)
+                                          .eq(Category::getId, condition.getCategoryId()))
                 .getCategoryName();
         return ArticleConditionList.builder()
                 .articleConditionList(articleList)

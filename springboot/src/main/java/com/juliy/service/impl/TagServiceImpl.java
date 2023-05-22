@@ -6,14 +6,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.juliy.entity.ArticleTag;
 import com.juliy.entity.Tag;
 import com.juliy.exception.ServiceException;
+import com.juliy.mapper.ArticleMapper;
 import com.juliy.mapper.ArticleTagMapper;
 import com.juliy.mapper.TagMapper;
 import com.juliy.model.dto.ConditionDTO;
 import com.juliy.model.dto.TagDTO;
-import com.juliy.model.vo.PageResult;
-import com.juliy.model.vo.TagAdminVO;
-import com.juliy.model.vo.TagOptionVO;
-import com.juliy.model.vo.TagVO;
+import com.juliy.model.vo.*;
 import com.juliy.service.TagService;
 import com.juliy.utils.BeanCopyUtils;
 import com.juliy.utils.PageUtils;
@@ -33,13 +31,14 @@ import java.util.Objects;
 public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagService {
 
     private final TagMapper tagMapper;
-
     private final ArticleTagMapper articleTagMapper;
+    private final ArticleMapper articleMapper;
 
     @Autowired
-    public TagServiceImpl(TagMapper tagMapper, ArticleTagMapper articleTagMapper) {
+    public TagServiceImpl(TagMapper tagMapper, ArticleTagMapper articleTagMapper, ArticleMapper articleMapper) {
         this.tagMapper = tagMapper;
         this.articleTagMapper = articleTagMapper;
+        this.articleMapper = articleMapper;
     }
 
     @Override
@@ -50,16 +49,16 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
     @Override
     public PageResult<TagAdminVO> listTagsAdminByPage(ConditionDTO condition) {
         Long count = tagMapper.selectCount(new LambdaQueryWrapper<Tag>()
-                .like(StrUtil.isNotBlank(condition.getKeywords()),
-                        Tag::getTagName,
-                        condition.getKeywords()));
+                                                   .like(StrUtil.isNotBlank(condition.getKeywords()),
+                                                         Tag::getTagName,
+                                                         condition.getKeywords()));
 
         if (count == 0) {
             return new PageResult<>();
         }
         List<TagAdminVO> tagList = tagMapper.selectTagsAdmin(PageUtils.getLimitCurrent(),
-                PageUtils.getSize(),
-                condition);
+                                                             PageUtils.getSize(),
+                                                             condition);
         return new PageResult<>(tagList, count);
     }
 
@@ -68,8 +67,8 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
         List<Tag> tagList = tagMapper.selectList(
                 new LambdaQueryWrapper<Tag>()
                         .like(StrUtil.isNotBlank(condition.getKeywords()),
-                                Tag::getTagName,
-                                condition.getKeywords())
+                              Tag::getTagName,
+                              condition.getKeywords())
                         .orderByDesc(Tag::getId));
         return BeanCopyUtils.copyBeanList(tagList, TagOptionVO.class);
     }
@@ -105,5 +104,20 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
             throw new ServiceException("删除失败，该标签下存在文章");
         }
         this.removeBatchByIds(tagIds);
+    }
+
+    @Override
+    public ArticleConditionList listTagArticles(ConditionDTO condition) {
+        List<ArticleConditionVO> articleList = articleMapper.selectArticlesByCondition(PageUtils.getLimitCurrent(),
+                                                                                       PageUtils.getSize(),
+                                                                                       condition);
+        String name = this.getOne(new LambdaQueryWrapper<Tag>()
+                                          .select(Tag::getTagName)
+                                          .eq(Tag::getId, condition.getTagId()))
+                .getTagName();
+        return ArticleConditionList.builder()
+                .articleConditionList(articleList)
+                .name(name)
+                .build();
     }
 }
