@@ -26,12 +26,12 @@ public interface ArticleMapper extends BaseMapper<Article> {
 
     /**
      * 查询后台文章列表
-     * @param limit     页码
+     * @param current   页码
      * @param size      数量
      * @param condition 查询条件
      * @return 后台文章列表
      */
-    List<ArticleAdminVO> selectArticlesAdmin(@Param("limit") Long limit, @Param("size") Long size,
+    List<ArticleAdminVO> selectArticlesAdmin(@Param("current") Long current, @Param("size") Long size,
                                              @Param("condition") ConditionDTO condition);
 
     /**
@@ -99,12 +99,12 @@ public interface ArticleMapper extends BaseMapper<Article> {
 
     /**
      * 根据条件查询文章
-     * @param limit     页码
+     * @param current   页码
      * @param size      大小
      * @param condition 条件
      * @return 文章列表
      */
-    List<ArticleConditionVO> selectArticlesByCondition(@Param("limit") Long limit, @Param("size") Long size,
+    List<ArticleConditionVO> selectArticlesByCondition(@Param("current") Long current, @Param("size") Long size,
                                                        @Param("condition") ConditionDTO condition);
 
 }

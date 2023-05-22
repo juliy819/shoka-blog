@@ -16,7 +16,7 @@
       </div>
       <div class="web-item">
         <div class="web-name">总访问量</div>
-        <div class="web-count">{{ blogStore.viewCount }}</div>
+        <n-number-animation class="web-count" from="0" :to="blogStore.viewCount" />
       </div>
     </div>
     <div v-else>

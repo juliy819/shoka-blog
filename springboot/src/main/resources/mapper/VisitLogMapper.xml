@@ -14,11 +14,11 @@
         create_time
         FROM ( SELECT id FROM t_visit_log
         <where>
-            <if test="keyword!=null">
-                page like concat('%',#{keyword},'%')
+            <if test="condition!=null">
+                page like concat('%',#{condition.keywords},'%')
             </if>
         </where>
-        ORDER BY id DESC LIMIT #{limit},#{size} ) temp
+        ORDER BY id DESC LIMIT #{current},#{size} ) temp
         LEFT JOIN t_visit_log tvl ON temp.id = tvl.id
     </select>
 

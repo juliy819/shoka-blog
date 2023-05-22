@@ -7,7 +7,7 @@
   <div class="page-header">
     <div class="page-title">
       <h1 class="article-title">{{ article.articleTitle }}</h1>
-      <div class="article-meta">
+      <div class="article-time">
         <div class="first-meta">
           <span class="meta-item">
             <svg-icon icon-class="calendar" style="margin-right: 0.15rem" />
@@ -237,7 +237,7 @@ onMounted(() => {
   color: var(--header-text-color);
 }
 
-.article-meta {
+.article-time {
   @include mixin.flex;
 
   flex-direction: column;

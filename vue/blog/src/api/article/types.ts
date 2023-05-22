@@ -228,7 +228,7 @@ export interface ArticleConditionList {
   /**
    * 文章列表
    */
-  articleConditionVOList: ArticleCondition[];
+  articleConditionList: ArticleCondition[];
 
   /**
    * 条件名

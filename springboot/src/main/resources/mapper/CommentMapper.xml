@@ -40,8 +40,8 @@
             <if test="condition.commentType != null">
                 c.comment_type=#{condition.commentType}
             </if>
-            <if test="condition.keyword != null">
-                AND u.nickname LIKE concat('%',#{condition.keyword},'%')
+            <if test="condition.keywords != null">
+                AND u.nickname LIKE concat('%',#{condition.keywords},'%')
             </if>
             <if test="condition.isCheck != null">
                 AND c.is_check = #{condition.isCheck}

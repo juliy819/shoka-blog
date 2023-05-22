@@ -1,3 +1,22 @@
+import type { Result } from '@/model';
+import type { AxiosPromise } from 'axios';
+import type { ArticleConditionList, ArticleQuery } from '@/api/article/types';
+
+export interface CategoryApi {
+
+  /**
+   * 查看文章分类
+   * @returns 文章分类
+   */
+  getCategoryList(): AxiosPromise<Result<Category[]>>;
+
+  /**
+   * 查看分类文章
+   * @returns 文章分类
+   */
+  getCategoryArticleList(articleQuery: ArticleQuery): AxiosPromise<Result<ArticleConditionList>>;
+}
+
 /**
  * 分类
  */

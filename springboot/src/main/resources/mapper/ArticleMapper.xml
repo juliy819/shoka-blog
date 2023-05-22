@@ -145,7 +145,7 @@
         ORDER BY is_top DESC,
         is_featured DESC,
         id DESC
-        LIMIT #{limit}, #{size}
+        LIMIT #{current}, #{size}
         ) a
         LEFT JOIN t_category c ON a.category_id = c.id
         LEFT JOIN t_article_tag tat ON a.id = tat.article_id
@@ -299,10 +299,10 @@
         INNER JOIN t_tag t ON tat.tag_id = t.id
         <where>
             is_delete = 0 and `status` = 1
-            <if test="condition.categoryId != null">
+            <if test="condition.categoryId != 0">
                 and category_id = #{condition.categoryId}
             </if>
-            <if test="condition.tagId != null">
+            <if test="condition.tagId != 0">
                 and tag_id = #{condition.tagId}
             </if>
         </where>

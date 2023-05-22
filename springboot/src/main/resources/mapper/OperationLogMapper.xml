@@ -29,6 +29,6 @@
             </if>
         </where>
         ORDER BY id DESC
-        LIMIT #{limit},#{size}
+        LIMIT #{current},#{size}
     </select>
 </mapper>

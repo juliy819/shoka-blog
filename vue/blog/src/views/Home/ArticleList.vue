@@ -7,11 +7,10 @@
   <div v-if="articleList.length > 0" v-animate="['fadeInUp']" class="article-item" v-for="article in articleList"
        :key="article.id">
     <router-link :to="`/article/${article.id}`" class="article-cover">
-      <n-image class="cover" :src="setArticleCover(article.articleCover)" preview-disabled
-               :imgProps="{ style: { objectFit: 'cover', width: '100%', height: '100%'} }" />
+      <my-image :src="setArticleCover(article.articleCover)" />
     </router-link>
     <div class="article-info">
-      <div class="article-meta">
+      <div class="article-time">
         <!-- 置顶 -->
         <span class="top" v-if="article.isTop === 1">
           <svg-icon icon-class="top" size="0.85rem" style="margin-right: 0.15rem" />
@@ -132,7 +131,7 @@ onMounted(() => {
     .article-info {
       padding: 1rem 0 3rem 1.5rem;
 
-      .article-meta {
+      .article-time {
         justify-content: flex-start;
       }
     }
@@ -157,11 +156,6 @@ onMounted(() => {
   margin-right: 1.5rem;
   clip-path: polygon(0 0, 92% 0, 100% 100%, 0 100%);
   border-radius: 0.625rem 0 0 0.625rem;
-
-  .cover {
-    @include mixin.flex;
-    transition: all 0.2s ease-in-out 0s;
-  }
 }
 
 .article-info {
@@ -170,7 +164,7 @@ onMounted(() => {
   overflow: hidden;
   padding: 1rem 1.5rem 3rem 0;
 
-  .article-meta {
+  .article-time {
     display: flex;
     justify-content: flex-end;
     font-size: 0.8rem;
@@ -257,10 +251,6 @@ a {
       margin: auto;
       clip-path: polygon(0 0, 100% 0, 100% 92%, 0 100%);
       border-radius: 0.625rem 0.625rem 0 0;
-
-      .cover {
-        width: 100%;
-      }
     }
 
     .article-info {
@@ -284,9 +274,6 @@ a {
         padding: 0 1rem 3rem;
       }
     }
-
   }
-
 }
-
 </style>
