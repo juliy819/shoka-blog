@@ -206,7 +206,7 @@
                 AND `status` = 1
               ORDER BY is_top DESC,
                        id DESC
-                  LIMIT #{current}, #{size}) a
+              LIMIT #{current}, #{size}) a
                  INNER JOIN t_category c ON a.category_id = c.id
                  INNER JOIN t_article_tag tat ON a.id = tat.article_id
                  INNER JOIN t_tag t ON t.id = tat.tag_id
@@ -241,7 +241,8 @@
         WHERE is_delete = 0
           AND `status` = 1
           AND id &lt; #{articleId}
-        ORDER BY id DESC LIMIT 1
+        ORDER BY id DESC
+        LIMIT 1
     </select>
 
     <select id="selectNextArticle" resultType="com.juliy.model.vo.ArticleNavigationVO">
@@ -250,16 +251,17 @@
         WHERE is_delete = 0
           AND `status` = 1
           AND id &gt; #{articleId}
-        ORDER BY id LIMIT 1
+        ORDER BY id
+        LIMIT 1
     </select>
 
     <select id="selectArchives" resultType="com.juliy.model.vo.ArchiveVO">
-        select id, article_title, article_cover, create_time
-        from t_article
-        where is_delete = 0
-          and `status` = 1
-        order by create_time
-            limit #{current}, #{size}
+        SELECT id, article_title, article_cover, create_time
+        FROM t_article
+        WHERE is_delete = 0
+          AND `status` = 1
+        ORDER BY create_time DESC
+        LIMIT #{current}, #{size}
     </select>
 
     <select id="selectArticleStatistics" resultType="com.juliy.model.vo.ArticleStatisticsVO">
@@ -278,7 +280,8 @@
         FROM t_article
         WHERE is_delete = 0
           AND `status` = 1
-          AND is_featured = 1 LIMIT 5
+          AND is_featured = 1
+        LIMIT 5
     </select>
 
     <select id="selectArticlesByCondition" resultMap="articleConditionVO">

@@ -6,10 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.juliy.entity.Article;
-import com.juliy.entity.ArticleTag;
-import com.juliy.entity.Category;
-import com.juliy.entity.Tag;
+import com.juliy.entity.*;
 import com.juliy.enums.FilePathEnum;
 import com.juliy.enums.LikeTypeEnum;
 import com.juliy.mapper.ArticleMapper;
@@ -41,8 +38,7 @@ import java.util.stream.Collectors;
 
 import static com.juliy.constant.CommonConstant.FALSE;
 import static com.juliy.constant.CommonConstant.TRUE;
-import static com.juliy.constant.RedisConstant.ARTICLE_LIKE_COUNT;
-import static com.juliy.constant.RedisConstant.ARTICLE_VIEW_COUNT;
+import static com.juliy.constant.RedisConstant.*;
 import static com.juliy.enums.ArticleStatusEnum.PUBLIC;
 
 /**
@@ -126,6 +122,13 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         // 若没有分类名，则设置为默认分类
         if (StrUtil.isEmpty(articleDTO.getCategoryName())) {
             articleDTO.setCategoryName("默认分类");
+        }
+        // 若没有封面，则设置为默认封面
+        if (StrUtil.isEmpty(articleDTO.getArticleCover())) {
+            SiteConfig siteConfig = redisService.getObject(SITE_CONFIG);
+            if (Objects.nonNull(siteConfig)) {
+                articleDTO.setArticleCover(siteConfig.getArticleCover());
+            }
         }
         // 保存分类
         Integer categoryId = saveCategory(articleDTO.getCategoryName());

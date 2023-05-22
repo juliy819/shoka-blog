@@ -7,8 +7,8 @@
   <div v-if="articleList.length > 0" v-animate="['fadeInUp']" class="article-item" v-for="article in articleList"
        :key="article.id">
     <router-link :to="`/article/${article.id}`" class="article-cover">
-      <n-image class="cover" :src="setArticleCover(article.articleCover)"
-               :fallback-src="blogStore.siteConfig.articleCover" preview-disabled />
+      <n-image class="cover" :src="setArticleCover(article.articleCover)" preview-disabled
+               :imgProps="{ style: { objectFit: 'cover', width: '100%', height: '100%'} }" />
     </router-link>
     <div class="article-info">
       <div class="article-meta">
@@ -79,15 +79,15 @@ const setArticleCover = (coverSrc: string): string => {
 };
 
 watch(
-  () => pageQuery.value.current,
-  () => {
-    articleApi.getArticleList(pageQuery.value).then(({ data }) => {
-      articleList.value = data.data.recordList;
-      count.value = data.data.count;
-    }).catch(() => {
-      articleList.value = [];
-    });
-  }
+    () => pageQuery.value.current,
+    () => {
+      articleApi.getArticleList(pageQuery.value).then(({ data }) => {
+        articleList.value = data.data.recordList;
+        count.value = data.data.count;
+      }).catch(() => {
+        articleList.value = [];
+      });
+    }
 );
 
 onMounted(() => {
@@ -159,14 +159,8 @@ onMounted(() => {
   border-radius: 0.625rem 0 0 0.625rem;
 
   .cover {
-    height: 100%;
-    width: 100%;
+    @include mixin.flex;
     transition: all 0.2s ease-in-out 0s;
-
-    :deep(img) {
-      width: 100%;
-      height: 100%;
-    }
   }
 }
 

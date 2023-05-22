@@ -32,7 +32,6 @@ import Emoji from '@/components/Emoji.vue';
 import { ref } from 'vue';
 import commentApi from '@/api/comment';
 
-const entrys = Object.entries(emojiList);
 const { userStore, blogStore, appStore } = useStore();
 const inputActiveClass = {
   lineHeight: 'normal',
