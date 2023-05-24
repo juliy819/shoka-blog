@@ -56,7 +56,6 @@ requests.interceptors.response.use(
     let { message } = error;
     if (message === 'Network Error') {
       modal.msgError('后端接口连接异常');
-      modal.msgError(message);
     } else if (message.includes('timeout')) {
       modal.msgError('系统接口请求超时');
     }

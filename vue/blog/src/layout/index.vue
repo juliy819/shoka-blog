@@ -12,6 +12,9 @@
       <!-- 其它 -->
       <side-drawer />
       <login-dialog />
+      <register-dialog />
+      <email-dialog />
+      <password-dialog />
       <affix-tools />
     </div>
   </naive-provider>
@@ -22,6 +25,9 @@ import TheHeader from '@/layout/components/TheHeader';
 import AppMain from '@/layout/components/AppMain.vue';
 import TheFooter from '@/layout/components/TheFooter.vue';
 import SideDrawer from '@/layout/components/SideDrawer.vue';
+import RegisterDialog from '@/components/dialog/RegisterDialog.vue';
+import EmailDialog from '@/components/dialog/EmailDialog.vue';
+import PasswordDialog from '@/components/dialog/PasswordDialog.vue';
 </script>
 
 <style scoped lang="scss">

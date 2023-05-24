@@ -1,12 +1,12 @@
 package com.juliy.strategy.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
-import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.juliy.entity.Talk;
 import com.juliy.service.RedisService;
 import com.juliy.service.TalkService;
 import com.juliy.strategy.LikeStrategy;
+import com.juliy.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +34,7 @@ public class TalkLikeStrategyImpl extends LikeStrategy {
         Talk talk = talkService.getOne(new LambdaQueryWrapper<Talk>()
                                                .select(Talk::getId)
                                                .eq(Talk::getId, talkId));
-        Assert.notNull(talk, "说说不存在");
+        CommonUtils.checkParamNull(talk, "说说不存在");
         // 以用户id作为key
         String userLikeTalkKey = TALK_LIKE + StpUtil.getLoginIdAsString();
         judgeLike(userLikeTalkKey, TALK_LIKE_COUNT, talkId);

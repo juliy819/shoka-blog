@@ -3,9 +3,9 @@
  */
 export interface AppState {
   /**
-   * 侧边栏是否打开
+   * 侧边栏
    */
-  sideDrawerOpen: boolean;
+  sideDrawer: boolean;
 
   /**
    * 是否正在加载
@@ -33,9 +33,24 @@ export interface AppState {
   rightContainer: boolean;
 
   /**
-   * 是否显示登录窗口
+   * 登录窗口
    */
   loginFrame: boolean;
+
+  /**
+   * 注册窗口
+   */
+  registerFrame: boolean;
+
+  /**
+   * 修改邮箱窗口
+   */
+  emailFrame: boolean;
+
+  /**
+   * 修改密码窗口
+   */
+  passwordFrame: boolean;
 }
 
 export interface ArticleState {

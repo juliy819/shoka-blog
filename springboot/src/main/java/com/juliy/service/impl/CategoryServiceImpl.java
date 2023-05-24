@@ -13,6 +13,7 @@ import com.juliy.model.dto.ConditionDTO;
 import com.juliy.model.vo.*;
 import com.juliy.service.CategoryService;
 import com.juliy.utils.BeanCopyUtils;
+import com.juliy.utils.CommonUtils;
 import com.juliy.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -107,10 +108,11 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         List<ArticleConditionVO> articleList = articleMapper.selectArticlesByCondition(PageUtils.getLimitCurrent(),
                                                                                        PageUtils.getSize(),
                                                                                        condition);
-        String name = this.getOne(new LambdaQueryWrapper<Category>()
-                                          .select(Category::getCategoryName)
-                                          .eq(Category::getId, condition.getCategoryId()))
-                .getCategoryName();
+        Category category = this.getOne(new LambdaQueryWrapper<Category>()
+                                                .select(Category::getCategoryName)
+                                                .eq(Category::getId, condition.getCategoryId()));
+        CommonUtils.checkParamNull(category, "分类不存在");
+        String name = category.getCategoryName();
         return ArticleConditionList.builder()
                 .articleConditionList(articleList)
                 .name(name)

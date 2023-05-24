@@ -4,7 +4,7 @@
  * @date 2023/4/2 22:17
 -->
 <template>
-  <footer class="footer-wrapper">
+  <footer class="footer-wrapper" v-if="!isMessage">
     <p>
       copyright ©
       {{ formatDate(blogStore.siteConfig.createSiteTime, 'YYYY') }}
@@ -27,6 +27,7 @@ import useStore from '@/stores';
 import { formatDate } from '@/utils/date';
 
 const { blogStore } = useStore();
+const isMessage = computed(() => useRoute().name === 'message');
 
 
 </script>

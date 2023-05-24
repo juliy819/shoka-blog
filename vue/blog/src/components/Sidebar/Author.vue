@@ -4,7 +4,7 @@
  * @date 2023/4/5 17:04
 -->
 <template>
-  <div class="side-card">
+  <div :class="card ? 'side-card' : ''">
     <load-viewer :status="blogStore.status" failed-msg="作者信息加载失败">
       <template #data>
         <div class="author-info">
@@ -107,51 +107,17 @@ import useStore from '@/stores';
 const { blogStore } = useStore();
 const showSocial = computed(() => (social: string) => blogStore.siteConfig.socialList.includes(social));
 
+defineProps({
+  card: {
+    type: Boolean,
+    default: true
+  }
+});
+
 </script>
 
 <style scoped lang="scss">
 @use '@/assets/styles/mixin';
-
-.author-info {
-  @include mixin.flex;
-  flex-direction: column;
-
-  .author-avatar {
-    box-shadow: 0 0 2rem 0.2rem var(--body-bg-shadow);
-    border: 0.1rem solid var(--grey-0);
-    animation: 0.5s ease-in-out 0ms 1 normal forwards running blur;
-    -webkit-animation: 0.5s ease-in-out 0ms 1 normal forwards running blur;
-
-    &:hover {
-      animation: 1s ease 0ms 1 normal none running author-shake;
-      -webkit-animation: 1s ease 0ms 1 normal none running author-shake;
-    }
-  }
-
-  .author-name {
-    margin-top: 0.5rem;
-    font-weight: 800;
-    font-size: 1.4rem;
-    text-align: center;
-    color: var(--primary-color);
-
-    &:hover {
-      animation: rubberBand 1s ease-in-out;
-    }
-
-  }
-
-  .site-intro {
-    margin-top: 0.5rem;
-    font-size: 1em;
-    text-align: center;
-    color: var(--primary-color-darker);
-
-    &:hover {
-      animation: jello 1s ease-in-out;
-    }
-  }
-}
 
 .blog-info {
   display: flex;

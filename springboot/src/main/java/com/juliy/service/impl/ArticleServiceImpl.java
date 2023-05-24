@@ -1,7 +1,6 @@
 package com.juliy.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
-import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
@@ -24,6 +23,7 @@ import com.juliy.service.RedisService;
 import com.juliy.service.TagService;
 import com.juliy.strategy.context.LikeStrategyContext;
 import com.juliy.utils.BeanCopyUtils;
+import com.juliy.utils.CommonUtils;
 import com.juliy.utils.PageUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,19 +101,19 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public ArticleInfoVO getArticleInfoById(Integer articleId) {
         // 查询文章信息
-        ArticleInfoVO articleInfoVO = articleMapper.selectArticleInfoAdminById(articleId);
-        Assert.notNull(articleInfoVO, "文章不存在");
+        ArticleInfoVO articleInfo = articleMapper.selectArticleInfoAdminById(articleId);
+        CommonUtils.checkParamNull(articleInfo, "文章不存在");
         // 查询分类名称
         String categoryName = categoryMapper.selectOne(
                         new LambdaQueryWrapper<Category>()
                                 .select(Category::getCategoryName)
-                                .eq(Category::getId, articleInfoVO.getCategoryId()))
+                                .eq(Category::getId, articleInfo.getCategoryId()))
                 .getCategoryName();
         // 查询标签名称
         List<String> tagNameList = tagMapper.selectTagNamesByArticleId(articleId);
-        articleInfoVO.setCategoryName(categoryName);
-        articleInfoVO.setTagNameList(tagNameList);
-        return articleInfoVO;
+        articleInfo.setCategoryName(categoryName);
+        articleInfo.setTagNameList(tagNameList);
+        return articleInfo;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -230,7 +230,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public ArticleVO getArticleHomeById(Integer articleId) {
         ArticleVO article = articleMapper.selectArticleHomeById(articleId);
-        Assert.notNull(article, "不存在id为" + articleId + "的文章");
+        CommonUtils.checkParamNull(article, "文章不存在");
         // 浏览量加1
         redisService.incrZet(ARTICLE_VIEW_COUNT, articleId, 1D);
         // 查询上一篇文章

@@ -5,6 +5,7 @@ import { defineStore } from 'pinia';
 import type { LoginForm } from '@/api/login/types';
 import { modal } from '@/utils/modal';
 import loginApi from '@/api/login';
+import type { UserInfo } from '@/api/user/types';
 
 const useUserStore = defineStore('useUserStore', {
   state: (): UserState => ({
@@ -63,6 +64,16 @@ const useUserStore = defineStore('useUserStore', {
           reject(error);
         });
       });
+    },
+
+    /**
+     * 更新用户信息
+     * @param userInfo 用户信息
+     */
+    updateUserInfo(userInfo: UserInfo) {
+      this.nickname = userInfo.nickname;
+      this.webSite = userInfo.webSite;
+      this.intro = userInfo.intro;
     },
 
     /**

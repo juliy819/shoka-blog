@@ -5,6 +5,7 @@ router.beforeEach(async (to, from, next) => {
   const { appStore } = useStore();
   if (to.name === 'home') {
     appStore.headerChangeHeight = 700;
+    document.title = 'SHOKA-BLOG';
   } else {
     appStore.headerChangeHeight = 480;
   }

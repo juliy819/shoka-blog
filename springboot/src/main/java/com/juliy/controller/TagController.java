@@ -39,7 +39,6 @@ public class TagController {
      * @return 标签列表
      */
     @Operation(summary = "获取所有标签")
-    @SaCheckPermission("tag:list")
     @GetMapping("/list")
     public Result<List<TagVO>> getTags() {
         return Result.success(tagService.listTags());

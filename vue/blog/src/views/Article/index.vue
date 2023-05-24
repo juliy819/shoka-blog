@@ -41,96 +41,107 @@
     <img class="page-cover" :src="setArticleCover(article.articleCover)" alt="" />
     <Waves />
   </div>
-  <div v-if="article.articleTitle" class="bg">
-    <div class="main-container" v-if="article">
-      <!-- 左侧区域 -->
-      <div class="left-container" :class="!appStore.rightContainer ? 'width-100' : ''">
-        <div class="article-container">
-          <v-md-preview ref="articleRef" v-viewer class="md" :text="article.articleContent" />
-          <div class="tag-container">
-            <router-link :to="`/tag/${tag.id}`" v-for="tag in article.tagList" class="article-tag-category"
-                         :key="tag.id">
-              <n-ellipsis style="max-width: 8rem">
-                <svg-icon icon-class="tag" size="0.8rem" />
-                {{ tag.tagName }}
-              </n-ellipsis>
-            </router-link>
-          </div>
-
-          <footer class="article-footer">
-            <div class="meta">
-              阅读次数 {{ article.viewCount }} 次
-            </div>
-            <div class="like">
-              <n-button class="like-btn" :class="isLike(article.id)" @click="like()">
-                <svg-icon icon-class="like" size="0.9rem" style="margin-right: 0.5rem" />
-                点赞
-                {{ article.likeCount }}
-              </n-button>
-              <p>觉得本篇文章还不错的话，就点个赞叭(●'◡'●)</p>
-            </div>
-            <div class="copyright">
-              <ul>
-                <li class="author">
-                  <svg-icon icon-class="author" size="0.9rem" style="margin-right:0.3rem"></svg-icon>
-                  <strong>本文作者： </strong>{{ blogStore.siteConfig.siteAuthor }}
-                </li>
-                <li class="link">
-                  <svg-icon icon-class="article_link" size="0.9rem" style="margin-right:0.3rem"></svg-icon>
-                  <strong>本文链接：</strong>
-                  <a class="underline-a" :href="articleHref">{{ articleHref }}</a>
-                </li>
-                <li class="license">
-                  <svg-icon icon-class="article_share" size="0.8rem" style="margin-right:0.3rem"></svg-icon>
-                  <strong>版权声明： </strong>
-                  本站所有文章除特别声明外，均采用
-                  <a class="underline-a" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"
-                     target="_blank">
-                    BY-NC-SA
-                  </a>
-                  许可协议。转载请注明文章出处！
-                </li>
-              </ul>
-            </div>
-          </footer>
-          <div class="article-nav">
-            <div class="nav-item">
-              <router-link v-if="article.lastArticle" :to="`/article/${article.lastArticle.id}`" class="nav-cover"
-                           :style="{ 'background-image': 'url(' + setArticleCover(article.lastArticle.articleCover) + ')' }">
-                <span class="nav-action">上一篇</span>
-                <h3 class="nav-title">{{ article.lastArticle.articleTitle }}</h3>
-              </router-link>
-              <div v-else class="nav-cover">
-                <span class="nav-action">上一篇</span>
-                <h3 class="nav-title">没有了</h3>
+  <div class="bg">
+    <load-viewer :status="status">
+      <template #data>
+        <div class="main-container">
+          <div class="left-container" :class="!appStore.rightContainer ? 'width-100' : ''">
+            <div class="article-container">
+              <v-md-preview ref="articleRef" v-viewer class="md" :text="article.articleContent" />
+              <div class="tag-container">
+                <router-link :to="`/tag/${tag.id}`" v-for="tag in article.tagList" class="article-tag-category"
+                             :key="tag.id">
+                  <n-ellipsis style="max-width: 8rem">
+                    <svg-icon icon-class="tag" size="0.8rem" />
+                    {{ tag.tagName }}
+                  </n-ellipsis>
+                </router-link>
               </div>
-            </div>
-            <div class="nav-item">
-              <router-link v-if="article.nextArticle" :to="`/article/${article.nextArticle.id}`" class="nav-cover"
-                           :style="{ 'background-image': 'url(' + setArticleCover(article.nextArticle.articleCover) + ')' }">
-                <span class="nav-action">下一篇</span>
-                <h3 class="nav-title">{{ article.nextArticle.articleTitle }}</h3>
-              </router-link>
-              <div v-else class="nav-cover">
-                <span class="nav-action">下一篇</span>
-                <h3 class="nav-title">没有了</h3>
+
+              <footer class="article-footer">
+                <div class="meta">
+                  阅读次数 {{ article.viewCount }} 次
+                </div>
+                <div class="like">
+                  <n-button class="like-btn" :class="isLike(article.id)" @click="like()">
+                    <svg-icon icon-class="like" size="0.9rem" style="margin-right: 0.5rem" />
+                    点赞
+                    {{ article.likeCount }}
+                  </n-button>
+                  <p>觉得本篇文章还不错的话，就点个赞叭(●'◡'●)</p>
+                </div>
+                <div class="copyright">
+                  <ul>
+                    <li class="author">
+                      <svg-icon icon-class="author" size="0.9rem" style="margin-right:0.3rem"></svg-icon>
+                      <strong>本文作者： </strong>{{ blogStore.siteConfig.siteAuthor }}
+                    </li>
+                    <li class="link">
+                      <svg-icon icon-class="article_link" size="0.9rem" style="margin-right:0.3rem"></svg-icon>
+                      <strong>本文链接：</strong>
+                      <a class="underline-a" :href="articleHref">{{ articleHref }}</a>
+                    </li>
+                    <li class="license">
+                      <svg-icon icon-class="article_share" size="0.8rem" style="margin-right:0.3rem"></svg-icon>
+                      <strong>版权声明： </strong>
+                      本站所有文章除特别声明外，均采用
+                      <a class="underline-a" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"
+                         target="_blank">
+                        BY-NC-SA
+                      </a>
+                      许可协议。转载请注明文章出处！
+                    </li>
+                  </ul>
+                </div>
+              </footer>
+              <div class="article-nav">
+                <div class="nav-item">
+                  <router-link v-if="article.lastArticle" :to="`/article/${article.lastArticle.id}`" class="nav-cover"
+                               :style="{ 'background-image': 'url(' + setArticleCover(article.lastArticle.articleCover) + ')' }">
+                    <span class="nav-action">上一篇</span>
+                    <h3 class="nav-title">{{ article.lastArticle.articleTitle }}</h3>
+                  </router-link>
+                  <div v-else class="nav-cover">
+                    <span class="nav-action">上一篇</span>
+                    <h3 class="nav-title">没有了</h3>
+                  </div>
+                </div>
+                <div class="nav-item">
+                  <router-link v-if="article.nextArticle" :to="`/article/${article.nextArticle.id}`" class="nav-cover"
+                               :style="{ 'background-image': 'url(' + setArticleCover(article.nextArticle.articleCover) + ')' }">
+                    <span class="nav-action">下一篇</span>
+                    <h3 class="nav-title">{{ article.nextArticle.articleTitle }}</h3>
+                  </router-link>
+                  <div v-else class="nav-cover">
+                    <span class="nav-action">下一篇</span>
+                    <h3 class="nav-title">没有了</h3>
+                  </div>
+                </div>
               </div>
+              <Comment :comment-type="commentType" />
             </div>
           </div>
-          <Comment :comment-type="commentType" />
+          <div class="right-container" :class="!appStore.rightContainer ? 'display-none' : ''">
+            <div class="side-card">
+              <catalog :dom-ref="articleRef" />
+            </div>
+          </div>
         </div>
-      </div>
-      <!-- 右侧目录 -->
-      <div class="right-container" :class="!appStore.rightContainer ? 'display-none' : ''">
-        <div class="side-card">
-          <catalog :dom-ref="articleRef" />
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div v-else>
-    <n-skeleton text round :repeat="5" />
+      </template>
+      <template #loading>
+        <n-space justify="start" vertical style="margin: 1rem">
+          <n-skeleton round size="large" width="40%" />
+          <n-skeleton text round width="100%" :repeat="10" />
+        </n-space>
+      </template>
+      <template #fail>
+        <n-space justify="center" align="center" style="height: 30vh">
+          <n-gradient-text type="error" size="30" style="font-weight: bold">
+            文章加载失败
+          </n-gradient-text>
+        </n-space>
+      </template>
+    </load-viewer>
   </div>
 </template>
 
@@ -143,11 +154,11 @@ import articleApi from '@/api/article';
 import { formatDate } from '@/utils/date';
 import { modal } from '@/utils/modal';
 
+const status = ref<number>(0);
 const articleHref = window.location.href;
 const route = useRoute();
 const { userStore, blogStore, appStore } = useStore();
 const articleRef = ref();
-const articleLoaded = ref<boolean>(false);
 const wordNum = ref<number>();
 const readTime = ref<number>();
 const commentType = 1;
@@ -218,7 +229,17 @@ onMounted(() => {
     document.title = article.value.articleTitle;
     wordNum.value = deleteHTMLTag(article.value.articleContent).length;
     readTime.value = Math.round(wordNum.value / 400);
-    articleLoaded.value = true;
+    status.value = 1;
+  }).catch(() => {
+    status.value = -1;
+    article.value.createTime = '2023-1-1';
+    article.value.articleTitle = '文章';
+    article.value.category = {
+      id: 0,
+      categoryName: '分类'
+    };
+    wordNum.value = 0;
+    readTime.value = 0;
   });
 });
 

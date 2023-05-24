@@ -11,7 +11,7 @@
   </div>
   <div class="bg">
     <div class="page-container">
-      <load-viewer :status="status" no-data-msg="该分类下暂时还没有文章哦~" failed-msg="文章加载失败">
+      <load-viewer :status="status" no-data-msg="该分类下暂时还没有文章哦~" failed-msg="文章列表加载失败">
         <template #data>
           <n-grid x-gap="20" y-gap="20" cols="1 s:2 m:3" responsive="screen">
             <n-grid-item class="article-item" v-for="article of articleList" :key="article.id">

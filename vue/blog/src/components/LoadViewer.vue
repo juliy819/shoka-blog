@@ -3,13 +3,13 @@
  * @author juliy
  * @date 19:54
 -->
-<template v-if="status === -1 && displayWhenFailed">
+<template>
   <div v-if="status === 1">
     <slot name="data" />
   </div>
   <div v-else-if="status === 2">
     <slot name="no-data">
-      <n-space justify="center">
+      <n-space justify="center" align="center" v-if="displayWhenEmpty">
         <n-gradient-text type="error" style="font-weight: bold">
           {{ noDataMsg }}
         </n-gradient-text>
@@ -21,7 +21,7 @@
   </div>
   <div v-else>
     <slot name="fail">
-      <n-space justify="center" v-if="status === -1 && displayWhenFailed">
+      <n-space justify="center" align="center" v-if="displayWhenFailed">
         <n-gradient-text type="error" style="font-weight: bold">
           {{ failedMsg }}
         </n-gradient-text>

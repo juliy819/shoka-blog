@@ -4,20 +4,23 @@
  * @date 2023/4/28 15:04
 -->
 <template>
-  <n-modal v-model:show="showLoginDialog" :show-icon="false" class="bg" preset="dialog" transform-origin="center"
-           :block-scroll="false">
-    <!-- todo 登录弹窗待实现 -->
-    <n-form ref="formRef" :rules="rules" :model="loginForm" label-placement="left" :show-label="false" class="mt30">
+  <n-modal title="登录" v-model:show="showLoginDialog" :show-icon="false" class="bg" preset="dialog"
+           transform-origin="center" :block-scroll="false">
+    <n-form ref="formRef" :rules="rules" :model="loginForm" label-placement="left" class="mt20">
       <n-form-item label="账号" path="username">
-        <n-input v-model:value="loginForm.username" placeholder="账号" />
+        <n-input class="dialog-input" v-model:value="loginForm.username" placeholder="" type="text" />
       </n-form-item>
       <n-form-item label="密码" path="password">
-        <n-input v-model:value="loginForm.password" placeholder="密码" type="password" />
+        <n-input class="dialog-input" v-model:value="loginForm.password" placeholder="" type="password" />
       </n-form-item>
       <n-form-item>
-        <n-button style="width: 100%" :loading="loading" @click="login()">登录</n-button>
+        <n-button style="width: 100%" type="error" secondary :loading="loading" @click="login()">登录</n-button>
       </n-form-item>
     </n-form>
+    <n-space justify="space-between" style="width: 100%;">
+      <n-button text @click="toRegister()">立即注册</n-button>
+      <n-button text @click="toPassword()">忘记密码?</n-button>
+    </n-space>
   </n-modal>
 </template>
 
@@ -34,7 +37,7 @@ const formRef = ref<FormInst | null>(null);
 const rules = {
   username: {
     required: true,
-    message: '请输入用户名',
+    message: '请输入账号',
     trigger: ['blur', 'input']
   },
   password: {
@@ -50,7 +53,7 @@ const loginForm = ref<LoginForm>({
 
 const showLoginDialog = computed({
   get: () => appStore.loginFrame,
-  set: () => appStore.hideLoginFrame()
+  set: value => {appStore.loginFrame = value;}
 });
 
 const login = () => {
@@ -69,12 +72,31 @@ const login = () => {
       username: '',
       password: ''
     };
-    appStore.hideLoginFrame();
+    appStore.loginFrame = false;
     loading.value = false;
   }).catch(() => loading.value = false);
 };
+
+const toRegister = () => {
+  appStore.loginFrame = false;
+  appStore.showRegisterFrame();
+};
+
+const toPassword = () => {
+  appStore.loginFrame = false;
+  appStore.showPasswordFrame();
+};
+
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="scss"></style>
 
+<style>
+.dialog-input .n-input-wrapper {
+  padding: 0;
+}
+
+.dialog-input .n-input__input-el {
+  padding: 0 10px;
+}
 </style>

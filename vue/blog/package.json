@@ -35,7 +35,9 @@
     "vite-plugin-prismjs": "^0.0.8",
     "vite-plugin-svg-icons": "^2.0.1",
     "vue": "^3.2.47",
-    "vue-router": "^4.1.6"
+    "vue-cropper": "1.0.5",
+    "vue-router": "^4.1.6",
+    "vue3-danmaku": "^1.4.0"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.2.0",

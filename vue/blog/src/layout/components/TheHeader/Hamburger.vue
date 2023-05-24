@@ -18,7 +18,7 @@
 import useStore from '@/stores';
 
 const { appStore } = useStore();
-const classObj = computed(() => appStore.sideDrawerOpen ? 'toggle close' : 'toggle');
+const classObj = computed(() => appStore.sideDrawer ? 'toggle close' : 'toggle');
 
 </script>
 

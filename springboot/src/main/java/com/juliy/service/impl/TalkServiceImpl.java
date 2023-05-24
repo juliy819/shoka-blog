@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.juliy.entity.Talk;
 import com.juliy.enums.FilePathEnum;
-import com.juliy.exception.ServiceException;
 import com.juliy.mapper.CommentMapper;
 import com.juliy.mapper.TalkMapper;
 import com.juliy.model.dto.ConditionDTO;
@@ -15,7 +14,6 @@ import com.juliy.model.vo.*;
 import com.juliy.service.FileService;
 import com.juliy.service.RedisService;
 import com.juliy.service.TalkService;
-import com.juliy.strategy.context.UploadStrategyContext;
 import com.juliy.utils.BeanCopyUtils;
 import com.juliy.utils.CommonUtils;
 import com.juliy.utils.HTMLUtils;
@@ -47,19 +45,16 @@ public class TalkServiceImpl extends ServiceImpl<TalkMapper, Talk> implements Ta
     private final TalkMapper talkMapper;
     private final RedisService redisService;
     private final CommentMapper commentMapper;
-    private final UploadStrategyContext uploadStrategyContext;
     private final FileService fileService;
 
     @Autowired
     public TalkServiceImpl(TalkMapper talkMapper,
                            RedisService redisService,
                            CommentMapper commentMapper,
-                           UploadStrategyContext uploadStrategyContext,
                            FileService fileService) {
         this.talkMapper = talkMapper;
         this.redisService = redisService;
         this.commentMapper = commentMapper;
-        this.uploadStrategyContext = uploadStrategyContext;
         this.fileService = fileService;
     }
 
@@ -169,9 +164,7 @@ public class TalkServiceImpl extends ServiceImpl<TalkMapper, Talk> implements Ta
     public TalkVO getTalkById(Integer talkId) {
         // 查询说说信息
         TalkVO talk = talkMapper.selectTalkById(talkId);
-        if (Objects.isNull(talk)) {
-            throw new ServiceException("说说不存在");
-        }
+        CommonUtils.checkParamNull(talk, "说说不存在");
         // 查询说说点赞量
         Integer likeCount = redisService.getHash(TALK_LIKE_COUNT, talkId.toString());
         talk.setLikeCount(Optional.ofNullable(likeCount).orElse(0));

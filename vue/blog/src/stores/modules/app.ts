@@ -13,13 +13,16 @@ nProgress.configure({
 
 const useAppStore = defineStore('useAppStore', {
   state: (): AppState => ({
-    sideDrawerOpen: false,
+    sideDrawer: false,
     loading: false,
     npTimeout: -1,
     loadingTimeout: -1,
     headerChangeHeight: 700,
     rightContainer: true,
-    loginFrame: false
+    loginFrame: false,
+    registerFrame: false,
+    emailFrame: false,
+    passwordFrame: false
   }),
   actions: {
 
@@ -27,7 +30,7 @@ const useAppStore = defineStore('useAppStore', {
      * 打开侧边栏
      */
     showSideDrawer() {
-      this.sideDrawerOpen = true;
+      this.sideDrawer = true;
     },
 
     /**
@@ -38,10 +41,24 @@ const useAppStore = defineStore('useAppStore', {
     },
 
     /**
-     * 隐藏登录窗口
+     * 显示注册窗口
      */
-    hideLoginFrame() {
-      this.loginFrame = false;
+    showRegisterFrame() {
+      this.registerFrame = true;
+    },
+
+    /**
+     * 显示邮箱窗口
+     */
+    showEmailFrame() {
+      this.emailFrame = true;
+    },
+
+    /**
+     * 显示修改密码窗口
+     */
+    showPasswordFrame() {
+      this.passwordFrame = true;
     },
 
     /**

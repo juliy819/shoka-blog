@@ -94,8 +94,8 @@ watch(
     }
 );
 
-onMounted(() => {
-  articleApi.getArticleList(pageQuery.value).then(({ data }) => {
+onMounted(async () => {
+  await articleApi.getArticleList(pageQuery.value).then(({ data }) => {
     articleList.value = data.data.recordList;
     count.value = data.data.count;
     if (count.value > 0) {

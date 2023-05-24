@@ -140,6 +140,7 @@
 .page-container {
   position: relative;
   width: calc(100% - 0.625rem);
+  min-height: calc(30vh - 3rem);
   margin: 1.5rem auto;
   padding: 1.75rem 2.25rem;
   border-radius: 0.75rem;
@@ -220,6 +221,47 @@
 .pagination {
   justify-content: center;
   padding: 1.25rem 3.125rem;
+}
+
+.author-info {
+  @include mixin.flex;
+  flex-direction: column;
+
+  .author-avatar {
+    box-shadow: 0 0 2rem 0.2rem var(--body-bg-shadow);
+    border: 0.1rem solid var(--grey-0);
+    animation: 0.5s ease-in-out 0ms 1 normal forwards running blur;
+    -webkit-animation: 0.5s ease-in-out 0ms 1 normal forwards running blur;
+
+    &:hover {
+      animation: 1s ease 0ms 1 normal none running author-shake;
+      -webkit-animation: 1s ease 0ms 1 normal none running author-shake;
+    }
+  }
+
+  .author-name {
+    margin-top: 0.5rem;
+    font-weight: 800;
+    font-size: 1.4rem;
+    text-align: center;
+    color: var(--primary-color);
+
+    &:hover {
+      animation: rubberBand 1s ease-in-out;
+    }
+
+  }
+
+  .site-intro {
+    margin-top: 0.5rem;
+    font-size: 1em;
+    text-align: center;
+    color: var(--primary-color-darker);
+
+    &:hover {
+      animation: jello 1s ease-in-out;
+    }
+  }
 }
 
 .article-tag-category {

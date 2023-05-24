@@ -68,7 +68,6 @@ import useStore from '@/stores';
 import { modal } from '@/utils/modal';
 
 const route = useRoute();
-const router = useRouter();
 const { blogStore, userStore, appStore } = useStore();
 
 interface MenuItem {
