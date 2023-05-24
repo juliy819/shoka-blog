@@ -31,7 +31,6 @@ import TalkSwiper from '@/views/Home/TalkSwipper.vue';
 import FeaturedSwiper from '@/views/Home/FeaturedSwiper.vue';
 import ArticleList from '@/views/Home/ArticleList.vue';
 import Sidebar from '@/views/Home/Sidebar';
-import useStore from '@/stores';
 
 const scrollDown = () => {
   window.scrollTo({
@@ -39,13 +38,6 @@ const scrollDown = () => {
     top: document.documentElement.clientHeight
   });
 };
-
-const { appStore } = useStore();
-
-onMounted(() => {
-  appStore.headerChangeHeight = 700;
-});
-
 </script>
 
 <style scoped lang="scss">

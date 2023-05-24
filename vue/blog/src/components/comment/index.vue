@@ -133,7 +133,7 @@ const like = (comment: Comment | Reply): void => {
       comment.likeCount += 1;
     }
     userStore.commentLike(id);
-  }).catch(() => {modal.msgError('点赞失败');});
+  }).catch(() => {});
 };
 
 /**
@@ -149,7 +149,7 @@ const getMoreReplies = (index: number, comment: Comment): void => {
     }
     // 隐藏'查看更多'
     readMoreRef.value[index].style.display = 'none';
-  }).catch(() => {modal.msgError('评论加载失败');});
+  }).catch(() => {});
 };
 
 /**
@@ -161,7 +161,7 @@ const getMoreReplies = (index: number, comment: Comment): void => {
 const getCurrentPage = (current: number, index: number, commentId: number): void => {
   commentApi.getReplyList(commentId, { current: current, size: 5 }).then(({ data }) => {
     commentList.value[index].replyList = data.data;
-  }).catch(() => {modal.msgError('回复加载失败');});
+  }).catch(() => {});
 };
 
 /**
@@ -196,7 +196,7 @@ const getList = (): void => {
     commentQuery.value.current++;
     count.value = data.data.count;
     emit('getCommentCount', count.value);
-  }).catch(() => {modal.msgError('评论加载失败');});
+  }).catch(() => {});
 };
 
 /**
@@ -226,7 +226,7 @@ const reloadReplies = (index: number) => {
     }
     // 隐藏查看更多
     readMoreRef.value[index].style.display = 'none';
-  }).catch(() => {modal.msgError('回复加载失败');});
+  }).catch(() => {});
 };
 
 // 刷新评论列表

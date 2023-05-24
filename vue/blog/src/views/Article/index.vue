@@ -197,7 +197,6 @@ const deleteHTMLTag = (content: string) => {
 };
 
 const like = () => {
-
   if (!userStore.id) {
     modal.msgError('请先登录！');
     return;
@@ -210,11 +209,10 @@ const like = () => {
       article.value.likeCount += 1;
     }
     userStore.articleLike(articleId);
-  });
+  }).catch(() => {});
 };
 
 onMounted(() => {
-  appStore.headerChangeHeight = 480;
   articleApi.getArticle(Number(route.params.id)).then(({ data }) => {
     article.value = data.data;
     document.title = article.value.articleTitle;

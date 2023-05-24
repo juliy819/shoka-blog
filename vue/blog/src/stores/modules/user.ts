@@ -5,7 +5,6 @@ import { defineStore } from 'pinia';
 import type { LoginForm } from '@/api/login/types';
 import { modal } from '@/utils/modal';
 import loginApi from '@/api/login';
-import talkApi from '@/api/talk';
 
 const useUserStore = defineStore('useUserStore', {
   state: (): UserState => ({
@@ -122,21 +121,12 @@ const useUserStore = defineStore('useUserStore', {
      * @param talkId 说说id
      */
     talkLike(talkId: number) {
-      return new Promise((resolve, reject) => {
-        talkApi.likeTalk(talkId).then(() => {
-          let index = this.talkLikeSet.indexOf(talkId);
-          if (index != -1) {
-            this.talkLikeSet.splice(index, 1);
-          } else {
-            this.talkLikeSet.push(talkId);
-          }
-          resolve(null);
-        }).catch(error => {
-          console.error('点赞失败', error);
-          modal.msgError('点赞失败');
-          reject(error);
-        });
-      });
+      let index = this.talkLikeSet.indexOf(talkId);
+      if (index != -1) {
+        this.talkLikeSet.splice(index, 1);
+      } else {
+        this.talkLikeSet.push(talkId);
+      }
     }
   },
   getters: {},

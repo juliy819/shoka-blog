@@ -45,7 +45,7 @@ const handleSide = () => {
   appStore.rightContainer = !appStore.rightContainer;
 };
 const handleToComment = () => {
-  document.getElementById('comment-wrap')?.scrollIntoView({
+  document.getElementById('comment-container')?.scrollIntoView({
     block: 'start',
     inline: 'nearest',
     behavior: 'smooth'

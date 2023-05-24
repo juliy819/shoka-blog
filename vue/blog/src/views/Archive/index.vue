@@ -11,25 +11,32 @@
   </div>
   <div class="bg">
     <div class="page-container">
-      <div class="archive-title">文章总览 - {{ count }}</div>
-      <div class="archive-list">
-        <div class="archive-item" v-for="archive in archivesList" :key="archive.id">
-          <router-link id="image" class="article-cover" :to="`/article/${archive.id}`">
-            <n-image class="cover" lazy :intersection-observer-options="{root: '#footer-wrapper'}"
-                     :src="archive.articleCover" preview-disabled />
-          </router-link>
-          <div class="article-info">
-            <div class="article-time">
-              <svg-icon icon-class="calendar" class="mr5" />
-              <time>{{ formatDate(archive.createTime) }}</time>
+      <load-viewer :status="status" no-data-msg="暂时还没有发布过文章哦~" failed-msg="文章加载失败">
+        <template #data>
+          <div class="archive-title">文章总览 - {{ count }}</div>
+          <div class="archive-list">
+            <div class="archive-item" v-for="archive in archivesList" :key="archive.id">
+              <router-link id="image" class="article-cover" :to="`/article/${archive.id}`">
+                <n-image class="cover" lazy :intersection-observer-options="{root: '#footer-wrapper'}"
+                         :src="archive.articleCover" preview-disabled />
+              </router-link>
+              <div class="article-info">
+                <div class="article-time">
+                  <svg-icon icon-class="calendar" class="mr5" />
+                  <time>{{ formatDate(archive.createTime) }}</time>
+                </div>
+                <router-link class="article-title" :to="`/article/${archive.id}`">
+                  {{ archive.articleTitle }}
+                </router-link>
+              </div>
             </div>
-            <router-link class="article-title" :to="`/article/${archive.id}`">
-              {{ archive.articleTitle }}
-            </router-link>
           </div>
-        </div>
-      </div>
-      <pagination v-if="count > 0" v-model:current="queryParams.current" :total="Math.ceil(count / 5)" />
+          <pagination v-if="count > 0" v-model:current="queryParams.current" :total="Math.ceil(count / 5)" />
+        </template>
+        <template #loading>
+
+        </template>
+      </load-viewer>
     </div>
   </div>
 </template>
@@ -42,6 +49,7 @@ import { formatDate } from '@/utils/date';
 import { ref } from 'vue';
 
 const count = ref(0);
+const status = ref<number>(0);
 const queryParams = ref<PageQuery>({
   current: 1,
   size: 5
@@ -57,12 +65,19 @@ watch(
       });
     }
 );
+
 onMounted(() => {
   archivesApi.getArchivesList(queryParams.value).then(({ data }) => {
     archivesList.value = data.data.recordList;
     count.value = data.data.count;
-  });
+    if (count.value > 0) {
+      status.value = 1;
+    } else {
+      status.value = 2;
+    }
+  }).catch(() => {status.value = -1;});
 });
+
 </script>
 
 <style lang="scss" scoped>

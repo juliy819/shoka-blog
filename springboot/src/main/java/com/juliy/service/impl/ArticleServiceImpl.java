@@ -278,16 +278,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         likeStrategyContext.executeLikeStrategy(LikeTypeEnum.ARTICLE, articleId);
     }
 
-    @Override
-    public ArticleConditionList getArticlesByCondition(ConditionDTO condition, String conditionName) {
-        List<ArticleConditionVO> articleConditionList = articleMapper.selectArticlesByCondition(
-                PageUtils.getLimitCurrent(), PageUtils.getSize(), condition);
-        return ArticleConditionList.builder()
-                .articleConditionList(articleConditionList)
-                .name(conditionName)
-                .build();
-    }
-
     /**
      * 保存分类
      * @param categoryName 分类名称

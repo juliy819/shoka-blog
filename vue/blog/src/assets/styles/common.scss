@@ -274,6 +274,52 @@
   color: var(--primary-color);
 }
 
+/** 说说 */
+.talk-nickname {
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-right: 0.3125rem;
+  color: #ef89c6;
+}
+
+.talk-content {
+  margin-top: 0.3125rem;
+  font-size: 0.9375rem;
+  line-height: 1.5rem;
+  word-wrap: break-word;
+  word-break: break-all;
+  white-space: pre-line;
+}
+
+.talk-image {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  align-content: flex-start;
+  flex-wrap: wrap;
+  margin-top: 0.3125rem;
+
+  .image {
+    max-width: 16.5rem;
+    max-height: 12.5rem;
+    padding: 0.0625rem;
+    border-radius: 0.25rem;
+    margin: 0.125rem;
+    cursor: pointer;
+    object-fit: cover;
+  }
+}
+
+.talk-time,
+.talk-like,
+.talk-comment {
+  font-size: 0.8125rem;
+  margin-right: 1.25rem;
+  color: #9499a0;
+}
+
 ::selection {
   color: #fff;
   background-color: var(--color-red-a5);

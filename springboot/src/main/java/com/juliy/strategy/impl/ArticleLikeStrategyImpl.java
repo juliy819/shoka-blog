@@ -21,14 +21,13 @@ import static com.juliy.constant.RedisConstant.ARTICLE_LIKE_COUNT;
  * @date 2023/4/19 10:08
  */
 @Service("ArticleLikeStrategyImpl")
-public class ArticleLikeStrategyImpl implements LikeStrategy {
+public class ArticleLikeStrategyImpl extends LikeStrategy {
 
-    private final RedisService redisService;
     private final ArticleMapper articleMapper;
 
     @Autowired
     public ArticleLikeStrategyImpl(RedisService redisService, ArticleMapper articleMapper) {
-        this.redisService = redisService;
+        super(redisService);
         this.articleMapper = articleMapper;
     }
 
@@ -43,15 +42,6 @@ public class ArticleLikeStrategyImpl implements LikeStrategy {
         }
         // 以用户id作为key
         String likeArticleKey = ARTICLE_LIKE + StpUtil.getLoginIdAsString();
-        // 判断是否点过赞
-        if (redisService.hasSetValue(likeArticleKey, articleId)) {
-            // 取消点赞
-            redisService.deleteSet(likeArticleKey, articleId);
-            redisService.decrHash(ARTICLE_LIKE_COUNT, articleId.toString(), 1L);
-        } else {
-            // 点赞
-            redisService.setSet(likeArticleKey, articleId);
-            redisService.incrHash(ARTICLE_LIKE_COUNT, articleId.toString(), 1L);
-        }
+        super.judgeLike(likeArticleKey, ARTICLE_LIKE_COUNT, articleId);
     }
 }

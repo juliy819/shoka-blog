@@ -2,6 +2,8 @@ package com.juliy.utils;
 
 import com.juliy.exception.ServiceException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,7 +30,24 @@ public class CommonUtils {
     }
 
     /**
-     * 自定义参数校验
+     * 转换List
+     * @param obj   obj
+     * @param clazz clazz
+     * @return {@link List <T>}
+     */
+    public static <T> List<T> castList(Object obj, Class<T> clazz) {
+        List<T> result = new ArrayList<T>();
+        if (obj instanceof List<?>) {
+            for (Object o : (List<?>) obj) {
+                result.add(clazz.cast(o));
+            }
+            return result;
+        }
+        return result;
+    }
+
+    /**
+     * 自定义参数校验,flag为true则抛出异常
      * @param flag    校验标识
      * @param message 异常信息
      */

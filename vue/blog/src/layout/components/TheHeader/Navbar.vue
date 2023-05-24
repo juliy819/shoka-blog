@@ -8,7 +8,7 @@
     <!-- 网站标题 -->
     <div class="menu-item title">
       <router-link class="menu-btn" to="/">
-        {{ blogStore.siteConfig.siteName }}
+        {{ blogStore.siteConfig.siteName === undefined ? 'shoka-blog' : blogStore.siteConfig.siteName }}
       </router-link>
     </div>
     <div v-for="(menuItem, index) in menuItems" :key="index" class="menu-item">

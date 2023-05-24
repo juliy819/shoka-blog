@@ -23,6 +23,11 @@ public enum FilePathEnum {
     ARTICLE("/article/", "/article", "文章图片路径"),
 
     /**
+     * 文章图片路径
+     */
+    TALK("/talk/", "/talk", "说说图片路径"),
+
+    /**
      * 网站配置路径
      */
     CONFIG("/config/", "/config", "网站配置路径");

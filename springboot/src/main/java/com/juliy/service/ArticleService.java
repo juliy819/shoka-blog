@@ -118,12 +118,4 @@ public interface ArticleService extends IService<Article> {
      * @param articleId 文章id
      */
     void likeArticle(Integer articleId);
-
-    /**
-     * 按条件查询文章
-     * @param condition     查询条件
-     * @param conditionName 条件名称
-     * @return 文章条件列表
-     */
-    ArticleConditionList getArticlesByCondition(ConditionDTO condition, String conditionName);
 }

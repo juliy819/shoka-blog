@@ -103,7 +103,7 @@ public class CommentController {
      */
     @SaCheckLogin
     @Operation(description = "点赞评论")
-    @AccessLimit(seconds = 60, maxCount = 3)
+    @AccessLimit(seconds = 60, maxCount = 10)
     @SaCheckPermission("comment:like")
     @PostMapping("/{commentId}/like")
     public Result<?> likeComment(@PathVariable("commentId") Integer commentId) {
