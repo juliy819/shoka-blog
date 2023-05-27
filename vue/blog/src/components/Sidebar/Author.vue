@@ -33,34 +33,33 @@
           </div>
         </div>
         <div class="social-info">
-          <n-popover trigger="hover" placement="bottom">
+          <n-popover trigger="hover" placement="bottom" v-if="showSocial('github')">
             <template #trigger>
-              <a v-if="showSocial('github')" target="_blank" :href="blogStore.siteConfig.github" class="social-item">
+              <a target="_blank" :href="blogStore.siteConfig.github" class="social-item">
                 <svg-icon icon-class="github" size="1.4rem"></svg-icon>
               </a>
             </template>
             github
           </n-popover>
-          <n-popover trigger="hover" placement="bottom">
+          <n-popover trigger="hover" placement="bottom" v-if="showSocial('gitee')">
             <template #trigger>
-              <a v-if="showSocial('gitee')" target="_blank" :href="blogStore.siteConfig.gitee" class="social-item">
+              <a target="_blank" :href="blogStore.siteConfig.gitee" class="social-item">
                 <svg-icon icon-class="gitee" size="1.4rem"></svg-icon>
               </a>
             </template>
             gitee
           </n-popover>
-          <n-popover trigger="hover" placement="bottom">
+          <n-popover trigger="hover" placement="bottom" v-if="showSocial('bilibili')">
             <template #trigger>
-              <a v-if="showSocial('bilibili')" target="_blank" :href="blogStore.siteConfig.bilibili"
-                 class="social-item">
+              <a target="_blank" :href="blogStore.siteConfig.bilibili" class="social-item">
                 <svg-icon icon-class="bilibili" size="1.4rem"></svg-icon>
               </a>
             </template>
             bilibili
           </n-popover>
-          <n-popover trigger="hover" placement="bottom">
+          <n-popover trigger="hover" placement="bottom" v-if="showSocial('qq')">
             <template #trigger>
-              <a v-if="showSocial('qq')" target="_blank"
+              <a target="_blank"
                  :href="'https://wpa.qq.com/msgrd?v=3&uin=' + blogStore.siteConfig.qq + '&site=qq&menu=yes'"
                  class="social-item">
                 <svg-icon icon-class="qq" size="1.4rem" color="#00a1d6"></svg-icon>
