@@ -8,7 +8,7 @@
     <!-- 搜索栏 -->
     <el-form v-show="showSearch" :inline="true">
       <el-form-item label="分类名称">
-        <el-input v-model="queryParams.keywords" clearable placeholder="请输入分类名称" style="width: 200px"
+        <el-input v-model="categoryQuery.keywords" clearable placeholder="请输入分类名称" style="width: 200px"
                   @keyup.enter="queryCategories" />
       </el-form-item>
       <el-form-item>
@@ -35,7 +35,8 @@
     <!-- 表格 -->
     <el-table v-loading="loading" :data="categoryList" @selection-change="changeSelectedId">
       <el-table-column align="center" type="selection" />
-      <el-table-column align="center" label="分类名" min-width="150" prop="categoryName" />
+      <el-table-column align="center" label="分类名" min-width="150" prop="categoryName"
+                       :show-overflow-tooltip="true" />
       <el-table-column align="center" label="文章数量" min-width="100" prop="articleCount" />
       <el-table-column align="center" label="创建时间" min-width="150" prop="createTime">
         <template #default="scope">
@@ -62,7 +63,7 @@
       </el-table-column>
     </el-table>
     <!-- 分页工具 -->
-    <pagination v-if="count > 0" v-model:limit="queryParams.size" v-model:page="queryParams.current" :total="count"
+    <pagination v-if="count > 0" v-model:limit="categoryQuery.size" v-model:page="categoryQuery.current" :total="count"
                 @pagination="getCategoryList" />
     <!-- 添加或修改对话框 -->
     <el-dialog v-model="open" :title="title" append-to-body width="500px">
@@ -108,7 +109,7 @@ const open = ref(false);
 const categoryIdList = ref<number[]>([]);
 const categoryList = ref<Category[]>([]);
 const data = reactive({
-  queryParams: {
+  categoryQuery: {
     current: 1,
     size: 10
   } as CategoryQuery,
@@ -117,7 +118,7 @@ const data = reactive({
     categoryName: ''
   } as CategoryForm
 });
-const { queryParams, categoryForm } = toRefs(data);
+const { categoryQuery, categoryForm } = toRefs(data);
 
 /**
  * 添加分类
@@ -205,7 +206,7 @@ const deleteCategories = (id?: number): void => {
  */
 const getCategoryList = (): void => {
   loading.value = true;
-  categoryApi.getCategoryList(queryParams.value).then(({ data }) => {
+  categoryApi.getCategoryList(categoryQuery.value).then(({ data }) => {
     categoryList.value = data.data.recordList;
     count.value = data.data.count;
     loading.value = false;
@@ -216,7 +217,7 @@ const getCategoryList = (): void => {
  * 搜索分类
  */
 const queryCategories = (): void => {
-  queryParams.value.current = 1;
+  categoryQuery.value.current = 1;
   getCategoryList();
 };
 
@@ -224,8 +225,8 @@ const queryCategories = (): void => {
  * 重置搜索
  */
 const resetQuery = (): void => {
-  queryParams.value.keywords = '';
-  queryParams.value.current = 1;
+  categoryQuery.value.keywords = '';
+  categoryQuery.value.current = 1;
   getCategoryList();
 };
 

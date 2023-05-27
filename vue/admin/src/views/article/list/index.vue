@@ -107,7 +107,7 @@
         </template>
       </el-table-column>
       <!-- 文章分类 -->
-      <el-table-column align="center" label="分类" prop="categoryName" width="100" />
+      <el-table-column align="center" label="分类" prop="categoryName" width="100" :show-overflow-tooltip="true" />
       <!-- 文章标签 -->
       <el-table-column align="center" label="标签" prop="tagList" width="120">
         <template #default="scope">
@@ -397,7 +397,7 @@ const getArticleList = (): void => {
     articleList.value = data.data.recordList;
     count.value = data.data.count;
     previewCoverList.value = articleList.value
-      .map(article => article.articleCover === '' ? defCover : article.articleCover);
+        .map(article => article.articleCover === '' ? defCover : article.articleCover);
     loading.value = false;
   });
 };

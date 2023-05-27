@@ -5,20 +5,15 @@
 -->
 <template>
   <div class="pagination-container">
-    <el-pagination
-        :background="background"
-        v-model:current-page="currentPage"
-        v-model:page-size="pageSize"
-        :layout="layout"
-        :page-sizes="pageSizes"
-        :pager-count="pagerCount"
-        :total="total"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"/>
+    <el-pagination :background="background" v-model:current-page="currentPage" v-model:page-size="pageSize"
+                   :layout="layout" :page-sizes="pageSizes as number[]" :pager-count="pagerCount" :total="total"
+                   @size-change="handleSizeChange" @current-change="handleCurrentChange" />
   </div>
 </template>
 
-<script setup lang='ts'>
+<script setup lang="ts">
+
+import type { PropType } from 'vue';
 
 const props = defineProps({
   total: {

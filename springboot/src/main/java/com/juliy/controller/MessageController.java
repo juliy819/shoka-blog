@@ -44,7 +44,7 @@ public class MessageController {
      * @return {@link MessageVO} 留言列表
      */
     @VisitLogger(value = "留言")
-    @Operation(description = "查看留言列表")
+    @Operation(summary = "查看留言列表")
     @GetMapping("/list")
     public Result<List<MessageVO>> listMessages() {
         return Result.success(messageService.listMessages());
@@ -55,7 +55,7 @@ public class MessageController {
      * @param condition 条件
      * @return {@link Result<MessageAdminVO>} 留言列表
      */
-    @Operation(description = "查看后台留言列表")
+    @Operation(summary = "查看后台留言列表")
     @SaCheckPermission("message:list")
     @GetMapping("/admin/list")
     public Result<PageResult<MessageAdminVO>> listMessagesAdmin(ConditionDTO condition) {
@@ -68,7 +68,7 @@ public class MessageController {
      * @return {@link Result<>}
      */
     @AccessLimit(seconds = 60, maxCount = 3)
-    @Operation(description = "添加留言")
+    @Operation(summary = "添加留言")
     @PostMapping
     public Result<?> addMessage(@Validated @RequestBody MessageDTO message) {
         messageService.addMessage(message);
@@ -81,7 +81,7 @@ public class MessageController {
      * @return {@link Result<>}
      */
     @OptLogger(value = DELETE)
-    @Operation(description = "删除留言")
+    @Operation(summary = "删除留言")
     @SaCheckPermission("message:delete")
     @DeleteMapping
     public Result<?> deleteMessage(@RequestBody List<Integer> messageIdList) {
@@ -95,7 +95,7 @@ public class MessageController {
      * @return {@link Result<>}
      */
     @OptLogger(value = UPDATE)
-    @Operation(description = "审核留言")
+    @Operation(summary = "审核留言")
     @SaCheckPermission("message:check")
     @PutMapping("/admin/check")
     public Result<?> updateMessageCheck(@Validated @RequestBody CheckDTO check) {

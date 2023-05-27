@@ -140,6 +140,10 @@
   position: absolute;
 }
 
+.el-pagination .el-select .el-input {
+  width: 100% !important;
+}
+
 @media (max-width: 768px) {
   .pagination-container .el-pagination > .el-pagination__jump {
     display: none !important;
@@ -291,4 +295,9 @@
 /* 表格右侧工具栏样式 */
 .top-right-btn {
   margin-left: auto;
+}
+
+.status-container {
+  display: flex;
+  align-items: center;
 }

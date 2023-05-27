@@ -46,7 +46,7 @@ public class TalkController {
      * @param condition 条件
      * @return {@link TalkAdminVO} 后台说说
      */
-    @Operation(description = "查看后台说说列表")
+    @Operation(summary = "查看后台说说列表")
     @SaCheckPermission("talk:list")
     @GetMapping("/admin/list")
     public Result<PageResult<TalkAdminVO>> listTalksAdmin(ConditionDTO condition) {
@@ -59,7 +59,7 @@ public class TalkController {
      * @return {@link Result<String>}
      */
     @OptLogger(value = UPLOAD)
-    @Operation(description = "上传说说图片")
+    @Operation(summary = "上传说说图片")
     @SaCheckPermission("talk:upload")
     @PostMapping("/upload")
     public Result<String> uploadTalkImage(@RequestParam("file") MultipartFile file) {
@@ -72,7 +72,7 @@ public class TalkController {
      * @return {@link Result<>}
      */
     @OptLogger(value = ADD)
-    @Operation(description = "添加说说")
+    @Operation(summary = "添加说说")
     @SaCheckPermission("talk:add")
     @PostMapping
     public Result<?> addTalk(@Validated @RequestBody TalkDTO talk) {
@@ -86,7 +86,7 @@ public class TalkController {
      * @return {@link Result<>}
      */
     @OptLogger(value = DELETE)
-    @Operation(description = "删除说说")
+    @Operation(summary = "删除说说")
     @SaCheckPermission("talk:delete")
     @DeleteMapping("/{talkId}")
     public Result<?> deleteTalk(@PathVariable("talkId") Integer talkId) {
@@ -100,7 +100,7 @@ public class TalkController {
      * @return {@link Result<>}
      */
     @OptLogger(value = UPDATE)
-    @Operation(description = "修改说说")
+    @Operation(summary = "修改说说")
     @SaCheckPermission("talk:update")
     @PutMapping
     public Result<?> updateTalk(@Validated @RequestBody TalkDTO talk) {
@@ -113,9 +113,9 @@ public class TalkController {
      * @param talkId 说说id
      * @return {@link TalkAdminVO} 后台说说
      */
-    @Operation(description = "编辑说说")
+    @Operation(summary = "编辑说说")
     @SaCheckPermission("talk:edit")
-    @GetMapping("/admin/edit/{talkId}")
+    @GetMapping("/edit/{talkId}")
     public Result<TalkAdminInfoVO> editTalk(@PathVariable("talkId") Integer talkId) {
         return Result.success(talkService.editTalk(talkId));
     }
@@ -126,7 +126,7 @@ public class TalkController {
      * @return {@link Result<>}
      */
     @SaCheckLogin
-    @Operation(description = "点赞说说")
+    @Operation(summary = "点赞说说")
     @AccessLimit(seconds = 60, maxCount = 10)
     @SaCheckPermission("talk:like")
     @PostMapping("/{talkId}/like")
@@ -139,7 +139,7 @@ public class TalkController {
      * 查看首页说说
      * @return {@link Result<String>}
      */
-    @Operation(description = "查看首页说说")
+    @Operation(summary = "查看首页说说")
     @GetMapping("/listHome")
     public Result<List<TalkHomeVO>> listTalkHome() {
         return Result.success(talkService.listTalksHome());
@@ -150,7 +150,7 @@ public class TalkController {
      * @return {@link Result<TalkVO>}
      */
     @VisitLogger(value = "说说列表")
-    @Operation(description = "查看说说列表")
+    @Operation(summary = "查看说说列表")
     @GetMapping("/list")
     public Result<PageResult<TalkVO>> listTalkVO() {
         return Result.success(talkService.listTalks());
@@ -162,7 +162,7 @@ public class TalkController {
      * @return {@link Result<TalkVO>}
      */
     @VisitLogger(value = "说说")
-    @Operation(description = "查看说说")
+    @Operation(summary = "查看说说")
     @GetMapping("/{talkId}")
     public Result<TalkVO> getTalkById(@PathVariable("talkId") Integer talkId) {
         return Result.success(talkService.getTalkById(talkId));

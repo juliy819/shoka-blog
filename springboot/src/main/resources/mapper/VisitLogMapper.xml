@@ -5,21 +5,21 @@
 
     <select id="selectVisitLogs" resultType="com.juliy.entity.VisitLog">
         SELECT
-        tvl.id,
+        id,
         page,
         ip_address,
         ip_source,
         os,
         browser,
         create_time
-        FROM ( SELECT id FROM t_visit_log
+        FROM t_visit_log
         <where>
-            <if test="condition!=null">
+            <if test="condition.keywords!=null">
                 page like concat('%',#{condition.keywords},'%')
             </if>
         </where>
-        ORDER BY id DESC LIMIT #{current},#{size} ) temp
-        LEFT JOIN t_visit_log tvl ON temp.id = tvl.id
+        ORDER BY id DESC
+        LIMIT #{current},#{size}
     </select>
 
     <select id="selectUserViews" resultType="com.juliy.model.vo.UserViewVO">

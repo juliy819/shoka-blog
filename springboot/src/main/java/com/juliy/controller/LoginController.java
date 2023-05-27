@@ -74,7 +74,7 @@ public class LoginController {
      * @param register 注册信息
      * @return {@link Result<>}
      */
-    @Operation(description = "用户邮箱注册")
+    @Operation(summary = "用户邮箱注册")
     @PostMapping("/register")
     public Result<?> register(@Validated @RequestBody RegisterDTO register) {
         loginService.register(register);
@@ -86,7 +86,7 @@ public class LoginController {
      * @return {@link Result<>}
      */
     @AccessLimit(seconds = 60, maxCount = 1)
-    @Operation(description = "发送邮箱验证码")
+    @Operation(summary = "发送邮箱验证码")
     @GetMapping("/sendCode")
     public Result<?> sendCode(String username) {
         loginService.sendCode(username);

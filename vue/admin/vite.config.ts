@@ -8,6 +8,7 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 import ElementPlus from 'unplugin-element-plus/vite';
 import path from 'path';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
+// @ts-ignore
 import { prismjsPlugin } from 'vite-plugin-prismjs';
 
 export default defineConfig({

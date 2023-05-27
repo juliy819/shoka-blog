@@ -52,3 +52,27 @@ export interface PageQuery {
    */
   size: number;
 }
+
+/**
+ * 上传图片
+ */
+export interface Picture {
+  /**
+   * 链接
+   */
+  url: string;
+}
+
+/**
+ * 审核DTO
+ */
+export interface CheckDTO {
+  /**
+   * id集合
+   */
+  idList: number[];
+  /**
+   * 是否通过 (0否 1是)
+   */
+  isCheck: number;
+}

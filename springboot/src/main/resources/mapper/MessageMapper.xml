@@ -29,7 +29,7 @@
             </if>
         </where>
         ORDER BY id DESC
-        LIMIT #{limit},#{size}) temp
+        LIMIT #{current},#{size}) temp
         LEFT JOIN t_message tm ON temp.id = tm.id
     </select>
 </mapper>

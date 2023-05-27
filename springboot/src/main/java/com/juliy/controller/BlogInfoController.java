@@ -29,7 +29,7 @@ public class BlogInfoController {
     /**
      * 上传访客信息
      */
-    @Operation(description = "上传访客信息")
+    @Operation(summary = "上传访客信息")
     @GetMapping("/report")
     Result<?> report() {
         blogInfoService.report();
@@ -40,7 +40,7 @@ public class BlogInfoController {
      * 获取博客信息
      * @return 博客信息
      */
-    @Operation(description = "获取博客信息")
+    @Operation(summary = "获取博客信息")
     @GetMapping("/info")
     Result<BlogInfoVO> getBlogInfo() {
         return Result.success(blogInfoService.getBlogInfo());
@@ -50,7 +50,7 @@ public class BlogInfoController {
      * 获取博客后台信息
      * @return 博客后台信息
      */
-    @Operation(description = "获取博客信息")
+    @Operation(summary = "获取博客信息")
     @GetMapping("/admin/info")
     Result<BlogInfoAdminVO> getBlogInfoAdmin() {
         return Result.success(blogInfoService.getBlogInfoAdmin());

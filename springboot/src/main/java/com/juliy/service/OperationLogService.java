@@ -17,7 +17,7 @@ public interface OperationLogService extends IService<OperationLog> {
      * @param condition 条件
      * @return 日志列表
      */
-    PageResult<OperationLog> listOperationLogVO(ConditionDTO condition);
+    PageResult<OperationLog> listOperationLogs(ConditionDTO condition);
 
     /**
      * 保存操作日志

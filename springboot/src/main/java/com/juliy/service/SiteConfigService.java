@@ -24,9 +24,30 @@ public interface SiteConfigService extends IService<SiteConfig> {
     void updateSiteConfig(SiteConfig siteConfig);
 
     /**
-     * 上传网站配置图片
+     * 上传默认用户头像
      * @param file 图片
      * @return 图片url
      */
-    String saveSiteImage(MultipartFile file);
+    String saveUserAvatar(MultipartFile file);
+
+    /**
+     * 上传默认游客头像
+     * @param file 图片
+     * @return 图片url
+     */
+    String saveTouristAvatar(MultipartFile file);
+
+    /**
+     * 上传作者头像
+     * @param file 图片
+     * @return 图片url
+     */
+    String saveAuthorAvatar(MultipartFile file);
+
+    /**
+     * 上传文章封面
+     * @param file 图片
+     * @return 图片url
+     */
+    String saveArticleCover(MultipartFile file);
 }

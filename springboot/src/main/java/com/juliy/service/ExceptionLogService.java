@@ -17,7 +17,7 @@ public interface ExceptionLogService extends IService<ExceptionLog> {
      * @param condition 条件
      * @return 日志列表
      */
-    PageResult<ExceptionLog> listExceptionLog(ConditionDTO condition);
+    PageResult<ExceptionLog> listExceptionLogs(ConditionDTO condition);
 
     /**
      * 保存异常日志

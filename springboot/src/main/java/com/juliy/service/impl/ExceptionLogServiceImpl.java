@@ -30,7 +30,7 @@ public class ExceptionLogServiceImpl extends ServiceImpl<ExceptionLogMapper, Exc
     public ExceptionLogServiceImpl(ExceptionLogMapper exceptionLogMapper) {this.exceptionLogMapper = exceptionLogMapper;}
 
     @Override
-    public PageResult<ExceptionLog> listExceptionLog(ConditionDTO condition) {
+    public PageResult<ExceptionLog> listExceptionLogs(ConditionDTO condition) {
         // 查询异常日志数量
         long count = this.count(
                 new LambdaQueryWrapper<ExceptionLog>()

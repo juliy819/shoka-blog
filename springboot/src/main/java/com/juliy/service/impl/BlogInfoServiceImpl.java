@@ -31,19 +31,13 @@ import static com.juliy.enums.ArticleStatusEnum.PUBLIC;
 public class BlogInfoServiceImpl implements BlogInfoService {
 
     private final ArticleService articleService;
-
     private final CategoryService categoryService;
-
     private final TagService tagService;
-
     private final SiteConfigService siteConfigService;
-
     private final UserService userService;
-
+    private final MessageService messageService;
     private final VisitLogService visitLogService;
-
     private final RedisService redisService;
-
     private final HttpServletRequest request;
 
     @Autowired
@@ -52,6 +46,7 @@ public class BlogInfoServiceImpl implements BlogInfoService {
                                TagService tagService,
                                SiteConfigService siteConfigService,
                                UserService userService,
+                               MessageService messageService,
                                VisitLogService visitLogService,
                                RedisService redisService,
                                HttpServletRequest request) {
@@ -60,6 +55,7 @@ public class BlogInfoServiceImpl implements BlogInfoService {
         this.tagService = tagService;
         this.siteConfigService = siteConfigService;
         this.userService = userService;
+        this.messageService = messageService;
         this.visitLogService = visitLogService;
         this.redisService = redisService;
         this.request = request;
@@ -112,10 +108,10 @@ public class BlogInfoServiceImpl implements BlogInfoService {
     @Override
     public BlogInfoAdminVO getBlogInfoAdmin() {
         // 访问量
-        Long count = redisService.getObject(BLOG_VIEW_COUNT);
-        Long viewCount = Optional.ofNullable(count).orElse(0L);
-        // 留言量 todo
-        Long messageCount = 0L;
+        Integer count = redisService.getObject(BLOG_VIEW_COUNT);
+        Long viewCount = Optional.of(count.longValue()).orElse(0L);
+        // 留言量
+        Long messageCount = messageService.count();
         // 用户量
         Long userCount = userService.count();
         // 文章量

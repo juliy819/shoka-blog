@@ -54,7 +54,42 @@ public class SiteConfigServiceImpl extends ServiceImpl<SiteConfigMapper, SiteCon
     }
 
     @Override
-    public String saveSiteImage(MultipartFile file) {
-        return fileService.saveFile(file, FilePathEnum.CONFIG);
+    public String saveUserAvatar(MultipartFile file) {
+        String image = fileService.saveFile(file, FilePathEnum.CONFIG);
+        SiteConfig siteConfig = new SiteConfig();
+        siteConfig.setId(1);
+        siteConfig.setUserAvatar(image);
+        this.updateById(siteConfig);
+        return image;
+    }
+
+    @Override
+    public String saveTouristAvatar(MultipartFile file) {
+        String image = fileService.saveFile(file, FilePathEnum.CONFIG);
+        SiteConfig siteConfig = new SiteConfig();
+        siteConfig.setId(1);
+        siteConfig.setTouristAvatar(image);
+        this.updateById(siteConfig);
+        return image;
+    }
+
+    @Override
+    public String saveAuthorAvatar(MultipartFile file) {
+        String image = fileService.saveFile(file, FilePathEnum.CONFIG);
+        SiteConfig siteConfig = new SiteConfig();
+        siteConfig.setId(1);
+        siteConfig.setAuthorAvatar(image);
+        this.updateById(siteConfig);
+        return image;
+    }
+
+    @Override
+    public String saveArticleCover(MultipartFile file) {
+        String image = fileService.saveFile(file, FilePathEnum.CONFIG);
+        SiteConfig siteConfig = new SiteConfig();
+        siteConfig.setId(1);
+        siteConfig.setArticleCover(image);
+        this.updateById(siteConfig);
+        return image;
     }
 }

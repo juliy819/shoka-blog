@@ -37,7 +37,7 @@ public class SiteConfigController {
      */
     @Operation(summary = "获取网站配置")
     @SaCheckPermission("site:list")
-    @GetMapping("/list")
+    @GetMapping
     public Result<SiteConfig> getSiteConfig() {
         return Result.success(siteConfigService.getSiteConfig());
     }
@@ -56,16 +56,55 @@ public class SiteConfigController {
     }
 
     /**
-     * 上传网站配置图片
+     * 上传默认用户头像
      * @param file 图片
      * @return 图片路径
      */
-    @Operation(summary = "上传网站配置图片")
-    @SaCheckPermission("web:site:upload")
+    @Operation(summary = "上传默认用户头像")
+    @SaCheckPermission("site:upload")
     @OptLogger(value = UPLOAD)
-    @PostMapping("/upload")
-    public Result<String> saveSiteImg(@RequestParam("file") MultipartFile file) {
-        return Result.success(siteConfigService.saveSiteImage(file));
+    @PostMapping("/upload/user")
+    public Result<String> saveUserAvatar(@RequestParam("file") MultipartFile file) {
+        return Result.success(siteConfigService.saveUserAvatar(file));
+    }
+
+    /**
+     * 上传游客头像
+     * @param file 图片
+     * @return 图片路径
+     */
+    @Operation(summary = "上传游客头像")
+    @SaCheckPermission("site:upload")
+    @OptLogger(value = UPLOAD)
+    @PostMapping("/upload/tourist")
+    public Result<String> saveTouristAvatar(@RequestParam("file") MultipartFile file) {
+        return Result.success(siteConfigService.saveTouristAvatar(file));
+    }
+
+    /**
+     * 上传作者头像
+     * @param file 图片
+     * @return 图片路径
+     */
+    @Operation(summary = "上传作者头像")
+    @SaCheckPermission("site:upload")
+    @OptLogger(value = UPLOAD)
+    @PostMapping("/upload/author")
+    public Result<String> saveAuthorAvatar(@RequestParam("file") MultipartFile file) {
+        return Result.success(siteConfigService.saveAuthorAvatar(file));
+    }
+
+    /**
+     * 上传文章封面
+     * @param file 图片
+     * @return 图片路径
+     */
+    @Operation(summary = "上传文章封面")
+    @SaCheckPermission("site:upload")
+    @OptLogger(value = UPLOAD)
+    @PostMapping("/upload/article")
+    public Result<String> saveArticleCover(@RequestParam("file") MultipartFile file) {
+        return Result.success(siteConfigService.saveArticleCover(file));
     }
 
 }

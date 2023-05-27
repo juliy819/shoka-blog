@@ -64,7 +64,7 @@ public class ExceptionLogAspect {
         // 异常名称
         exceptionLog.setName(e.getClass().getName());
         // 操作描述
-        exceptionLog.setDescription(operation.description());
+        exceptionLog.setDescription(operation.summary());
         // 获取请求的类名
         String className = joinPoint.getTarget().getClass().getName();
         // 获取请求的方法名

@@ -31,7 +31,7 @@ public class OperationLogServiceImpl extends ServiceImpl<OperationLogMapper, Ope
 
 
     @Override
-    public PageResult<OperationLog> listOperationLogVO(ConditionDTO condition) {
+    public PageResult<OperationLog> listOperationLogs(ConditionDTO condition) {
         // 查询操作日志数量
         long count = this.count(
                 new LambdaQueryWrapper<OperationLog>()

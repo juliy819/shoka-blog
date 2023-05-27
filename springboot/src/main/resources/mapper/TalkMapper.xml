@@ -16,7 +16,7 @@
         t_talk t
         INNER JOIN t_user u ON t.user_id = u.id
         <where>
-            <if test="condition != null">
+            <if test="condition.status != null">
                 t.status = #{condition.status}
             </if>
         </where>

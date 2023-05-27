@@ -157,3 +157,11 @@ aside {
 .multiselect--active {
   z-index: 1000 !important;
 }
+
+:root {
+  --talkBg: #f0f1f4;
+}
+
+html.dark {
+  --talkBg: #000;
+}

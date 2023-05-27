@@ -47,7 +47,7 @@ public class CommentController {
      * @param condition 条件
      * @return {@link Result<CommentAdminVO>} 后台评论
      */
-    @Operation(description = "查看后台评论")
+    @Operation(summary = "查看后台评论")
     @SaCheckPermission("comment:list")
     @GetMapping("/admin/list")
     public Result<PageResult<CommentAdminVO>> getCommentsAdmin(ConditionDTO condition) {
@@ -60,7 +60,7 @@ public class CommentController {
      * @return {@link Result<>}
      */
     @SaCheckLogin
-    @Operation(description = "添加评论")
+    @Operation(summary = "添加评论")
     @SaCheckPermission("comment:add")
     @PostMapping
     public Result<?> addComment(@Validated @RequestBody CommentDTO comment) {
@@ -74,7 +74,7 @@ public class CommentController {
      * @return {@link Result<>}
      */
     @OptLogger(value = DELETE)
-    @Operation(description = "删除评论")
+    @Operation(summary = "删除评论")
     @SaCheckPermission("comment:delete")
     @DeleteMapping
     public Result<?> deleteComments(@RequestBody List<Integer> commentIdList) {
@@ -88,7 +88,7 @@ public class CommentController {
      * @return {@link Result<>}
      */
     @OptLogger(value = UPDATE)
-    @Operation(description = "审核评论")
+    @Operation(summary = "审核评论")
     @SaCheckPermission("comment:check")
     @PutMapping("/admin/check")
     public Result<?> checkComment(@Validated @RequestBody CheckDTO check) {
@@ -102,7 +102,7 @@ public class CommentController {
      * @return {@link Result<>}
      */
     @SaCheckLogin
-    @Operation(description = "点赞评论")
+    @Operation(summary = "点赞评论")
     @AccessLimit(seconds = 60, maxCount = 10)
     @SaCheckPermission("comment:like")
     @PostMapping("/{commentId}/like")
@@ -115,7 +115,7 @@ public class CommentController {
      * 查看最新评论
      * @return {@link List<RecentCommentVO>}
      */
-    @Operation(description = "查看最新评论")
+    @Operation(summary = "查看最新评论")
     @GetMapping("/recent")
     public Result<List<RecentCommentVO>> getRecentComments() {
         return Result.success(commentService.listRecentComments());
@@ -126,7 +126,7 @@ public class CommentController {
      * @param condition 条件
      * @return {@link Result<CommentVO>}
      */
-    @Operation(description = "查看评论")
+    @Operation(summary = "查看评论")
     @GetMapping("/list")
     public Result<PageResult<CommentVO>> getComments(ConditionDTO condition) {
         return Result.success(commentService.listComments(condition));
@@ -137,7 +137,7 @@ public class CommentController {
      * @param commentId 评论id
      * @return {@link Result<ReplyVO>} 回复评论列表
      */
-    @Operation(description = "查看回复评论")
+    @Operation(summary = "查看回复评论")
     @GetMapping("/{commentId}/reply")
     public Result<List<ReplyVO>> getReply(@PathVariable("commentId") Integer commentId) {
         return Result.success(commentService.listReply(commentId));

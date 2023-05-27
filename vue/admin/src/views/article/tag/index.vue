@@ -8,7 +8,7 @@
     <!-- 搜索栏 -->
     <el-form v-show="showSearch" :inline="true">
       <el-form-item label="标签名称">
-        <el-input v-model="queryParams.keywords" clearable placeholder="请输入标签名称" style="width: 200px"
+        <el-input v-model="tagQuery.keywords" clearable placeholder="请输入标签名称" style="width: 200px"
                   @keyup.enter="queryTags" />
       </el-form-item>
       <el-form-item>
@@ -34,7 +34,7 @@
     <!-- 表格 -->
     <el-table v-loading="loading" :data="tagList" @selection-change="changeSelectedId">
       <el-table-column align="center" type="selection" />
-      <el-table-column align="center" label="标签名" min-width="150" prop="tagName" />
+      <el-table-column align="center" label="标签名" min-width="150" prop="tagName" :show-overflow-tooltip="true" />
       <el-table-column align="center" label="文章数量" min-width="100" prop="articleCount" />
       <el-table-column align="center" label="创建时间" min-width="150" prop="createTime">
         <template #default="scope">
@@ -61,7 +61,7 @@
       </el-table-column>
     </el-table>
     <!-- 分页工具 -->
-    <pagination v-if="count > 0" v-model:limit="queryParams.size" v-model:page="queryParams.current" :total="count"
+    <pagination v-if="count > 0" v-model:limit="tagQuery.size" v-model:page="tagQuery.current" :total="count"
                 @pagination="getTagList" />
     <!-- 添加或修改对话框 -->
     <el-dialog v-model="open" :title="title" append-to-body width="500px">
@@ -108,7 +108,7 @@ const tagIdList = ref<number[]>([]);
 const tagList = ref<Tag[]>([]);
 
 const data = reactive({
-  queryParams: {
+  tagQuery: {
     current: 1,
     size: 10
   } as TagQuery,
@@ -117,7 +117,7 @@ const data = reactive({
     tagName: ''
   } as TagForm
 });
-const { queryParams, tagForm } = toRefs(data);
+const { tagQuery, tagForm } = toRefs(data);
 
 /**
  * 添加标签
@@ -205,7 +205,7 @@ const deleteTags = (id?: number): void => {
  */
 const getTagList = (): void => {
   loading.value = true;
-  tagApi.getTagList(queryParams.value).then(({ data }) => {
+  tagApi.getTagList(tagQuery.value).then(({ data }) => {
     tagList.value = data.data.recordList;
     count.value = data.data.count;
     loading.value = false;
@@ -216,7 +216,7 @@ const getTagList = (): void => {
  * 搜索标签
  */
 const queryTags = (): void => {
-  queryParams.value.current = 1;
+  tagQuery.value.current = 1;
   getTagList();
 };
 
@@ -224,8 +224,8 @@ const queryTags = (): void => {
  * 重置搜索
  */
 const resetQuery = (): void => {
-  queryParams.value.keywords = '';
-  queryParams.value.current = 1;
+  tagQuery.value.keywords = '';
+  tagQuery.value.current = 1;
   getTagList();
 };
 

@@ -111,7 +111,7 @@ public class CategoryController {
      * @return 文章列表
      */
     @VisitLogger(value = "分类文章")
-    @Operation(description = "查看分类下的文章")
+    @Operation(summary = "查看分类下的文章")
     @GetMapping("/article")
     public Result<ArticleConditionList> listCategoryArticles(ConditionDTO condition) {
         return Result.success(categoryService.listCategoryArticles(condition));

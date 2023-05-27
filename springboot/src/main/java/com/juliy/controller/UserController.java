@@ -32,7 +32,7 @@ public class UserController {
      * @param email 邮箱信息
      * @return {@link Result<>}
      */
-    @Operation(description = "修改用户邮箱")
+    @Operation(summary = "修改用户邮箱")
     @PutMapping("/email")
     public Result<?> updateUserEmail(@Validated @RequestBody EmailDTO email) {
         userService.updateUserEmail(email);
@@ -44,7 +44,7 @@ public class UserController {
      * @param file 文件
      * @return {@link Result<String>} 头像地址
      */
-    @Operation(description = "修改用户头像")
+    @Operation(summary = "修改用户头像")
     @PostMapping("/avatar")
     public Result<String> updateUserAvatar(@RequestParam(value = "file") MultipartFile file) {
         return Result.success(userService.saveAvatar(file));
@@ -55,7 +55,7 @@ public class UserController {
      * @param userInfo 用户信息
      * @return {@link Result<>}
      */
-    @Operation(description = "修改用户信息")
+    @Operation(summary = "修改用户信息")
     @PutMapping("/info")
     public Result<?> updateUserInfo(@Validated @RequestBody UserInfoDTO userInfo) {
         userService.updateUserInfo(userInfo);
@@ -67,7 +67,7 @@ public class UserController {
      * @param password 用户信息
      * @return {@link Result<>}
      */
-    @Operation(description = "修改用户密码")
+    @Operation(summary = "修改用户密码")
     @PutMapping("/password")
     public Result<?> updatePassword(@Validated @RequestBody PasswordDTO password) {
         userService.updatePassword(password);
