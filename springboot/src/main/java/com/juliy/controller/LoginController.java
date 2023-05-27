@@ -1,8 +1,10 @@
 package com.juliy.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
+import com.juliy.annotation.AccessLimit;
 import com.juliy.entity.Menu;
 import com.juliy.model.dto.LoginDTO;
+import com.juliy.model.dto.RegisterDTO;
 import com.juliy.model.vo.AdminUserInfoVO;
 import com.juliy.model.vo.Result;
 import com.juliy.model.vo.RouterVO;
@@ -67,17 +69,29 @@ public class LoginController {
         return Result.success();
     }
 
-    ///**
-    // * 用户注册
-    // * @param registerInfo
-    // * @return
-    // */
-    //@Operation(summary = "用户注册")
-    //@PostMapping("/users/register")
-    //public Result<?> register(@Valid @RequestBody RegisterDTO registerInfo) {
-    //    loginService.register(registerInfo);
-    //    return Result.success();
-    //}
+    /**
+     * 用户邮箱注册
+     * @param register 注册信息
+     * @return {@link Result<>}
+     */
+    @Operation(description = "用户邮箱注册")
+    @PostMapping("/register")
+    public Result<?> register(@Validated @RequestBody RegisterDTO register) {
+        loginService.register(register);
+        return Result.success();
+    }
+
+    /**
+     * 发送邮箱验证码
+     * @return {@link Result<>}
+     */
+    @AccessLimit(seconds = 60, maxCount = 1)
+    @Operation(description = "发送邮箱验证码")
+    @GetMapping("/sendCode")
+    public Result<?> sendCode(String username) {
+        loginService.sendCode(username);
+        return Result.success();
+    }
 
     /**
      * 获取后台用户信息

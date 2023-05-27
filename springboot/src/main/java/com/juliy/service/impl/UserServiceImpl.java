@@ -3,15 +3,25 @@ package com.juliy.service.impl;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.juliy.entity.User;
+import com.juliy.enums.FilePathEnum;
 import com.juliy.mapper.UserMapper;
+import com.juliy.model.dto.EmailDTO;
+import com.juliy.model.dto.PasswordDTO;
+import com.juliy.model.dto.UserInfoDTO;
 import com.juliy.model.vo.AdminUserInfoVO;
 import com.juliy.model.vo.UserInfoVO;
+import com.juliy.service.FileService;
 import com.juliy.service.RedisService;
 import com.juliy.service.UserService;
+import com.juliy.utils.CommonUtils;
+import com.juliy.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Set;
@@ -28,12 +38,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     private final UserMapper userMapper;
     private final RedisService redisService;
+    private final FileService fileService;
 
     @Autowired
     public UserServiceImpl(UserMapper userMapper,
-                           RedisService redisService) {
+                           RedisService redisService,
+                           FileService fileService) {
         this.userMapper = userMapper;
         this.redisService = redisService;
+        this.fileService = fileService;
     }
 
     @Override
@@ -84,5 +97,62 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 .talkLikeSet(talkLikeSet)
                 .loginType(user.getLoginType())
                 .build();
+    }
+
+    @Override
+    public void updateUserEmail(EmailDTO email) {
+        verifyCode(email.getEmail(), email.getCode());
+        User user = User.builder()
+                .id(StpUtil.getLoginIdAsInt())
+                .email(email.getEmail())
+                .build();
+        userMapper.updateById(user);
+    }
+
+    @Override
+    public String saveAvatar(MultipartFile file) {
+        String avatar = fileService.saveFile(file, FilePathEnum.ARTICLE);
+        User user = User.builder()
+                .id(StpUtil.getLoginIdAsInt())
+                .avatar(avatar)
+                .build();
+        this.updateById(user);
+        return avatar;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void updateUserInfo(UserInfoDTO userInfo) {
+        User user = User.builder()
+                .id(StpUtil.getLoginIdAsInt())
+                .nickname(userInfo.getNickname())
+                .intro(userInfo.getIntro())
+                .webSite(userInfo.getWebSite())
+                .build();
+        this.updateById(user);
+    }
+
+    @Override
+    public void updatePassword(PasswordDTO password) {
+        verifyCode(password.getUsername(), password.getCode());
+        User existUser = userMapper.selectOne(new LambdaQueryWrapper<User>()
+                                                      .select(User::getUsername)
+                                                      .eq(User::getUsername, password.getUsername()));
+        CommonUtils.checkParamNull(existUser, "邮箱尚未注册！");
+        // 根据用户名修改密码
+        this.update(new User(), new LambdaUpdateWrapper<User>()
+                .set(User::getPassword, SecurityUtils.sha256Encrypt(password.getPassword()))
+                .eq(User::getUsername, password.getUsername()));
+    }
+
+    /**
+     * 校验验证码
+     * @param username 用户名
+     * @param code     验证码
+     */
+    public void verifyCode(String username, String code) {
+        String sysCode = redisService.getObject(CODE_KEY + username);
+        CommonUtils.checkParam(StrUtil.isBlank(code), "验证码未发送或已过期！");
+        CommonUtils.checkParam(!sysCode.equals(code), "验证码错误，请重新输入！");
     }
 }

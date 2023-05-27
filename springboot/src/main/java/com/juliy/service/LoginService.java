@@ -22,4 +22,10 @@ public interface LoginService {
      * @param register 注册信息
      */
     void register(RegisterDTO register);
+
+    /**
+     * 发送验证码
+     * @param username 用户名
+     */
+    void sendCode(String username);
 }

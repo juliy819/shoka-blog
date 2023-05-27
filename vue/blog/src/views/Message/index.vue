@@ -9,13 +9,12 @@
     <h1 class="message-title">留言板</h1>
     <div class="message-input">
       <input class="input" v-model="messageContent" @keyup.enter="send" placeholder="说点什么吧" />
-      <!--      <button class="send" @click="send">发送</button>-->
-      <n-button class="send">发送</n-button>
+      <n-button class="send" @click="send">发送</n-button>
     </div>
   </div>
   <!-- 弹幕列表 -->
   <div class="danmaku-container">
-    <vue-danmaku ref="danmaku" class="danmaku" v-model:danmus="messageList" use-slot is-suspend random-channel>
+    <vue-danmaku ref="danmaku" class="danmaku" v-model:danmus="messageList" use-slot is-suspend random-channel loop>
       <template v-slot:dm="{danmu}">
         <span class="danmaku-item">
           <n-avatar circle size="medium" :src="danmu.avatar" />
@@ -33,6 +32,7 @@ import messageApi from '@/api/message';
 import type { Message } from '@/api/message/types';
 import useStore from '@/stores';
 import VueDanmaku from 'vue3-danmaku';
+import { modal } from '@/utils/modal';
 
 const { blogStore, userStore } = useStore();
 const messageContent = ref('');
@@ -41,7 +41,7 @@ const messageList = ref<Message[]>([]);
 
 const send = () => {
   if (messageContent.value.trim() == '') {
-    window.$message?.warning('留言内容不能为空');
+    modal.msgWarning('留言内容不能为空');
     return false;
   }
   const userAvatar = userStore.avatar ? userStore.avatar : blogStore.siteConfig.touristAvatar;
@@ -53,10 +53,10 @@ const send = () => {
   };
   messageApi.addMessage(message).then(() => {
     if (blogStore.siteConfig.messageCheck) {
-      window.$message?.warning('留言成功，正在审核中');
+      modal.msgWarning('留言成功，正在审核中');
     } else {
       danmaku.value.push(message);
-      window.$message?.success('留言成功');
+      modal.msgSuccess('留言成功');
     }
     messageContent.value = '';
   }).catch(() => {});

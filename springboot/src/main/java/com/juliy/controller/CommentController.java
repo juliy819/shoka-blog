@@ -90,7 +90,7 @@ public class CommentController {
     @OptLogger(value = UPDATE)
     @Operation(description = "审核评论")
     @SaCheckPermission("comment:check")
-    @PutMapping("/admin/pass")
+    @PutMapping("/admin/check")
     public Result<?> checkComment(@Validated @RequestBody CheckDTO check) {
         commentService.updateCommentCheck(check);
         return Result.success();

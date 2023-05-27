@@ -5,7 +5,7 @@ package com.juliy.constant;
  * @author juliy
  * @date 2023/3/1 19:58
  */
-public interface CommonConstant {
+public class CommonConstant {
 
     /**
      * 否
