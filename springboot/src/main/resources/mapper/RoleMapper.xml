@@ -10,4 +10,44 @@
         WHERE ur.user_id = #{userId}
           AND r.is_disable = 0
     </select>
+
+    <select id="countRole" resultType="java.lang.Long">
+        SELECT
+        COUNT(id)
+        FROM
+        t_role
+        <where>
+            <if test="condition.keywords != null">
+                role_name like concat('%',#{condition.keywords},'%')
+            </if>
+            <if test="condition.isDisable != null">
+                and is_disable = #{condition.isDisable}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectRoleList" resultType="com.juliy.model.vo.RoleVO">
+        SELECT id,
+        role_name,
+        role_desc,
+        is_disable,
+        create_time
+        FROM t_role
+        <where>
+            <if test="condition.keywords != null">
+                role_name like concat('%',#{condition.keywords},'%')
+            </if>
+            <if test="condition.isDisable != null">
+                and is_disable = #{condition.isDisable}
+            </if>
+        </where>
+        ORDER BY id
+        LIMIT #{current},#{size}
+    </select>
+
+    <select id="selectUserRoleList" resultType="com.juliy.model.vo.UserRoleVO">
+        select id, role_name
+        from t_role
+    </select>
+
 </mapper>

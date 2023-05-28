@@ -15,20 +15,20 @@ public enum RoleEnum {
     /**
      * 管理员
      */
-    ADMIN("1", "admin"),
+    ADMIN(1, "admin"),
     /**
      * 用户
      */
-    USER("2", "user"),
+    USER(2, "user"),
     /**
      * 测试账号
      */
-    TEST("3", "test");
+    TEST(3, "test");
 
     /**
      * 角色id
      */
-    private final String roleId;
+    private final Integer roleId;
 
     /**
      * 描述

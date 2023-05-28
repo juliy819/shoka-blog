@@ -1,22 +1,24 @@
 package com.juliy.service.impl;
 
+import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.juliy.entity.User;
+import com.juliy.entity.UserRole;
 import com.juliy.enums.FilePathEnum;
+import com.juliy.mapper.RoleMapper;
 import com.juliy.mapper.UserMapper;
-import com.juliy.model.dto.EmailDTO;
-import com.juliy.model.dto.PasswordDTO;
-import com.juliy.model.dto.UserInfoDTO;
-import com.juliy.model.vo.AdminUserInfoVO;
-import com.juliy.model.vo.UserInfoVO;
+import com.juliy.mapper.UserRoleMapper;
+import com.juliy.model.dto.*;
+import com.juliy.model.vo.*;
 import com.juliy.service.FileService;
 import com.juliy.service.RedisService;
 import com.juliy.service.UserService;
 import com.juliy.utils.CommonUtils;
+import com.juliy.utils.PageUtils;
 import com.juliy.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,8 +26,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
+import static com.juliy.constant.CommonConstant.TRUE;
 import static com.juliy.constant.RedisConstant.*;
 
 /**
@@ -37,14 +41,20 @@ import static com.juliy.constant.RedisConstant.*;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     private final UserMapper userMapper;
+    private final RoleMapper roleMapper;
+    private final UserRoleMapper userRoleMapper;
     private final RedisService redisService;
     private final FileService fileService;
 
     @Autowired
     public UserServiceImpl(UserMapper userMapper,
+                           RoleMapper roleMapper,
+                           UserRoleMapper userRoleMapper,
                            RedisService redisService,
                            FileService fileService) {
         this.userMapper = userMapper;
+        this.roleMapper = roleMapper;
+        this.userRoleMapper = userRoleMapper;
         this.redisService = redisService;
         this.fileService = fileService;
     }
@@ -97,6 +107,63 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 .talkLikeSet(talkLikeSet)
                 .loginType(user.getLoginType())
                 .build();
+    }
+
+    @Override
+    public PageResult<UserAdminVO> listUserAdmin(ConditionDTO condition) {
+        // 查询后台用户数量
+        Long count = userMapper.countUser(condition);
+        if (count == 0) {
+            return new PageResult<>();
+        }
+        // 查询后台用户列表
+        List<UserAdminVO> userList = userMapper.selectUserAdmin(PageUtils.getLimitCurrent(),
+                                                                PageUtils.getSize(), condition);
+        return new PageResult<>(userList, count);
+    }
+
+    @Override
+    public List<UserRoleVO> listUserRole() {
+        return roleMapper.selectUserRoleList();
+    }
+
+    @Override
+    public void updateUser(UserRoleDTO user) {
+        // 更新用户信息
+        User newUser = User.builder()
+                .id(user.getId())
+                .nickname(user.getNickname())
+                .build();
+        baseMapper.updateById(newUser);
+        // 删除用户角色
+        userRoleMapper.delete(new LambdaQueryWrapper<UserRole>().eq(UserRole::getUserId, user.getId()));
+        // 重新添加用户角色
+        user.getRoleIdList().forEach(roleId -> userRoleMapper
+                .insert(UserRole.builder()
+                                .userId(user.getId())
+                                .roleId(roleId)
+                                .build()));
+        // 删除Redis缓存中的角色
+        SaSession sessionByLoginId = StpUtil.getSessionByLoginId(user.getId(), false);
+        Optional.ofNullable(sessionByLoginId).ifPresent(saSession -> saSession.delete("Role_List"));
+    }
+
+    @Override
+    public void updateUserStatus(DisableDTO disable) {
+        // 更新用户状态
+        User newUser = User.builder()
+                .id(disable.getId())
+                .isDisable(disable.getIsDisable())
+                .build();
+        userMapper.updateById(newUser);
+        if (disable.getIsDisable().equals(TRUE)) {
+            // 先踢下线再封禁
+            StpUtil.logout(disable.getId());
+            StpUtil.disable(disable.getId(), 86400);
+        } else {
+            // 解除封禁
+            StpUtil.untieDisable(disable.getId());
+        }
     }
 
     @Override

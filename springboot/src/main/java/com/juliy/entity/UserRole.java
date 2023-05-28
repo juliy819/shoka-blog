@@ -34,5 +34,5 @@ public class UserRole {
     /**
      * 角色id
      */
-    private String roleId;
+    private Integer roleId;
 }
