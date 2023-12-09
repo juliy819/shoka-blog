@@ -1,0 +1,9 @@
+[submodule "shoka-blog-springboot"]
+	path = shoka-blog-springboot
+	url = https://github.com/juliy819/shoka-blog-springboot.git
+[submodule "shoka-blog-client"]
+	path = shoka-blog-client
+	url = https://github.com/juliy819/shoka-blog-client.git
+[submodule "shoka-blog-admin"]
+	path = shoka-blog-admin
+	url = https://github.com/juliy819/shoka-blog-admin.git
